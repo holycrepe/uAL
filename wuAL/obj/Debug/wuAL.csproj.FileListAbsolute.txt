@@ -1,15 +1,68 @@
-D:\My Dropbox\Misc\uAL\wuAL\bin\Debug\wuAL.exe.config
-D:\My Dropbox\Misc\uAL\wuAL\bin\Debug\wuAL.exe
-D:\My Dropbox\Misc\uAL\wuAL\bin\Debug\wuAL.pdb
-D:\My Dropbox\Misc\uAL\wuAL\bin\Debug\Jayrock.dll
-D:\My Dropbox\Misc\uAL\wuAL\bin\Debug\Jayrock.Json.dll
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\ResolveAssemblyReference.cache
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\MainWindow.baml
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\MainWindow.g.cs
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\App.g.cs
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\wuAL_MarkupCompile.cache
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\wuAL.g.resources
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\wuAL.Properties.Resources.resources
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\wuAL.csproj.GenerateResource.Cache
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\wuAL.exe
-D:\My Dropbox\Misc\uAL\wuAL\obj\Debug\wuAL.pdb
+D:\Git\uAL\wUAL\bin\Debug\NLog.config
+D:\Git\uAL\wUAL\bin\Debug\wUAL.exe.config
+D:\Git\uAL\wUAL\bin\Debug\wUAL.exe
+D:\Git\uAL\wUAL\bin\Debug\wUAL.pdb
+D:\Git\uAL\wUAL\bin\Debug\JetBrains.Annotations.dll
+D:\Git\uAL\wUAL\bin\Debug\NLog.dll
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.dll
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.GridView.dll
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.Input.dll
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.Navigation.dll
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Data.dll
+D:\Git\uAL\wUAL\bin\Debug\Torrent.dll
+D:\Git\uAL\wUAL\bin\Debug\uAL.dll
+D:\Git\uAL\wUAL\bin\Debug\UTorrentRestAPI.dll
+D:\Git\uAL\wUAL\bin\Debug\BencodeNET.dll
+D:\Git\uAL\wUAL\bin\Debug\RestSharp.dll
+D:\Git\uAL\wUAL\bin\Debug\Torrent.pdb
+D:\Git\uAL\wUAL\bin\Debug\uAL.pdb
+D:\Git\uAL\wUAL\bin\Debug\UTorrentRestAPI.pdb
+D:\Git\uAL\wUAL\bin\Debug\JetBrains.Annotations.xml
+D:\Git\uAL\wUAL\bin\Debug\NLog.xml
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.xml
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.GridView.xml
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.Input.xml
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Controls.Navigation.xml
+D:\Git\uAL\wUAL\bin\Debug\Telerik.Windows.Data.xml
+D:\Git\uAL\wUAL\bin\Debug\BencodeNET.xml
+D:\Git\uAL\wUAL\bin\Debug\RestSharp.xml
+D:\Git\uAL\wUAL\obj\Debug\wUAL.csprojResolveAssemblyReference.cache
+D:\Git\uAL\wUAL\obj\Debug\Assets\Styles.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Brushes.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Expander\PlusMinusExpander.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\QueueGrids.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\SettingsGrid.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\TabHeader.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\PlusMinusExpander.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Telerik.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Themes\Current\System.Windows.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Themes\Current\Telerik.Windows.Controls.GridView.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Themes\Current\Telerik.Windows.Controls.Input.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Themes\Current\Telerik.Windows.Controls.Navigation.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Themes\Current\Telerik.Windows.Controls.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\Images.baml
+D:\Git\uAL\wUAL\obj\Debug\MainWindow.g.cs
+D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueGridHeaderControl.g.cs
+D:\Git\uAL\wUAL\obj\Debug\UserControls\ActionToggleSettingControl.g.cs
+D:\Git\uAL\wUAL\obj\Debug\App.g.cs
+D:\Git\uAL\wUAL\obj\Debug\wUAL_Content.g.cs
+D:\Git\uAL\wUAL\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Git\uAL\wUAL\obj\Debug\wUAL_MarkupCompile.cache
+D:\Git\uAL\wUAL\obj\Debug\wUAL_MarkupCompile.lref
+D:\Git\uAL\wUAL\obj\Debug\App.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\GridViewColumnHeader.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\TorrentRowDetails.baml
+D:\Git\uAL\wUAL\obj\Debug\Assets\QueueStyleSelectors.baml
+D:\Git\uAL\wUAL\obj\Debug\MainWindow.baml
+D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueGridHeaderControl.baml
+D:\Git\uAL\wUAL\obj\Debug\UserControls\ActionToggleSettingControl.baml
+D:\Git\uAL\wUAL\obj\Debug\wUAL.g.resources
+D:\Git\uAL\wUAL\obj\Debug\wUAL.Properties.Resources.resources
+D:\Git\uAL\wUAL\obj\Debug\wUAL.csproj.GenerateResource.Cache
+D:\Git\uAL\wUAL\obj\Debug\wUAL.exe.licenses
+D:\Git\uAL\wUAL\obj\Debug\wUAL.exe
+D:\Git\uAL\wUAL\obj\Debug\wUAL.pdb
+D:\Git\uAL\wUAL\bin\Debug\Newtonsoft.Json.dll
+D:\Git\uAL\wUAL\bin\Debug\Newtonsoft.Json.xml
+D:\Git\uAL\wUAL\bin\Debug\nunit.framework.dll
+D:\Git\uAL\wUAL\bin\Debug\nunit.framework.xml

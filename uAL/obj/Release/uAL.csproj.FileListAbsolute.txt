@@ -1,7 +1,26 @@
-D:\My Dropbox\Misc\uAL\uAL\obj\Release\uAL.exe
-D:\My Dropbox\Misc\uAL\uAL\obj\Release\uAL.pdb
-D:\My Dropbox\Misc\uAL\uAL\bin\Release\uAL.exe
-D:\My Dropbox\Misc\uAL\uAL\bin\Release\uAL.pdb
-D:\My Dropbox\Misc\uAL\uAL\bin\Release\Jayrock.dll
-D:\My Dropbox\Misc\uAL\uAL\bin\Release\Jayrock.Json.dll
-D:\My Dropbox\Misc\uAL\uAL\obj\Release\ResolveAssemblyReference.cache
+D:\Git\uAL\uAL\bin\Release\NLog.config
+D:\Git\uAL\uAL\bin\Release\uAL.dll.config
+D:\Git\uAL\uAL\bin\Release\uAL.dll
+D:\Git\uAL\uAL\bin\Release\uAL.pdb
+D:\Git\uAL\uAL\bin\Release\BencodeNET.dll
+D:\Git\uAL\uAL\bin\Release\NLog.dll
+D:\Git\uAL\uAL\bin\Release\BencodeNET.xml
+D:\Git\uAL\uAL\bin\Release\NLog.xml
+D:\Git\uAL\uAL\obj\Release\uAL.dll
+D:\Git\uAL\uAL\obj\Release\uAL.pdb
+D:\Git\uAL\uAL\bin\Release\Torrent.dll
+D:\Git\uAL\uAL\obj\Release\uAL.csprojResolveAssemblyReference.cache
+D:\Git\uAL\uAL\bin\Release\Telerik.Windows.Controls.dll
+D:\Git\uAL\uAL\bin\Release\Telerik.Windows.Data.dll
+D:\Git\uAL\uAL\bin\Release\Telerik.Windows.Controls.xml
+D:\Git\uAL\uAL\bin\Release\Telerik.Windows.Data.xml
+D:\Git\uAL\uAL\bin\Release\JetBrains.Annotations.dll
+D:\Git\uAL\uAL\bin\Release\UTorrentRestAPI.dll
+D:\Git\uAL\uAL\bin\Release\RestSharp.dll
+D:\Git\uAL\uAL\bin\Release\Newtonsoft.Json.dll
+D:\Git\uAL\uAL\bin\Release\UTorrentRestAPI.pdb
+D:\Git\uAL\uAL\bin\Release\JetBrains.Annotations.xml
+D:\Git\uAL\uAL\bin\Release\RestSharp.xml
+D:\Git\uAL\uAL\bin\Release\Newtonsoft.Json.xml
+D:\Git\uAL\uAL\bin\Release\nunit.framework.dll
+D:\Git\uAL\uAL\bin\Release\nunit.framework.xml

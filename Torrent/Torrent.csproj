@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <CscToolPath>$(MSBuildProgramFiles32)\MSBuild\14.0\Bin</CscToolPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{2917E84C-B8B0-4308-BCDA-DFDE860A274D}</ProjectGuid>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Torrent</RootNamespace>
+    <AssemblyName>Torrent</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkProfile />
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
+    <SourceAnalysisOverrideSettingsFile>C:\Users\Avi\AppData\Roaming\ICSharpCode\SharpDevelop5\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BencodeNET">
+      <HintPath>..\packages\BencodeNET.1.2.1\lib\net40\BencodeNET.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.2.3\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xaml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\TypeTypeConverter.cs" />
+    <Compile Include="Enums\Extensions.cs" />
+    <Compile Include="Enums\PadDirection.cs" />
+    <Compile Include="Extensions\DebuggerDisplayExtensions.cs" />
+    <Compile Include="Extensions\LoggerExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\KeyValuePairExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Helpers\Utils\DebugUtils.cs" />
+    <Compile Include="Helpers\Utils\FileSystemSearchUtils.cs" />
+    <Compile Include="Infrastructure\Collections\MyKeyedCollection.cs" />
+    <Compile Include="Infrastructure\InfoReporters\DebuggerInfoReporter.cs" />
+    <Compile Include="Infrastructure\InfoReporters\InfoReporter.cs" />
+    <Compile Include="Infrastructure\InfoReporters\TextInfoReporter.cs" />
+    <Compile Include="Infrastructure\Interfaces\IDebuggerDisplay.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Helpers\StringHelpers\NumberPadder.cs" />
+    <Compile Include="Helpers\StringHelpers\PadStringOptions.cs" />
+    <Compile Include="Helpers\StringHelpers\TitlePadder.cs" />
+    <Compile Include="Extensions\PathExtensions.cs" />
+    <Compile Include="Extensions\RegexExtensions.cs" />
+    <Compile Include="Extensions\NumberExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="Extensions\DictExtensions.cs" />
+    <Compile Include="Helpers\StringHelpers\RegexStripper.cs" />
+    <Compile Include="Helpers\Utils\DictUtils.cs" />
+    <Compile Include="Helpers\FileHelpers\FileComparer.cs" />
+    <Compile Include="Helpers\Utils\FileSystemUtils.cs" />
+    <Compile Include="Helpers\Utils\ClassUtils.cs" />
+    <Compile Include="Helpers\Utils\RegexUtils.Tokens.cs" />
+    <Compile Include="Infrastructure\Logging\LogEventInfoCloneable.cs" />
+    <Compile Include="Infrastructure\Logging\LoggingAdapter.cs" />
+    <Compile Include="Properties\Settings\Flags\Flag.cs" />
+    <Compile Include="Extensions\FlagExtensions.cs" />
+    <Compile Include="Properties\Settings\Flags\Flags.cs" />
+    <Compile Include="Enums\GetFileMethod.cs" />
+    <Compile Include="Helpers\Utils\LogUtils.cs" />
+    <Compile Include="Helpers\Utils\PathUtils.cs" />
+    <Compile Include="Enums\ProcessQueueMethod.cs" />
+    <Compile Include="Helpers\Utils\RegexUtils.cs" />
+    <Compile Include="Helpers\Utils\SerializationUtils.cs" />
+    <Compile Include="Infrastructure\ContextHandlers\ContextHandlers.cs" />
+    <Compile Include="Infrastructure\ContextHandlers\ContextHandler.cs" />
+    <Compile Include="Infrastructure\ContextHandlers\ContextHandlerStatus.cs" />
+    <Compile Include="Infrastructure\ContextHandlers\ContextHandlerType.cs" />
+    <Compile Include="Infrastructure\ContextHandlers\ContextHandlerTypeExtensions.cs" />
+    <Compile Include="Infrastructure\Interfaces\INotifyPropertyChangedExtended.cs" />
+    <Compile Include="Infrastructure\Interfaces\NotifyPropertyChangedExtendedBase.cs" />
+    <None Include="Infrastructure\DelegateCommand.cs" />
+    <Compile Include="Infrastructure\Interfaces\DisposableBase.cs" />
+    <Compile Include="Infrastructure\Interfaces\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Properties\Settings\BaseSettings\BaseSubSettings.cs" />
+    <Compile Include="Properties\Settings\MySettings\MySettingsBase.Subclasses.cs" />
+    <Compile Include="Queue\QueueItemBase.cs" />
+    <Compile Include="Queue\QueueItemBaseMembers.cs" />
+    <Compile Include="Queue\QueueStatus.cs" />
+    <Compile Include="Queue\QueueStatusMember.cs" />
+    <Compile Include="Properties\Settings\BaseSettings\BaseSettings.cs" />
+    <Compile Include="Properties\Settings\MySettings\MySettings.Subclasses.cs" />
+    <Compile Include="Properties\Settings\MySettings\MySettingsBase.cs" />
+    <Compile Include="Properties\Settings\MySettings\MySettings.cs" />
+    <Compile Include="Properties\Settings\Binding\SettingBindingExtensionBase.cs" />
+    <Compile Include="Properties\Settings\Binding\MyExtension.cs" />
+    <Compile Include="Properties\Settings\SettingsManager.cs" />
+    <Compile Include="Queue\QueueStatusRegion.cs" />
+    <Compile Include="TorrentFileInfo.cs" />
+    <Compile Include="Torrent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TorrentInfo.cs" />
+    <Compile Include="TorrentInfoCache.cs" />
+    <Compile Include="TorrentItem.cs" />
+    <Compile Include="TorrentLabel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\Logging" />
+    <Folder Include="Infrastructure\Collections" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

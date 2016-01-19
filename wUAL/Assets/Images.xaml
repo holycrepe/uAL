@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:Properties="clr-namespace:wUAL.Properties;assembly=wUAL"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="DefaultIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/DefaultIcon.ico"/>
+	<BitmapImage x:Key="StatusIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/Information.ico"/>
+	<BitmapImage x:Key="DupeIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/Dupe-File.ico"/>
+    <BitmapImage x:Key="LabelIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/Category.ico"/>
+    <BitmapImage x:Key="TorrentFileIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/File.ico"/>
+    <BitmapImage x:Key="URLIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/URL.ico"/>
+    <BitmapImage x:Key="CategoryIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/Label.ico"/>
+    <BitmapImage x:Key="MetalinkIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="pack://application:,,,/Assets/Icons/jDL.ico"/>
+    <StackPanel x:Key="StatusImage">
+        <Image Source="{DynamicResource StatusIcon}" Width="24" />
+    </StackPanel>
+    <StackPanel x:Key="LabelImage">
+        <Image Source="{DynamicResource LabelIcon}" Width="24" />
+    </StackPanel>
+    <StackPanel x:Key="CategoryImage">
+        <Image Source="{DynamicResource CategoryIcon}" Width="24" />
+	</StackPanel>
+    <StackPanel x:Key="MetalinkImage">
+        <Image Source="{DynamicResource MetalinkIcon}" Width="24" />
+	</StackPanel>
+	<ImageBrush x:Key="SplitterBackground" ImageSource="pack://application:,,,/Assets/Images/Splitter.jpg" />
+	<ImageBrush x:Key="MetalinkBackground" ImageSource="{DynamicResource MetalinkIcon}" />
+	<ImageBrush x:Key="DupeBackground" ImageSource="{DynamicResource DupeIcon}" />
+</ResourceDictionary>

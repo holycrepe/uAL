@@ -1,8 +1,20 @@
-﻿<Application x:Class="wuAL.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    StartupUri="MainWindow.xaml">
+﻿<Application
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:wUAL"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             x:Class="wUAL.App"
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!--pack://application:,,,/Artwork/Notify.ico-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>                
+                <ResourceDictionary Source="Assets/Telerik.xaml" />
+            	<ResourceDictionary Source="Assets/TabHeader.xaml" />
+                <ResourceDictionary Source="Assets/Images.xaml" />
+                <ResourceDictionary Source="Assets/Brushes.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!--<SolidColorBrush x:Key="wUAL_ContentBackground" Color="{StaticResource TabControl_ContentBackground}" />-->    		
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

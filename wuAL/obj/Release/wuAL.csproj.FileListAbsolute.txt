@@ -1,15 +1,67 @@
-D:\My Dropbox\Misc\uAL\wuAL\bin\Release\wuAL.exe
-D:\My Dropbox\Misc\uAL\wuAL\bin\Release\wuAL.pdb
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\ResolveAssemblyReference.cache
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\App.g.cs
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\wuAL_MarkupCompile.cache
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\wuAL.g.resources
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\wuAL.Properties.Resources.resources
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\wuAL.csproj.GenerateResource.Cache
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\wuAL.exe
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\wuAL.pdb
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\MainWindow.baml
-D:\My Dropbox\Misc\uAL\wuAL\obj\Release\MainWindow.g.cs
-D:\My Dropbox\Misc\uAL\wuAL\bin\Release\Jayrock.dll
-D:\My Dropbox\Misc\uAL\wuAL\bin\Release\Jayrock.Json.dll
-D:\My Dropbox\Misc\uAL\wuAL\bin\Release\wuAL.exe.config
+D:\Git\uAL\wUAL\obj\Release\wUAL.csprojResolveAssemblyReference.cache
+D:\Git\uAL\wUAL\obj\Release\Assets\Styles.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Brushes.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Expander\PlusMinusExpander.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\QueueGrids.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\SettingsGrid.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\TabHeader.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\PlusMinusExpander.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Telerik.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Themes\Current\System.Windows.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Themes\Current\Telerik.Windows.Controls.GridView.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Themes\Current\Telerik.Windows.Controls.Input.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Themes\Current\Telerik.Windows.Controls.Navigation.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Themes\Current\Telerik.Windows.Controls.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\Images.baml
+D:\Git\uAL\wUAL\obj\Release\UserControls\QueueGridHeaderControl.g.cs
+D:\Git\uAL\wUAL\obj\Release\UserControls\ActionToggleSettingControl.g.cs
+D:\Git\uAL\wUAL\obj\Release\App.g.cs
+D:\Git\uAL\wUAL\obj\Release\wUAL_Content.g.cs
+D:\Git\uAL\wUAL\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\Git\uAL\wUAL\obj\Release\wUAL_MarkupCompile.cache
+D:\Git\uAL\wUAL\obj\Release\wUAL_MarkupCompile.lref
+D:\Git\uAL\wUAL\bin\Release\NLog.config
+D:\Git\uAL\wUAL\bin\Release\wUAL.exe.config
+D:\Git\uAL\wUAL\bin\Release\wUAL.exe
+D:\Git\uAL\wUAL\bin\Release\wUAL.pdb
+D:\Git\uAL\wUAL\bin\Release\NLog.dll
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.dll
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.GridView.dll
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.Input.dll
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.Navigation.dll
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Data.dll
+D:\Git\uAL\wUAL\bin\Release\Torrent.dll
+D:\Git\uAL\wUAL\bin\Release\uAL.dll
+D:\Git\uAL\wUAL\bin\Release\BencodeNET.dll
+D:\Git\uAL\wUAL\bin\Release\uAL.pdb
+D:\Git\uAL\wUAL\bin\Release\NLog.xml
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.xml
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.GridView.xml
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.Input.xml
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Controls.Navigation.xml
+D:\Git\uAL\wUAL\bin\Release\Telerik.Windows.Data.xml
+D:\Git\uAL\wUAL\bin\Release\BencodeNET.xml
+D:\Git\uAL\wUAL\obj\Release\MainWindow.g.cs
+D:\Git\uAL\wUAL\obj\Release\App.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\GridViewColumnHeader.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\TorrentRowDetails.baml
+D:\Git\uAL\wUAL\obj\Release\Assets\QueueStyleSelectors.baml
+D:\Git\uAL\wUAL\obj\Release\MainWindow.baml
+D:\Git\uAL\wUAL\obj\Release\UserControls\QueueGridHeaderControl.baml
+D:\Git\uAL\wUAL\obj\Release\UserControls\ActionToggleSettingControl.baml
+D:\Git\uAL\wUAL\obj\Release\wUAL.g.resources
+D:\Git\uAL\wUAL\obj\Release\wUAL.Properties.Resources.resources
+D:\Git\uAL\wUAL\obj\Release\wUAL.csproj.GenerateResource.Cache
+D:\Git\uAL\wUAL\obj\Release\wUAL.exe.licenses
+D:\Git\uAL\wUAL\obj\Release\wUAL.exe
+D:\Git\uAL\wUAL\obj\Release\wUAL.pdb
+D:\Git\uAL\wUAL\bin\Release\JetBrains.Annotations.dll
+D:\Git\uAL\wUAL\bin\Release\UTorrentRestAPI.dll
+D:\Git\uAL\wUAL\bin\Release\RestSharp.dll
+D:\Git\uAL\wUAL\bin\Release\Newtonsoft.Json.dll
+D:\Git\uAL\wUAL\bin\Release\UTorrentRestAPI.pdb
+D:\Git\uAL\wUAL\bin\Release\JetBrains.Annotations.xml
+D:\Git\uAL\wUAL\bin\Release\RestSharp.xml
+D:\Git\uAL\wUAL\bin\Release\Newtonsoft.Json.xml
+D:\Git\uAL\wUAL\bin\Release\nunit.framework.dll
+D:\Git\uAL\wUAL\bin\Release\nunit.framework.xml

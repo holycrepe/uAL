@@ -1,56 +1,1126 @@
-﻿<Window x:Class="wuAL.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    DataContext="{Binding RelativeSource={RelativeSource Self}}"
-    Title="wuAL - uTorrent Auto Labeller with WPF GUI" Height="300" Width="300">
-    <StackPanel Margin="5">
-        <StackPanel.Resources>
-            <BooleanToVisibilityConverter x:Key="boolToVis" />
-        </StackPanel.Resources>
-        <Grid Visibility="{Binding Path=NotConnected, Converter={StaticResource boolToVis}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+<?xml version="1.0" encoding="utf-8"?>
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        xmlns:controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
+        xmlns:my="clr-namespace:wUAL"
+        xmlns:settings="clr-namespace:wUAL.Properties.Settings"
+        xmlns:bind="clr-namespace:wUAL.Properties.Settings.Binding"
+        xmlns:myControl="clr-namespace:wUAL.UserControls" 
+        xmlns:helpers="clr-namespace:wUAL.Helpers" 
+        xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Data"
+	x:Name="wUALMainWindow"
+	x:Class="wUAL.MainWindow"	
+	settings:WindowSettings.Save="True"
+	d:DesignHeight="1000"
+	Title="wUAL"
+	Initialized="Window_Initialized"
+	Closing="Window_Closing">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+					Source="Assets/QueueStyleSelectors.xaml" />
+                <ResourceDictionary
+					Source="Assets/TorrentRowDetails.xaml" />
+                <ResourceDictionary
+					Source="Assets/GridViewColumnHeader.xaml" />
+                <ResourceDictionary
+					Source="Assets/SettingsGrid.xaml" />
+                <ResourceDictionary
+					Source="Assets/QueueGrids.xaml" />
+                <ResourceDictionary
+					Source="Assets/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>            
+            <CollectionViewSource
+				x:Key="torrentQueueItemViewSource" />
+            <CollectionViewSource
+				x:Key="metalinkQueueItemViewSource" />        	
+    		<!--<my:EnumViewModel x:Key="GetFileMethodDataSource" EnumType="torrentHelpers:GetFileMethod"/>-->
+            <!-- <CollectionViewSource
+				x:Key="torrentQueueItemViewSource"
+				d:DesignSource="{d:DesignInstance {x:Type Torrents:TorrentQueueItem}, CreateList=True}" />
+            <CollectionViewSource
+				x:Key="metalinkQueueItemViewSource"
+				d:DesignSource="{d:DesignInstance {x:Type Metalinks:MetalinkQueueItem}, CreateList=True}" /> -->
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition
+				Height="8" />
+            <RowDefinition
+				Height="{bind:App StatusRowHeight, Converter={my:GridLengthConverter}}" />
+        </Grid.RowDefinitions>
+        <telerik:RadTabControl
+			x:Name="radTabControl"
+			SelectedIndex="1"
+			Grid.RowSpan="2">
+            <telerik:RadTabItem
+				x:Name="radTabStart">
+                <telerik:RadTabItem.Header>
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch"
+						Content="Start wUAL"
+						Click="Start" />
+                </telerik:RadTabItem.Header>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem
+				x:Name="radTabTorrents"
+				Header="Torrents"
+				DataContext="{StaticResource torrentQueueItemViewSource}">
+                <Grid
+					x:Name="gridTorrents">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+							Height="60" />
+                        <RowDefinition
+							Height="*" />
+                    </Grid.RowDefinitions>
+                    <telerik:Label
+						Style="{StaticResource TabHeaderLabelStyle}"
+						DataContext="{Binding ElementName=grdTorrents, Mode=OneWay}"
+						Content="{Binding Items.Count, Mode=OneWay, Converter={my:CountConverter Prefix=Total, Suffix='Detected Torrent', UsePrefixIfBlank=False}}"
+                	/>
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						Click="ProcessTorrentQueue"
+						Content="{Binding SelectedItems.Count, Mode=OneWay, Converter={my:CountConverter Prefix=Process, Suffix=Torrent, TextIfBlank=All}}"
+						DataContext="{Binding ElementName=grdTorrents, Mode=OneWay}"
+						IsEnabled="{Binding Items.Count, Mode=OneWay}" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						Margin="5,0,0,35"
+						Visibility="{Binding MayQueueAllTorrents, Converter={my:VisibilityConverter}, ElementName=wUALMainWindow, Mode=OneWay}"
+						Click="QueueAllTorrents"
+						Content="Queue All Torrents" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						HorizontalAlignment="Right"
+						Visibility="{bind:Torrent MONITOR, Converter={my:VisibilityConverter}}"
+						Click="StartTorrentMonitor"
+						Content="Reset Queue" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						HorizontalAlignment="Right"
+						Margin="0,0,0,35"
+						x:Name="btnTorrentsConnect"
+						Visibility="{Binding IsConnected, Converter={my:InverseConverter}, ElementName=wUALMainWindow, Mode=OneWay}"
+						IsEnabled="{Binding IsValidSettings, ElementName=wUALMainWindow}"
+						Click="Connect"
+						Content="Connect to uTorrent" />
+                    <controls:RadGridView
+						x:Name="grdTorrents"
+						Grid.Row="1"
+						ItemsSource="{Binding}"
+						AutoGenerateColumns="False"
+						RowStyleSelector="{StaticResource TorrentQueueStyle}"
+						RowIndicatorVisibility="Collapsed"
+						RowDetailsTemplate="{StaticResource TorrentRowDetailsTemplate}"
+						ScrollViewer.HorizontalScrollBarVisibility="Auto"
+						ScrollViewer.CanContentScroll="True"
+						SelectionMode="Extended"
+						ShowColumnSortIndexes="True"
+						AutoExpandGroups="{bind:Torrent AUTO_EXPAND_GROUPS}">
+                        <controls:RadGridView.GroupDescriptors>
+                            <telerik:ColumnGroupDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Status], ElementName=grdTorrents}"
+								DisplayContent="{StaticResource StatusImage}" />
+                            <telerik:ColumnGroupDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Label], ElementName=grdTorrents}"
+								DisplayContent="{StaticResource LabelImage}" />
+                            <telerik:ColumnGroupDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[ExtendedLabel], ElementName=grdTorrents}"
+								DisplayContent="{StaticResource CategoryImage}" />
+                        </controls:RadGridView.GroupDescriptors>
+                        <controls:RadGridView.SortDescriptors>
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Status], ElementName=grdTorrents}" />
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Label], ElementName=grdTorrents}" />
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[ExtendedLabel], ElementName=grdTorrents}" />
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Torrent], ElementName=grdTorrents}" />
+                        </controls:RadGridView.SortDescriptors>
+                        <controls:RadGridView.Columns>
+                            <controls:GridViewSelectColumn />
+                            <controls:GridViewDataColumn
+								UniqueName="Status"
+								Header="{my:QueueGridHeader Status}"
+								DataMemberBinding="{Binding Status}"
+								ShowColumnWhenGrouped="True"
+								Width="110"
+								IsReadOnly="True" />
+                            <controls:GridViewToggleRowDetailsColumn
+								IsVisible="{Binding Label.IsExtendable}" />
+                            <!--<telerik:GridViewToggleRowDetailsColumn>
+                                <telerik:GridViewToggleRowDetailsColumn.ToggleButtonStyle>
+                                    <Style
+										TargetType="{x:Type telerik:GridViewToggleButton}"
+										BasedOn="{StaticResource GridViewToggleButtonStyle}">
+                                        <Setter
+											Property="Visibility"
+											Value="{Binding Label.IsExtendable, Mode=OneWay, Converter={my:VisibilityConverter}}" />
+                                    </Style>
+                                </telerik:GridViewToggleRowDetailsColumn.ToggleButtonStyle>
+                            </telerik:GridViewToggleRowDetailsColumn>-->
+                            <controls:GridViewDataColumn
+								UniqueName="Label"
+								Header="{my:QueueGridHeader Label}"
+								DataMemberBinding="{Binding Label.Base, Mode=TwoWay}"
+								KeyUp="TorrentQueueItem_SetAllowUpdatePath"
+								ShowColumnWhenGrouped="True"
+								CellStyle="{StaticResource QueueGridViewCellMainStyle}" />
+                            <controls:GridViewDataColumn
+								UniqueName="ExtendedLabel"
+								Header="{my:QueueGridHeader Extended, Category}"
+								DataMemberBinding="{Binding Label.Extended, Mode=TwoWay}"
+								KeyUp="TorrentQueueItem_SetAllowUpdatePath"
+								IsReadOnly="{Binding Label.UseExtendedName, Converter={my:InverseConverter}, Mode=OneWay}"
+								IsVisible="{Binding Label.IsExtendable, Converter={my:VisibilityConverter}, Mode=OneWay}"
+								GroupMemberPath="Label.IsExtendedText" />
+                            <controls:GridViewDataColumn
+								UniqueName="Torrent"
+								Header="{my:QueueGridHeader Torrent, TorrentFile}"
+								DataMemberBinding="{Binding TorrentName}"
+								ShowColumnWhenGrouped="False"
+								IsReadOnly="True"
+								SortingState="Ascending">
+                                <controls:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel
+											VerticalAlignment="Center"
+											Orientation="Horizontal">
+                                            <Image
+												Width="24"
+												Margin="0,0,5,0"
+												DataContext="{Binding Dupe}"
+												Source="{StaticResource DupeIcon}"
+												ToolTip="{Binding FullName}"
+												Cursor="Hand"
+												Visibility="{Binding Converter={my:VisibilityConverter}}"
+												MouseUp="ExploreFile_MouseUp" />
+                                            <Image
+												Width="24"
+												Margin="0,0,5,0"
+												DataContext="{Binding Info.CommentLink, Mode=OneWay}"
+												Source="{StaticResource URLIcon}"
+												ToolTip="{Binding}"
+												Cursor="Hand"
+												Visibility="{Binding Converter={my:VisibilityConverter}}"
+												MouseUp="OpenURL_MouseUp" />
+                                            <TextBlock
+												VerticalAlignment="Center"
+												DataContext="{Binding File}">
+												<Hyperlink
+													ToolTip="{Binding FullName}"
+                                                    Click="ExploreFile">
+													<InlineUIContainer>
+														<TextBlock
+                                                            Text="{Binding Converter={my:FilenameOnlyConverter}}" />
+													</InlineUIContainer>
+												</Hyperlink>
+											</TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:GridViewDataColumn.CellTemplate>
+                            </controls:GridViewDataColumn>
+                        </controls:RadGridView.Columns>
+                    </controls:RadGridView>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem
+				x:Name="radTabMetalinks"
+				Header="Metalinks"
+				DataContext="{StaticResource metalinkQueueItemViewSource}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+							Height="60" />
+                        <RowDefinition
+							Height="*" />
+                    </Grid.RowDefinitions>
+                    <telerik:Label
+						Style="{StaticResource TabHeaderLabelStyle}"
+						Content="Detected Metalinks" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						Click="ProcessMetalinkQueue"
+						Content="{Binding SelectedItems.Count, Mode=OneWay, Converter={my:CountConverter Prefix=Process, Suffix=Metalink}}"
+						IsEnabled="{Binding SelectedItems.Count, Mode=OneWay}"
+						DataContext="{Binding ElementName=grdMetalinks, Mode=OneWay}" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						Margin="5,0,0,35"
+						Visibility="{Binding MayQueueAllMetalinks, Converter={my:VisibilityConverter}, ElementName=wUALMainWindow, Mode=OneWay}"
+						Click="QueueAllMetalinks"
+						Content="Queue All Metalinks" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						HorizontalAlignment="Right"
+						Margin="0,0,0,35"
+						x:Name="btnMetalinksConnect"
+						Visibility="{Binding IsConnected, Converter={my:InverseConverter}, ElementName=wUALMainWindow, Mode=OneWay}"
+						IsEnabled="{Binding IsValidSettings, ElementName=wUALMainWindow}"
+						Click="Connect"
+						Content="Connect to uTorrent" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						HorizontalAlignment="Right"
+						Visibility="{bind:Metalink MONITOR, Converter={my:VisibilityConverter}}"
+						Click="StartMetalinkMonitor"
+						Content="Reset Queue" />
+                    <controls:RadGridView
+						x:Name="grdMetalinks"
+						Grid.Row="1"
+						ItemsSource="{Binding}"
+						AutoGenerateColumns="False"
+						RowStyleSelector="{StaticResource MetalinkQueueStyle}"
+						RowIndicatorVisibility="Collapsed"
+						ScrollViewer.HorizontalScrollBarVisibility="Auto"
+						ScrollViewer.CanContentScroll="True"
+						SelectionMode="Extended"
+						ShowColumnSortIndexes="True"
+						AutoExpandGroups="{bind:Metalink AUTO_EXPAND_GROUPS}">
+                        <controls:RadGridView.GroupDescriptors>
+                            <telerik:ColumnGroupDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Status], ElementName=grdMetalinks}"
+								DisplayContent="{StaticResource StatusImage}" />
+                            <telerik:ColumnGroupDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Category], ElementName=grdMetalinks}"
+								DisplayContent="{StaticResource CategoryImage}" />
+                        </controls:RadGridView.GroupDescriptors>
+                        <controls:RadGridView.SortDescriptors>
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Status], ElementName=grdMetalinks}" />
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Category], ElementName=grdMetalinks}" />
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Metalink], ElementName=grdMetalinks}" />
+                            <telerik:ColumnSortDescriptor
+								SortDirection="Ascending"
+								Column="{Binding Columns[Torrent], ElementName=grdMetalinks}" />
+                        </controls:RadGridView.SortDescriptors>
+                        <controls:RadGridView.Columns>
+                            <controls:GridViewSelectColumn />
+                            <controls:GridViewDataColumn
+								UniqueName="Status"
+								Header="{my:QueueGridHeader Status}"
+								DataMemberBinding="{Binding Status}"
+								ShowColumnWhenGrouped="True"
+								Width="110"
+								IsReadOnly="True" />
+                            <controls:GridViewDataColumn
+								UniqueName="Category"
+								Header="{my:QueueGridHeader Category}"
+								DataMemberBinding="{Binding Category, Mode=TwoWay}"
+								ShowColumnWhenGrouped="True"
+								CellStyle="{StaticResource QueueGridViewCellMainStyle}" />
+                            <controls:GridViewDataColumn
+								UniqueName="Torrent"
+								Header="{my:QueueGridHeader Torrent, TorrentFile}"
+								DataMemberBinding="{Binding TorrentName, Mode=TwoWay}"
+								IsReadOnly="{Binding Status.IsActivatable, Converter={my:InverseConverter}}"
+								ShowColumnWhenGrouped="False">
+                                <controls:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel
+											Orientation="Horizontal">
+                                            <Image
+												Width="24"
+												Margin="0,0,5,0"
+												DataContext="{Binding Metalink}"
+												Source="{StaticResource MetalinkIcon}"
+												ToolTip="{Binding FullName}"
+												Cursor="Hand"
+												MouseUp="ExploreFile_MouseUp" />
+                                            <TextBlock
+												VerticalAlignment="Center"
+												DataContext="{Binding Torrent}">
+												<Hyperlink
+													Click="ExploreFile">
+													<TextBlock
+														DataContext="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:RadRowItem}}}"
+														Text="{Binding TorrentName, Mode=TwoWay}" />
+												</Hyperlink>
+											</TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:GridViewDataColumn.CellTemplate>
+                            </controls:GridViewDataColumn>
+                            <controls:GridViewDataColumn
+								UniqueName="URL"
+								Header="{my:QueueGridHeader URL}"
+								DataMemberBinding="{Binding Uri.AbsoluteUri}"
+								ShowColumnWhenGrouped="False"
+								IsReadOnly="True">
+                                <controls:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+											VerticalAlignment="Center"
+											DataContext="{Binding Uri}">
+											<Hyperlink
+												Click="OpenURL">
+												<InlineUIContainer>
+													<TextBlock
+														Text="{Binding PathAndQuery}" />
+												</InlineUIContainer>
+											</Hyperlink>
+										</TextBlock>
+                                    </DataTemplate>
+                                </controls:GridViewDataColumn.CellTemplate>
+                            </controls:GridViewDataColumn>
+                            <controls:GridViewDataColumn
+								UniqueName="Metalink"
+								Header="{my:QueueGridHeader Metalink}"
+								DataMemberBinding="{Binding MetalinkName}"
+								ShowColumnWhenGrouped="False"
+								IsReadOnly="True">
+                                <controls:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+											DataContext="{Binding Metalink}">
+											<Hyperlink
+												Click="ExploreFile">
+												<InlineUIContainer>
+													<TextBlock
+														Text="{Binding Converter={my:FilenameOnlyConverter}}" />
+												</InlineUIContainer>
+											</Hyperlink>
+										</TextBlock>
+                                    </DataTemplate>
+                                </controls:GridViewDataColumn.CellTemplate>
+                            </controls:GridViewDataColumn>
+                        </controls:RadGridView.Columns>
+                    </controls:RadGridView>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem
+				x:Name="radTabSettings"
+				Header="Settings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+							Height="60" />
+                        <RowDefinition
+							Height="*" />
+                    </Grid.RowDefinitions>
+                    <telerik:Label
+						Style="{StaticResource TabHeaderLabelStyle}"
+						Content="Application Settings" />
+                    <telerik:RadButton
+						Style="{StaticResource TabHeaderButtonStyle}"
+						x:Name="btnSettingsConnect"
+						IsEnabled="{Binding IsValidSettings, ElementName=wUALMainWindow, Mode=OneWay}"
+						Click="Connect"
+						Content="Connect to uTorrent" />
+                    <Grid
+						Grid.Row="1"
+						VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+								Height="32" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+								MinWidth="200" />
+                            <ColumnDefinition
+								Width="4*" />
+                        </Grid.ColumnDefinitions>
+                        <telerik:Label
+							Content="Connection"
+							Style="{StaticResource SettingsGridLabelHeading}" />
+                        <telerik:Label
+							Content="User Name"
+							Grid.Row="1" />
+                        <telerik:RadWatermarkTextBox
+							Text="{bind:Lib UserName}"
+                            WatermarkContent="Use `admin`"
+							Grid.Column="1"
+							Grid.Row="1" />
+                        <telerik:Label
+							Content="Password"
+							Grid.Row="2" />
+                        <PasswordBox
+							helpers:PasswordHelper.Attach="True"
+							helpers:PasswordHelper.Password="{bind:Lib Password}"
+							Grid.Column="1"
+							Grid.Row="2"
+							HorizontalContentAlignment="Stretch"
+							HorizontalAlignment="Stretch" />
+                        <telerik:Label
+							Content="Host"
+							Grid.Row="3" />
+                        <telerik:RadWatermarkTextBox
+							Text="{bind:Lib Host}"
+                            WatermarkContent="Use Local Host"
+							Grid.Column="1"
+							Grid.Row="3" />
+                        <telerik:Label
+							Content="Port"
+							Grid.Row="4" />
+                        <telerik:RadWatermarkTextBox
+							Text="{bind:Lib Port}"
+							Grid.Column="1"
+							Grid.Row="4"
+							HorizontalAlignment="Stretch"
+							HorizontalContentAlignment="Left" />
+                        <!--<telerik:RadMaskedNumericInput
+							Value="{bind:Lib Port}"
+							Text="{bind:Lib Port}"
+							Grid.Column="1"
+							Grid.Row="4"
+							Mask="d####"
+							HorizontalAlignment="Stretch"
+							EmptyContent="Port #"
+							AutoFillNumberGroupSeparators="False"
+							HorizontalContentAlignment="Left"
+							TextMode="PlainText" />-->
+                        <telerik:Label
+							Content="Directories"
+							Style="{StaticResource SettingsGridLabelHeading}"
+							Grid.Row="5" />
+                        <telerik:Label
+							Content="Import"
+							Grid.Row="6" />
+                        <telerik:RadWatermarkTextBox
+							Text="{bind:Lib ImportDirectory}"
+                            WatermarkContent="Load From uTorrent Settings"
+							Grid.Column="1"
+							Grid.Row="6" />
+                        <telerik:Label
+							Content="Added Files"
+							Grid.Row="7" />
+                        <telerik:RadWatermarkTextBox
+							Text="{bind:Lib AddedTorrentDirectory}"
+                            WatermarkContent="Use {Import Directory Parent}\ADDED"
+							Grid.Column="1"
+							Grid.Row="7" />
+                        <telerik:Label
+							Content="Downloads"
+							Grid.Row="8" />
+                        <telerik:RadWatermarkTextBox
+							Text="{bind:Lib DownloadsDirectory}"
+                            WatermarkContent="Use Import Directory Drive Root"
+							Grid.Column="1"
+							Grid.Row="8" />
+                        <telerik:Label
+							Content="Custom Settings"
+							Style="{StaticResource SettingsGridLabelHeading}"
+							Grid.Row="9" />
+                        <telerik:Label
+							Content="Methods"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="10" />
+                        <telerik:Label
+							Content="Get Files"
+							Grid.Row="11" />
+                    	<telerik:RadComboBox 
+						    ItemsSource="{bind:Enum Torrent.Enums.GetFileMethod}"
+                            SelectedItem="{bind:My METHODS.GET_FILES}"                            
+                    		DisplayMemberPath=""
+                            HorizontalAlignment="Left"
+                            Width="150"
+							Grid.Column="1"
+							Grid.Row="11" />
+                        <telerik:Label
+							Content="Process Queue"
+							Grid.Row="12" />
+                        <telerik:RadComboBox 
+						    ItemsSource="{bind:Enum Torrent.Enums.ProcessQueueMethod}"
+                            SelectedItem="{bind:My METHODS.PROCESS_QUEUE}"
+                    		DisplayMemberPath=""
+                            HorizontalAlignment="Left"
+                            Width="150"
+							Grid.Column="1"
+							Grid.Row="12" />
+                        <telerik:Label
+							Content="Labels"
+							Style="{StaticResource SettingsGridLabelHeading}"
+							Grid.Row="13" />
+                        <Grid
+							Grid.Row="14"
+							Grid.ColumnSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+									Height="Auto" />
+                                <RowDefinition
+									Height="*" />
+                                <RowDefinition
+									Height="Auto" />
+                                <RowDefinition
+									Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+									Width="*" />
+                                <ColumnDefinition
+									Width="25" />
+                                <ColumnDefinition
+									Width="*" />
+                                <ColumnDefinition
+									Width="25" />
+                                <ColumnDefinition
+									Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <telerik:Label
+								Content="Labels to Dupe Check"
+								Style="{StaticResource SettingsGridSubHeadingLabel}"
+								Grid.ColumnSpan="1" />
+                            <telerik:RadWatermarkTextBox
+								Text="{bind:Lib labelsToDupeCheck, Converter={my:StringCollectionConverter}}"
+                                WatermarkContent="Labels Roots To Dupe Check"
+								VerticalContentAlignment="Top"
+								AcceptsReturn="True"
+								Grid.Row="1" />
+                            <telerik:Label
+								Content="Words To Strip"
+								Style="{StaticResource SettingsGridSubHeadingLabel}"
+								Grid.ColumnSpan="1"
+								Grid.Column="2" />
+                            <telerik:RadWatermarkTextBox
+								Text="{bind:Lib labelsWordsToStrip, Converter={my:StringCollectionConverter}, Mode=TwoWay}"
+                                WatermarkContent="Words To Strip From Labels"
+								VerticalContentAlignment="Top"
+								AcceptsReturn="True"
+								Grid.Row="1"
+								Grid.Column="2" />
+                            <telerik:Label
+								Style="{StaticResource SettingsGridSubHeadingLabel}"
+								Grid.ColumnSpan="1"
+								Grid.Column="4">
+                                <DockPanel>
+                                    <telerik:Label
+										Content="Words to Strip (Extended)" />
+                                    <CheckBox
+										Content="Extend Labels By Default"
+										IsChecked="{bind:Lib EnableExtendedLabelsByDefault}"
+										HorizontalAlignment="Right" />
+                                </DockPanel>
+                            </telerik:Label>
+                            <telerik:RadWatermarkTextBox
+								Text="{bind:Lib labelsWordsToStripExtended, Converter={my:StringCollectionConverter}, Mode=TwoWay}"
+                                WatermarkContent="Words to Ignore When Determining If Label Needs to Be Extended"
+								VerticalContentAlignment="Top"
+								AcceptsReturn="True"
+								Grid.Row="1"
+								Grid.Column="4" />
+                            <telerik:Label
+								Style="{StaticResource SettingsGridSubHeadingLabel}"
+								Grid.Row="2"
+								Grid.ColumnSpan="1">
+                                <DockPanel>
+                                    <telerik:Label
+										Content="Label Filtering" />
+                                    <myControl:ActionToggleSettingControl
+										HorizontalAlignment="Right"
+										DataContext="{bind:Toggle Filters.Global}" />
+                                </DockPanel>
+                            </telerik:Label>
+                            <telerik:Label
+								Style="{StaticResource SettingsGridSubHeadingLabel}"
+								Grid.Row="2"
+								Grid.ColumnSpan="1"
+								Grid.Column="2">
+                                <DockPanel>
+                                    <telerik:Label
+										Content="Labels to Include" />
+                                    <myControl:ActionToggleSettingControl
+										HorizontalAlignment="Right"
+										DataContext="{bind:Toggle Filters.Include}" />
+                                </DockPanel>
+                            </telerik:Label>
+                            <telerik:RadWatermarkTextBox
+								Text="{bind:Lib labelsToInclude, Converter={my:StringCollectionConverter}, Mode=TwoWay}"
+                                WatermarkContent="Include Only Files With These Labels"
+								VerticalContentAlignment="Top"
+								AcceptsReturn="True"
+								Grid.Row="3"
+								Grid.Column="2" />
+                            <telerik:Label
+								Style="{StaticResource SettingsGridSubHeadingLabel}"
+								Grid.Row="2"
+								Grid.ColumnSpan="1"
+								Grid.Column="4">
+                                <DockPanel>
+                                    <telerik:Label
+										Content="Labels to Exclude" />
+                                    <myControl:ActionToggleSettingControl
+										HorizontalAlignment="Right"
+										DockPanel.Dock="Right"
+										DataContext="{bind:Toggle Filters.Exclude}" />
+                                </DockPanel>
+                            </telerik:Label>
+                            <telerik:RadWatermarkTextBox
+								Text="{bind:Lib labelsToExclude, Converter={my:StringCollectionConverter}, Mode=TwoWay}"
+                                WatermarkContent="Exclude Any Files With These Labels"
+								VerticalContentAlignment="Top"
+								AcceptsReturn="True"
+								Grid.Row="3"
+								Grid.Column="4" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem
+				x:Name="radTabToggles"
+				Header="Toggles">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+							Height="60" />
+                        <RowDefinition
+							Height="*" />
+                    </Grid.RowDefinitions>
+                    <telerik:Label
+						Style="{StaticResource TabHeaderLabelStyle}"
+						Content="Toggles" />
+                    <Grid
+						Grid.Row="1"
+						VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
+								Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+								MinWidth="200" />
+                            <ColumnDefinition
+								Width="4*" />
+                        </Grid.ColumnDefinitions>
+                        <telerik:Label
+							Content="Toggles"
+							Style="{StaticResource SettingsGridLabelHeading}"
+							Grid.Row="9" />
+                        <telerik:Label
+							Content="Behaviors"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="10" />
+                        <telerik:Label
+							Content="Start Up:"
+							Grid.Row="11" />
+                        <UniformGrid
+							Grid.Column="1"
+							Columns="3"
+							Grid.Row="11">
+                            <CheckBox
+								IsChecked="{bind:Lib AutoStart}"
+								Content="Auto Start" />
+                            <CheckBox
+								IsChecked="{bind:Lib ConnectOnStartup}"
+								Content="Auto Connect on Start" />
+                        </UniformGrid>
+                        <telerik:Label
+							Content="Queue Processing:"
+							Grid.Row="12" />
+                        <UniformGrid
+							Grid.Column="1"
+							Columns="3"
+							Grid.Row="12">
+                            <CheckBox
+								IsChecked="{bind:Lib CheckDupes}"
+								Content="Check Dupes" />
+                            <CheckBox
+								IsChecked="{bind:Lib CheckAlreadyExists}"
+								Content="Check Queued In uTorrent" />
+                            <CheckBox
+								IsChecked="{bind:Lib StopOnDone}"
+								Content="Stop Completed Torrents" />
+                        </UniformGrid>
+                        <telerik:Label
+							Content="Queues"
+							Style="{StaticResource SettingsGridLabelHeading}"
+							Grid.Row="13" />
+                        <telerik:Label
+							Content="Grid"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="14" />
+                        <telerik:Label
+							Content="Auto Expand Groups"
+							Grid.Row="15" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle AutoExpandGroups}"
+							Grid.Row="15" />
+                        <telerik:Label
+							Content="Monitors"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="16" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle Monitor}"
+							Grid.Row="16"
+							Grid.Column="1" />
+                        <telerik:Label
+							Content="Initialize On Startup"
+							Grid.Row="17" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle InitializeMonitor}"
+							Grid.Row="17" />
+                        <telerik:Label
+							Content="Adding"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="18" />
+                        <telerik:Label
+							Content="File System Watchers"
+							Grid.Row="19" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle Watcher}"
+							Grid.Row="19" />
+                        <telerik:Label
+							Content="On Startup"
+							Grid.Row="20" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle QueueFilesOnStartup}"
+							Grid.Row="20" />
+                        <telerik:Label
+							Content="Pre-Processing"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="21" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle PreProcess}"
+							Grid.Row="21" />
+                        <telerik:Label
+							Content="Processing"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="22" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle ProcessQueue.All}"
+							Grid.Row="22" />
+                        <telerik:Label
+							Content="Preview Mode:"
+							Grid.Row="23" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle PreviewMode}"
+							Grid.Row="23" />
+                        <telerik:Label
+							Content="Move Processed Files"
+							Grid.Row="24" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle MoveProcessedFiles}"
+							Grid.Row="24" />
+                        <telerik:Label
+							Content="Automation"
+							Style="{StaticResource SettingsGridSubHeadingLabel}"
+							Grid.Row="25" />
+                        <telerik:Label
+							Content="File System Watchers"
+							Grid.Row="26" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle ProcessQueue.OnWatcher}"
+							Grid.Row="26" />
+                        <telerik:Label
+							Content="On Startup"
+							Grid.Row="27" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle ProcessQueue.Startup}"
+							Grid.Row="27" />
+                        <telerik:Label
+							Content="On Manual Queueing"
+							Grid.Row="28" />
+                        <myControl:ActionToggleSettingControl
+							DataContext="{bind:Toggle ProcessQueue.Manual}"
+							Grid.Row="28" />
+                    </Grid>
+                </Grid>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
+        <!--<telerik:Label Background="#FF021F3C" HorizontalAlignment="Stretch" Height="8" Visibility="{Binding Visibility, ElementName=radProgressBar}" Grid.Row="2" />-->        
+        <GridSplitter
+			Height="8"
+			HorizontalAlignment="Stretch"
+			ResizeDirection="Rows"
+			ResizeBehavior="BasedOnAlignment"
+			VerticalAlignment="Center"
+			Background="{StaticResource SplitterBackground}"
+			Grid.Row="2" />
+        <Grid 
+            x:Name="gridProgress"
+            DataContext="{Binding Stopwatch, ElementName=wUALMainWindow, Mode=OneWay}"
+            Grid.Row="3" 
+            Background="{StaticResource TabControl_ContentBackground}">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="2"/>
-                <RowDefinition/>
-                <RowDefinition Height="2"/>
-                <RowDefinition/>
-                <RowDefinition Height="2"/>
-                <RowDefinition/>
-                <RowDefinition Height="2"/>
-                <RowDefinition/>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="*" />
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right">Username</Label>
-            <TextBox Name="UserNameBox" Grid.Column="1"  TextChanged="SettingsTextChanged"/>
-            <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right">Password</Label>
-            <PasswordBox Name="PasswordBox" Grid.Column="1" Grid.Row="2" PasswordChanged="SettingsTextChanged"/>
-            <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right">Host:port</Label>
-            <TextBox Name="HostnameBox" Grid.Column="1" Grid.Row="4" TextChanged="SettingsTextChanged"/>
-            <Label Visibility="{Binding Path=IsLocalhost, Converter={StaticResource boolToVis}}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Right">Torrent-directory</Label>
-            <TextBox Name="TorrentDirBox"  Visibility="{Binding Path=IsLocalhost, Converter={StaticResource boolToVis}}" Grid.Column="1" Grid.Row="6" TextChanged="SettingsTextChanged" />
-            <Button Grid.Row="8" Grid.ColumnSpan="2" Width="100" Click="Connect" IsEnabled="{Binding IsValidSettings}">Connect...</Button>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <telerik:RadProgressBar
+			    Grid.ColumnSpan="2"
+                x:Name="radProgressBar"			    
+			    Value="{Binding Value}"
+                Maximum="{Binding Maximum}"
+                Foreground="{StaticResource wUAL_ProgressBarForeground}"
+			    Background="{StaticResource wUAL_ContentBackgroundDark}"
+                Visibility="{Binding IsActive, Converter={my:VisibilityConverter}}"
+			    Height="30"
+                VerticalAlignment="Stretch"
+			    HorizontalAlignment="Stretch" />
+            <telerik:Label			    
+                Grid.ColumnSpan="2"
+                FontSize="12"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Left"
+			    Visibility="{Binding IsActive, Converter={my:VisibilityConverter}}"
+                Content="{Binding Remaining, Converter={my:TimeSpanConverter}}" />
+            <telerik:Label FontSize="16" FontWeight="Bold" Grid.ColumnSpan="2"
+                           VerticalAlignment="Stretch" HorizontalAlignment="Center" 
+                           Visibility="{Binding IsActive, Converter={my:VisibilityConverter}}" >
+                <MultiBinding
+				Converter="{my:PercentMultiConverter}"
+				Mode="OneWay">
+                    <Binding
+					Path="Value" />
+                    <Binding
+					Path="Maximum" />
+                </MultiBinding>
+            </telerik:Label>
+
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Right" 
+                        Visibility="{Binding IsActive, Converter={my:VisibilityConverter}}">
+                <telerik:Label			    
+                    FontSize="12"
+                    Padding="0"
+                    Margin="0"
+                    Content="{Binding Elapsed, Converter={my:TimeSpanConverter}}" />
+                <telerik:Label			    
+                    FontSize="12"
+                    Padding="0"
+                    Margin="0"
+                    HorizontalContentAlignment="Center"
+                    Width="15"
+                    Content="/" />
+                <telerik:Label			    
+                    FontSize="12"
+                    Padding="0,0,5,0"
+                    Margin="0"
+                    Content="{Binding Estimated, Converter={my:TimeSpanConverter}}" />
+            </StackPanel>
+            
+
+            <TextBlock
+				Grid.Row="1"                    
+                Background="{StaticResource TabControl_ContentBackground}"
+                Visibility="{Binding IsActive, Converter={my:VisibilityConverter}}"
+				Text="Progress:"
+				FontWeight="Bold"
+				FontSize="16"
+				Width="100"
+				Foreground="#FF82B8EE" />
+
+            <Grid
+				Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+				Background="{StaticResource wUAL_ContentBackgroundDark}"
+                Visibility="{Binding IsActive, Converter={my:VisibilityConverter}}"
+				ScrollViewer.CanContentScroll="False"
+				Focusable="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <telerik:Label Grid.ColumnSpan="3" Background="{StaticResource wUAL_ProgressLabelCounts}" />
+                <telerik:Label Grid.Column="3" Background="{StaticResource wUAL_ProgressLabelTitle}" />
+
+                <telerik:Label                     
+                    Grid.Row="1"
+                    Background="{StaticResource wUAL_ProgressLabelCounts}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Right"
+                    FontFamily="Source Code Pro"
+                    FontSize="14"
+                    Padding="0"
+                    Margin="0"
+                    Content="{Binding Value}" />
+                <telerik:Label 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Background="{StaticResource wUAL_ProgressLabelCounts}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    FontFamily="Source Code Pro"
+                    FontSize="14"
+                    Padding="0"
+                    Margin="0"
+                    Content="/" />
+                <telerik:Label
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Background="{StaticResource wUAL_ProgressLabelCounts}"
+                    HorizontalAlignment="Stretch"
+                    FontFamily="Source Code Pro"
+                    FontSize="14"
+                    Padding="0"
+                    Margin="0"
+                    Content="{Binding Maximum}" />
+                <telerik:Label 
+                    Background="{StaticResource wUAL_ProgressLabelTitle}"
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    FontSize="14"
+                    HorizontalAlignment="Stretch"
+                    Content="{Binding Title}" />
+                <telerik:Label 
+                    Background="{StaticResource wUAL_ProgressLabelText}"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    FontSize="10"
+                    HorizontalAlignment="Stretch"
+                    Content=" " />
+                <telerik:Label 
+                    Background="{StaticResource wUAL_ProgressLabelText}"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    FontSize="10"
+                    HorizontalAlignment="Stretch"
+                    Content="{Binding Status}" />
+                <telerik:Label 
+                    Background="{StaticResource wUAL_ProgressLabelText}"
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    FontSize="10"
+                    HorizontalAlignment="Stretch"
+                    Content="{Binding Text}" />
+            </Grid>
+            
+
+            <TextBlock
+				Grid.Row="2"
+                Foreground="{StaticResource wUAL_LabelHeaderForeground}"
+				Background="{StaticResource TabControl_ContentBackground}"
+				Text="Status:"
+				FontWeight="Bold"
+				FontSize="16"
+				Width="100" />
+            <telerik:RadListBox
+				x:Name="radListStatus"
+                Grid.Row="2"
+                Grid.Column="1"
+				VerticalAlignment="Stretch"
+				CanAutocompleteSelectPartialMatches="False"
+				ScrollViewer.CanContentScroll="False"
+				Focusable="False"
+				IsTextSearchEnabled="False"
+				Background="{StaticResource wUAL_ContentBackgroundDark}" />
+
         </Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding Path=Connected, Converter={StaticResource boolToVis}}">
-            <TextBlock VerticalAlignment="Center">Connected to <TextBlock Text="{Binding HostAddress}"/></TextBlock>
-            <Button>Disconnect...</Button>
-        </StackPanel>
-        <TextBlock Visibility="{Binding Path=Connecting, Converter={StaticResource boolToVis}}">Connecting to <TextBlock Text="{Binding HostAddress}"/>.. Please wait..</TextBlock>
-        <StackPanel Margin="0,2,0,2">
-            <CheckBox>Stop torrents when done downloading</CheckBox>
-            <Button Click="Button_Click">Bool-test</Button>
-        </StackPanel>
-        <ListView ItemsSource="{Binding TorrentActions}" Height="300">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="150" Header="Torrent"
-                                    DisplayMemberBinding="{Binding TorrentName}"/>
-                    <GridViewColumn Width="120" Header="Action"
-                                    DisplayMemberBinding="{Binding Action}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </StackPanel>
+    </Grid>
 </Window>
