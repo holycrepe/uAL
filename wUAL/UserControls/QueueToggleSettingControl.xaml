@@ -1,28 +1,25 @@
-﻿<UserControl x:Class="wUAL.UserControls.QueueToggleSettingControl "
+﻿<UserControl x:Class="wUAL.UserControls.QueueToggleSettingControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:my="clr-namespace:wUAL"
-             xmlns:local="clr-namespace:wUAL.UserControls"                      
              xmlns:bind="clr-namespace:wUAL.Properties.Settings.Binding"
-             mc:Ignorable="d"
-             d:DataContext="{bind:Toggle Monitor}"
-             d:DesignHeight="50" d:DesignWidth="300">
-    <UniformGrid
-		Columns="3"
-        DataContext="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:QueueToggleSettingControl}}}">
-        <CheckBox
-			IsChecked="{Binding All}"
-			Content="All" />
-        <CheckBox
-			IsChecked="{Binding Torrents}"
-			Content="Torrents"
-			IsEnabled="{Binding All, Converter={my:InverseConverter}, Mode=OneWay}" />
-        <CheckBox
-			IsChecked="{Binding Metalinks}"
-			Content="Metalinks"
-			IsEnabled="{Binding All, Converter={my:InverseConverter}, Mode=OneWay}" />
-    </UniformGrid>
-
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:my="clr-namespace:wUAL"
+             xmlns:myControl="clr-namespace:wUAL.UserControls"
+             xmlns:toggles="clr-namespace:uAL.Properties.Settings.ToggleSettings;assembly=uAL"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             x:Name="myQueueToggleSettingControl"
+             Grid.Column="1"
+             d:DataContext="{bind:Toggle Path=Monitors}"
+             d:DesignHeight="50"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Grid DataContext="{Binding DataContext, ElementName=myQueueToggleSettingControl}">                    
+            <telerik:FlagEnumEditor
+                x:Name="RadFlagEnumEditor"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                EnumType="toggles:MonitorTypes"
+                Value="{Binding}" />
+    </Grid>
 </UserControl>

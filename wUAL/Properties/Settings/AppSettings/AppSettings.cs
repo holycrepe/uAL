@@ -1,30 +1,45 @@
-﻿namespace wUAL.Properties.Settings {
-    
-    
-    // This class allows you to handle specific events on the settings class:
-    //  The SettingChanging event is raised before a setting's value is changed.
-    //  The PropertyChanged event is raised after a setting's value is changed.
-    //  The SettingsLoaded event is raised after the setting values are loaded.
-    //  The SettingsSaving event is raised before the setting values are saved.
-    public sealed partial class AppSettings {
-        
-        public AppSettings() {
-            // // To add event handlers for saving and changing settings, uncomment the lines below:
-            //
-            // this.SettingChanging += this.SettingChangingEventHandler;
-            //
-            // this.SettingsSaving += this.SettingsSavingEventHandler;
-            //
+﻿namespace wUAL.Properties.Settings.AppSettings
+{
+    using Torrent.Properties.Settings;
+    using static Torrent.Properties.Settings.BaseSettings;
+    using static Torrent.Helpers.Utils.DebugUtils;
+    public static partial class AppSettings
+    {
+        static AppSettingsBase _settings;
+        public static AppSettingsBase AppSetting
+        {
+            get { return _settings ?? (_settings = AppSettingsBase.Load()); }
+            set
+            {
+                if (_settings == null)
+                {
+                    _settings = value;
+                }
+                else
+                {
+                    _settings.Load(value);
+                }
+            }
+        }
+        static AppSettings() {
+            if (_settings != null)
+            {
+                DEBUG.Break();
+            }
+            if (CONSTRUCTOR_ACTION == BaseSettingsConstructor.Load)
+            {
+                Load();
+            }
+            else if (CONSTRUCTOR_ACTION == BaseSettingsConstructor.Default)
+            {
+                AppSetting = new AppSettingsBase();
+            }
+            DEBUG.Noop();
         }
 
-        public static AppSettings AppSetting => defaultInstance;
-        
-        private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {
-            // Add code to handle the SettingChangingEvent event here.
-        }
-        
-        private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
-            // Add code to handle the SettingsSaving event here.
+        public static void Load() { AppSetting = AppSettingsBase.Load(); }
+        public static void Save() {
+            AppSetting.Save();
         }
     }
 }

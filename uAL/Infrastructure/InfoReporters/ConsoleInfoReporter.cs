@@ -7,30 +7,23 @@ namespace uAL.Infrastructure
     using Torrent.Infrastructure.InfoReporters;
 
     public class ConsoleInfoReporter : InfoReporter
-    { 
-
-        public override InfoReporter SetLogger(Logger logger) {
+    {
+        public override InfoReporter SetLogger(Logger logger)
+        {
             this.logger = logger;
             return this;
         }
-    	
-        protected  override void reportError(string title, string text)
-        {
-            ColoredConsole.WriteError(title, text);
-        }
 
-        protected  override void reportBanner(string title, int? width)
+        protected override void reportError(string title, string text) { ColoredConsole.WriteError(title, text); }
+
+        protected override void reportBanner(string title, int? width)
         {
-            if (!width.HasValue)
-            {
+            if (!width.HasValue) {
                 width = Console.WindowWidth - 2;
             }
-            ColoredConsole.WriteInfoBanner(title.PadCenter((int)width));
+            ColoredConsole.WriteInfoBanner(title.PadCenter((int) width));
         }
 
-        protected override void reportText(string text)
-        {
-            throw new NotImplementedException();
-        }
+        protected override void reportText(string text) { throw new NotImplementedException(); }
     }
 }

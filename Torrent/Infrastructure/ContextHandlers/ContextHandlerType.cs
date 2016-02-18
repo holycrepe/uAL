@@ -6,6 +6,5 @@ namespace Torrent.Infrastructure.ContextHandlers
         ImmediateDisabler,
         DeferredEnabler,
         DeferredDisabler,
-
     }
 }

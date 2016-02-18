@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-	<trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
-		<security>
-			<requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-				<!--
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
 					The presence of the "requestedExecutionLevel" node will disable
 					file and registry virtualization on Vista.
 					
@@ -14,8 +14,12 @@
 						                       but do not prompt for administrator password when started by
 						                       standard user.
 				-->
-				<requestedExecutionLevel level="asInvoker"/>
-			</requestedPrivileges>
-		</security>
-	</trustInfo>
+        <requestedExecutionLevel level="asInvoker" />
+      </requestedPrivileges>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+    </security>
+  </trustInfo>
 </assembly>

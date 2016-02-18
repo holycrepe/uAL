@@ -6,9 +6,14 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
+using System;
+using System.Net.Cache;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Torrent.Helpers.Utils;
 
 namespace wUAL.UserControls
 {
@@ -16,23 +21,21 @@ namespace wUAL.UserControls
     /// Interaction logic for QueueGridHeaderControl.xaml
     /// </summary>
     public partial class QueueGridHeaderControl : UserControl
-	{
-
+    {
         #region Initialization
-        public QueueGridHeaderControl() : this(null)
-        {
-            
-        }
 
-        public QueueGridHeaderControl(string label, string iconPath = null, ImageSource icon = null) 
+        public QueueGridHeaderControl() : this(null) { }
+
+        public QueueGridHeaderControl(string label, string iconPath = null, ImageSource icon = null)
         {
             InitializeComponent();
             SetLabel(label, iconPath, icon);
         }
+
         void SetLabel(string label, string iconPath = null, ImageSource icon = null)
         {
-            if (label == null && iconPath == null && icon == null) { 
-                return;                
+            if (label == null && iconPath == null && icon == null) {
+                return;
             }
             if (label != null) {
                 SetValue(QueueLabelProperty, label);
@@ -42,31 +45,19 @@ namespace wUAL.UserControls
 
         void SetIconFromPath(string iconPath = null, ImageSource icon = null)
         {
-            if (QueueIcon != null)
-            {
+            if (QueueIcon != null) {
                 return;
             }
-            icon = icon ?? GetIconFromPath(iconPath ?? QueueLabel);
-            if (icon != null)
+            if (QueueIconName == null)
             {
-                QueueIcon = icon;
+                SetValue(QueueIconNameProperty, iconPath);
             }
-        }
+            icon = icon ?? ResourceUtils.GetIconFromPath(iconPath ?? QueueLabel);
+            if (icon != null) {
+                SetValue(QueueIconProperty, icon);
+            }
+        }        
 
-        ImageSource GetIconFromPath(string iconPath)
-        {
-            iconPath = iconPath.Replace(" ", "");
-            var iconResource = Application.Current.TryFindResource(iconPath + "Icon");
-            if (iconResource == null)
-            {
-                iconResource = Application.Current.TryFindResource(iconPath);
-            }
-            if (iconResource != null)
-            {
-                return (ImageSource)iconResource;
-            }
-            return null;
-        }
         #endregion
 
         #region QueueIconName Dependency Property
@@ -76,8 +67,9 @@ namespace wUAL.UserControls
         /// </summary>
         public string QueueIconName
         {
-            get { return (string)GetValue(QueueIconNameProperty); }
-            set {
+            get { return (string) GetValue(QueueIconNameProperty); }
+            set
+            {
                 SetIconFromPath(value);
                 SetValue(QueueIconNameProperty, value);
             }
@@ -87,8 +79,8 @@ namespace wUAL.UserControls
         /// Identified the QueueIconName dependency property
         /// </summary>
         public static readonly DependencyProperty QueueIconNameProperty =
-            DependencyProperty.Register("QueueIconName", typeof(string),
-              typeof(QueueGridHeaderControl), new PropertyMetadata());
+            DependencyProperty.Register(nameof(QueueIconName), typeof (string),
+                                        typeof (QueueGridHeaderControl), new PropertyMetadata());
 
         #endregion
 
@@ -101,33 +93,29 @@ namespace wUAL.UserControls
         /// </summary>
         public ImageSource QueueIcon
         {
-            get {
-                var value = (ImageSource)GetValue(QueueIconProperty);
-                if (value != null)
-                {
+            get
+            {
+                var value = (ImageSource) GetValue(QueueIconProperty);
+                if (value != null) {
                     return value;
                 }
-                if (_queueIcon != null)
-                {
+                if (_queueIcon != null) {
                     return _queueIcon;
                 }
-                if (QueueIconName != null)
-                {
-                    return _queueIcon = GetIconFromPath(QueueIconName);
+                if (QueueIconName != null) {
+                    return _queueIcon = ResourceUtils.GetIconFromPath(QueueIconName);
                 }
                 return null;
             }
-            set {
-                SetValue(QueueIconProperty, value);
-            }
+            set { SetValue(QueueIconProperty, value); }
         }
 
         /// <summary>
         /// Identified the QueueIcon dependency property
         /// </summary>
         public static readonly DependencyProperty QueueIconProperty =
-            DependencyProperty.Register("QueueIcon", typeof(ImageSource),
-              typeof(QueueGridHeaderControl), new PropertyMetadata());
+            DependencyProperty.Register(nameof(QueueIcon), typeof (ImageSource),
+                                        typeof (QueueGridHeaderControl), new PropertyMetadata());
 
         #endregion
 
@@ -138,8 +126,9 @@ namespace wUAL.UserControls
         /// </summary>
         public string QueueLabel
         {
-            get { return (string)GetValue(QueueLabelProperty); }
-            set {
+            get { return (string) GetValue(QueueLabelProperty); }
+            set
+            {
                 SetIconFromPath();
                 SetValue(QueueLabelProperty, value);
             }
@@ -149,10 +138,9 @@ namespace wUAL.UserControls
         /// Identified the QueueLabel dependency property
         /// </summary>
         public static readonly DependencyProperty QueueLabelProperty =
-            DependencyProperty.Register("QueueLabel", typeof(string),
-              typeof(QueueGridHeaderControl), new PropertyMetadata());
+            DependencyProperty.Register(nameof(QueueLabel), typeof (string),
+                                        typeof (QueueGridHeaderControl), new PropertyMetadata());
 
         #endregion
-
     }
 }

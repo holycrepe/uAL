@@ -13,6 +13,7 @@
         public readonly string WordsPattern;
         public readonly string Pattern;
         public readonly bool Extended;
+
         public RegexStripper(string subject, bool extended = false)
         {
             Extended = extended;

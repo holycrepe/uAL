@@ -5,9 +5,18 @@ namespace Torrent.Helpers.StringHelpers
     public class NumberPadder : PadStringOptions
     {
         public int Index { get; set; }
-        public int Number => GetNumber(Index);
+
+        public int Number
+            => GetNumber(Index);
+
         public string Separator { get; set; } = ". ";
         public bool IsIndex { get; set; }
+
+        public int FinalLength
+            => UseValue ? (Width + Separator.Length) : 0;
+
+        public string EmptyPadding
+            => UseValue ? new string(' ', FinalLength) : "";
 
         public NumberPadder(int index = -1, bool useValue = true, int width = 0, bool isIndex = true)
         {
@@ -16,12 +25,14 @@ namespace Torrent.Helpers.StringHelpers
             UseValue = useValue;
             IsIndex = isIndex;
         }
+
         int GetNumber(int index)
             => index + (IsIndex ? 1 : 0);
 
         public string PadIndex()
             => PadIndex(Index);
-        public string PadIndex(int index) 
+
+        public string PadIndex(int index)
             => UseValue ? GetNumber(index).ToString().Pad(this) + Separator : "";
 
         public static implicit operator string(NumberPadder helper)

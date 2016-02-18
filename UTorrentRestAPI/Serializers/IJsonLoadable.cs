@@ -6,6 +6,7 @@ namespace UTorrentRestAPI.DataModels
     {
         void LoadFromJson(RestList json);
     }
+
     public interface IJsonLoadable<JType> where JType : JToken
     {
         void LoadFromJson(JType json);

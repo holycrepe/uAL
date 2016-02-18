@@ -22,9 +22,8 @@ namespace UTorrentRestAPI
             //// 3 = priority
 
             // TODO Need a better way of handling versioning issues
-            if (json.Count <= i) 
-            { 
-                return; 
+            if (json.Count <= i) {
+                return;
             }
 
             PieceOffset = json[i++];
@@ -46,37 +45,37 @@ namespace UTorrentRestAPI
         /// Gets the size of the file inside the torrent
         /// </summary>
         public long SizeInBytes { get; private set; }
-        
+
         /// <summary>
         /// Gets the number of bytes downloaded for the file
         /// </summary>
         public long DownloadedBytes { get; private set; }
-        
+
         /// <summary>
         /// Gets the piece offset of the start of the file in the torrent
         /// </summary>
         public long PieceOffset { get; private set; }
-        
+
         /// <summary>
         /// Gets the number of pieces in the file
         /// </summary>
         public long Pieces { get; private set; }
-        
+
         /// <summary>
         /// Gets a value indicating whether the file is streamable or not
         /// </summary>
         public bool Streamable { get; private set; }
-        
+
         /// <summary>
         /// Gets an estimate of the number of seconds left to download the file
         /// </summary>
         public int EtaInSecs { get; private set; }
-        
+
         /// <summary>
         /// Gets the horizontal resolution of the file if available
         /// </summary>
         public int HorizontalResolution { get; private set; }
-        
+
         /// <summary>
         /// Gets the vertical resolution of the file if available
         /// </summary>

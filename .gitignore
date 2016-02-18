@@ -1,8 +1,15 @@
-
 Settings.Designer.cs
 lib/
 packages/
+.vs/
 Solution Items/dev
+Solution Items/Performance/Results
+wuAL/bin/
+wuAL/obj/
+wUAL/bin/
+wUAL/obj/
+wUAL/Assets/Themes/2015
+wUAL/Assets/Themes/2016
 
 #################
 ## Eclipse

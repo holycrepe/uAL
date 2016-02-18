@@ -8,10 +8,9 @@ namespace wUAL
     public class FilenameOnlyConverter : BaseConverter
     {
         public override object Convert(object value, Type targetType,
-            object parameter, CultureInfo culture)
+                                       object parameter, CultureInfo culture)
         {
-            if (value != null)
-            {
+            if (value != null) {
                 var filename = value.ToString();
                 return Path.GetFileNameWithoutExtension(filename);
             }

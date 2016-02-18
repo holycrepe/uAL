@@ -22,6 +22,7 @@ namespace Torrent.Infrastructure.InfoReporters
 
         public string GetBanner(int width = -1, char chr = '=')
             => new string(chr, width < 1 ? DefaultWidth - 2 : width) + "\n";
+
         public string GetBannerText(string text, int width = -1, char chr = '=')
             => string.Format("{0}{1}\n{0}", GetBanner(width, chr), text);
 
@@ -33,26 +34,31 @@ namespace Torrent.Infrastructure.InfoReporters
         public virtual void Write(string text, string suffix = "", string prefix = "")
             => DoWrite(prefix + text + suffix);
 
-        public virtual void WriteLine(string text="", string suffix = "", string prefix = "")
+        public virtual void WriteLine(string text = "", string suffix = "", string prefix = "")
             => DoWriteLine(prefix + text + suffix);
 
         public virtual void WriteErrorLine(string text, string suffix = "", string prefix = "")
             => WriteLine(text, suffix, prefix);
+
         public virtual void WriteErrorTitle(string text, string suffix = "", string prefix = "")
             => WriteLine(text, suffix, prefix);
 
-        public virtual void WriteError(string title, string text, string sep = "", string suffix = "", string prefix = "")
+        public virtual void WriteError(string title, string text, string sep = "", string suffix = "",
+                                       string prefix = "")
         {
             WriteErrorTitle(title, sep, prefix);
             WriteErrorLine(text, suffix);
         }
+
         protected void DoWriteException(Exception ex)
         {
-            var exceptionStrings = ex.ToString().Replace("\n", "\n#           ").Split(new string[] { "\r\n" }, 2, StringSplitOptions.None);
+            var exceptionStrings = ex.ToString()
+                                     .Replace("\n", "\n#           ")
+                                     .Split(new string[] {"\r\n"}, 2, StringSplitOptions.None);
             var exceptionTitle = exceptionStrings[0];
             var exceptionDetails = exceptionStrings[1];
 
-            WriteLine("########");            
+            WriteLine("########");
             WriteErrorTitle("Message:", suffix: "  ", prefix: "# ");
             WriteErrorLine(ex.Message);
             WriteErrorTitle("Source: ", suffix: "  ", prefix: "# ");
@@ -68,10 +74,13 @@ namespace Torrent.Infrastructure.InfoReporters
             WriteLine("########");
             WriteLine();
         }
+
         public virtual void WriteInfoLine(string text, string suffix = "", string prefix = "")
             => WriteLine(text, suffix, prefix);
+
         public virtual void WriteInfoTitle(string text, string suffix = "", string prefix = "")
             => WriteLine(text, suffix, prefix);
+
         public void WriteInfoBanner(string text, int width = -1, char chr = '=')
         {
             var banner = GetBanner(width, chr);
@@ -79,6 +88,5 @@ namespace Torrent.Infrastructure.InfoReporters
             WriteInfoLine(text);
             WriteInfoTitle(banner);
         }
-        
     }
 }

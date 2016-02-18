@@ -9,37 +9,56 @@ namespace wUAL.Properties.Settings.Binding
     using System.Windows.Data;
     using Torrent.Properties.Settings.Binding;
     using Torrent.Converters;
-    public class EnumExtension : SettingBindingExtensionBase<IEnumerable>
-    {        
-        public EnumExtension(string path) : base(path, false) { }
-        protected override IEnumerable Value => _value;
-        private Type enumType;
-        private IEnumerable _value;
-	
-	    [TypeConverter( typeof( TypeTypeConverter ) )]
-	    public Type EnumType
-	    {
-	        get { return enumType; }
-	        set
-	        {
-	            enumType = value;
-	            InitValues();
-	        }
-	    }
-
-        protected override BindingMode DefaultMode => BindingMode.OneTime;
-
-        protected override void Initialize()
+    using System.Windows.Markup;
+    using Torrent.Extensions;
+    public class EnumExtension : MarkupExtension
+    {
+        private Type _enumType;
+        public Type EnumType
         {
-            EnumType = TypeTypeConverter.ConvertFromName(SettingPath);
+            get { return this._enumType; }
+            set
+            {
+                if (value != this._enumType && value != null)
+                {
+                    var enumType = Nullable.GetUnderlyingType(value) ?? value;
+
+                    if (!enumType.IsEnum)
+                    {
+                        throw new ArgumentException($"Type {enumType.GetFriendlyFullName()} must be an Enum.");
+                    }
+                    this._enumType = value;
+                }
+            }
         }
 
-	    private void InitValues()
-	    {
-	        _value = EnumType.GetFields( BindingFlags.Public | BindingFlags.Static )
-	                        .Select( x => x.GetValue( EnumType ) );
-	    }
-	}
-	
-	
+        public EnumExtension() : base() { }
+
+        public EnumExtension(Type enumType) : base()
+        {
+            this.EnumType = enumType;
+        }
+
+        public bool UseDescriptions { get; set; } = false;
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            if (EnumType == null)
+            {
+                throw new InvalidOperationException($"{nameof(EnumType)} must be specified.");
+            }
+
+            return UseDescriptions ? EnumType.GetDescriptions() : EnumType.GetValues();
+
+            //Type actualEnumType = Nullable.GetUnderlyingType(this._enumType) ?? this._enumType;
+            //Array enumValues = Enum.GetValues(actualEnumType);
+
+            //if (actualEnumType == this._enumType)
+            //    return enumValues;
+
+            //Array tempArray = Array.CreateInstance(actualEnumType, enumValues.Length + 1);
+            //enumValues.CopyTo(tempArray, 1);
+            //return tempArray;
+        }
+    }
 }

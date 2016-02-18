@@ -23,12 +23,12 @@ namespace UTorrentRestAPI
         /// Removes the selected torrent job(s) from the list and the corresponding .torrent file(s) from the .torrent file storage location.
         /// </summary>
         TorrentFile = 3,
-        
+
         /// <summary>
         /// Removes the selected torrent job(s) from the list and all content downloaded from the torrent job(s).
         /// </summary>
         Data = 5,
-        
+
         /// <summary>
         /// Removes the selected torrent job(s) from the list, the corresponding .torrent file(s) from the .torrent file storage location, and all content downloaded from the torrent job(s).
         /// </summary>

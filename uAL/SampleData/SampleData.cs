@@ -20,7 +20,7 @@ namespace uAL.SampleData
                 var metalink = Path.Combine(Settings.ActiveDirectory, @"$\METALINKS\O", "myMetalink.metalink");
                 var torrent = Path.Combine(Settings.ActiveDirectory, category, "myTorrentName.torrent");
                 var uri = new Uri("http://www.google.com/testing/testing/testing/testing");
-                var item = new MetalinkQueueItem(metalink, category, uri, new FileInfo(torrent));
+                var item = new MetalinkQueueItem(metalink, category, uri, FileUtils.GetInfo(torrent));
                 item.Status = (MetalinkDownloadStatus)new Random().Next(1, 4);
                 return item;
             }

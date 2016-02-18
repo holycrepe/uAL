@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PlugIn xmlns="http://schemas.postsharp.org/1.0/configuration">
+  <TaskType Name="AddGenericConstraint" Implementation="AddGenericConstraint.Impl.AddGenericConstraintTask, AddGenericConstraint.Impl" Phase="Transform">
+    <Dependency TaskType="Remove" Position="After"/>
+    <Dependency TaskType="AnnotationRepository"/>
+  </TaskType>
+</PlugIn>

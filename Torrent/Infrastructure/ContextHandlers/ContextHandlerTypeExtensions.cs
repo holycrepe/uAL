@@ -7,10 +7,11 @@ namespace Torrent.Infrastructure.ContextHandlers
 
         public static bool IsDisabler(this ContextHandlerType type)
             => !type.IsEnabler();
+
         public static bool IsImmediate(this ContextHandlerType type)
             => type == ContextHandlerType.ImmediateEnabler || type == ContextHandlerType.ImmediateDisabler;
 
         public static bool IsDeferred(this ContextHandlerType type)
-            => !type.IsImmediate();        
+            => !type.IsImmediate();
     }
 }

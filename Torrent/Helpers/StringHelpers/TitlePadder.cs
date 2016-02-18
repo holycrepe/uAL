@@ -18,16 +18,22 @@ namespace Torrent.Helpers.StringHelpers
 
         public string GetTitle(object title)
             => title + GetTitleSuffix(title);
+
         public string GetTitleSuffix(object title)
             => string.IsNullOrEmpty(title?.ToString()) ? TitleEmptySuffix : TitleSuffix;
 
         public string PadTitle()
             => PadTitle(Subject, Text);
-        public string PadTitle(object title, object text=null)
+
+        public string PadTitle(object title, object text = null)
             => text == null ? title?.ToString() : GetTitle(title).Pad(this) + TextPrefix + text;
+
         //public TitlePadder(object title, object text, int width, bool padDefaultDirection, string titleSuffix = DEFAULT_TITLE_SUFFIX, char paddingChar = DEFAULT_PADDING_CHAR) : 
         //    this(title, text, width, padDefaultDirection ? PadDire : PadDirection.Left, titleSuffix, paddingChar) { }
-        public TitlePadder(object title = null, object text = null, int width = DEFAULT_WIDTH, PadDirection direction = PadDirection.Default, string titleSuffix = DEFAULT_TITLE_SUFFIX, char paddingChar = DEFAULT_PADDING_CHAR) {
+        public TitlePadder(object title = null, object text = null, int width = DEFAULT_WIDTH,
+                           PadDirection direction = PadDirection.Default, string titleSuffix = DEFAULT_TITLE_SUFFIX,
+                           char paddingChar = DEFAULT_PADDING_CHAR)
+        {
             Subject = title;
             Text = text;
             Width = width;

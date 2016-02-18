@@ -14,24 +14,15 @@ namespace Torrent.Helpers.Utils
         }
 
 
-        public FileComparer(FileInfo fileInfo) : this(File.ReadAllBytes(fileInfo.FullName))
-        {
-            Info = fileInfo;
-        }
+        public FileComparer(FileInfo fileInfo) : this(File.ReadAllBytes(fileInfo.FullName)) { Info = fileInfo; }
 
-        public FileComparer(string filename) : this(new FileInfo(filename))
-        {
-
-        }
+        public FileComparer(string filename) : this(FileUtils.GetInfo(filename)) { }
 
         public bool FileEquals(byte[] compare)
         {
-            if (original.Length == compare.Length)
-            {
-                for (var i = 0; i < original.Length; i++)
-                {
-                    if (original[i] != compare[i])
-                    {
+            if (original.Length == compare.Length) {
+                for (var i = 0; i < original.Length; i++) {
+                    if (original[i] != compare[i]) {
                         return false;
                     }
                 }
@@ -40,11 +31,6 @@ namespace Torrent.Helpers.Utils
             return false;
         }
 
-        public bool FileEquals(string path) 
-        {
-            return FileEquals(File.ReadAllBytes(path));
-        }
-
+        public bool FileEquals(string path) { return FileEquals(File.ReadAllBytes(path)); }
     }
-
 }

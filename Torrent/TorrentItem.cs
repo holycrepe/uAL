@@ -12,162 +12,223 @@ namespace Torrent
 {
     using Enums;
     using Helpers.StringHelpers;
+    using PostSharp.Patterns.Model;
+    using System.Linq;
+
+    [NotifyPropertyChanged]
     public class TorrentItem : QueueItemBase
     {
         TorrentLabel _label;
-        FileInfo _file;
+        //FileInfo _file;
         TorrentInfo _info;
-        bool _valid = true;
-        bool _allowUpdatePath = false;
-        static readonly string[] pathDeterminingProperties = {"Label", "File", "AllowUpdatePath"};
+        //bool _valid = true;
+        //bool _allowUpdatePath = false;
+        static readonly string[] pathDeterminingProperties = {nameof(Label), nameof(File), nameof(AllowUpdatePath)};
 
-        public bool AllowUpdatePath { 
-        	get { return _allowUpdatePath; }
-        	set { if (_allowUpdatePath != value) { _allowUpdatePath = value;  OnPropertyChanged(value, "AllowUpdatePath"); }
-        	}
-        }
-        
-        public string RootDirectory => FileName.StartsWith(NewRootDirectory, StringComparison.CurrentCulture) ? NewRootDirectory : OldRootDirectory;
+        public bool AllowUpdatePath { get; set; }
+
+        [SafeForDependencyAnalysis]
+        public string RootDirectory
+            => this.FileName.StartsWith(this.NewRootDirectory, StringComparison.CurrentCulture)
+                   ? this.NewRootDirectory
+                   : this.OldRootDirectory;
 
         public string NewRootDirectory { get; }
 
         public string OldRootDirectory { get; }
 
-        public bool Valid {
-        	get {
-        		return _valid;
-        	}
-        	set { if (_valid != value) { _valid = value; OnPropertyChanged(value, "Valid"); }
-        	}
-        }
-        
+        public bool Valid { get; set; } = true;
+
+        [SafeForDependencyAnalysis]
         public string Torrent
         {
+            [Pure]
             get
             {
-                var name = FileName.Replace(RootDirectory, "");
-                if (name.StartsWith("\\") || name.StartsWith("/"))
-                {
+                if (Depends.Guard) {
+                    Depends.On(this.FileName, this.RootDirectory);
+                }
+                var name = this.FileName.Replace(this.RootDirectory, "");
+                if (name.StartsWith("\\") || name.StartsWith("/")) {
                     name = name.Substring(1);
                 }
                 return name;
             }
         }
-        public string TorrentName => Path.GetFileNameWithoutExtension(FileName).UnescapeHTML();
 
-        void labelPropertyChanged()
+        public string TorrentName
         {
-            OnPropertyChanged(Label == null ? null : Label.Computed, "Label");
+            get { return Path.GetFileNameWithoutExtension(this.FileName); }
+            set { this.FileName = value; }
         }
-        void labelPropertyChanged(object sender, PropertyChangedEventArgs e) {
-        	OnPropertyChanged(Label.Computed, "Label", "Label." + e.PropertyName);	
+
+        protected void OnLabelChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this._label.Base)) {
+                this._queueItem.OnPropertyChanged(nameof(this._queueItem.Label));
+            }
         }
+
         public TorrentLabel Label
         {
-            get { return _label; }
-            set {
-                if (_label == value)
-                {
-                    return;
+            get { return this._label; }
+            set
+            {
+                if (this._label != null) {
+                    this._label.PropertyChanged -= OnLabelChanged;
                 }
-                if (_label != null) {
-            		_label.PropertyChanged -= labelPropertyChanged;
-            	}
-            	_label = value;
-            	labelPropertyChanged();
-            	if (_label != null) {
-            		try {
-            			_label.PropertyChanged += labelPropertyChanged;
-            			return;
-            		} catch (NullReferenceException) {            			
-            			return;
-            		}            		
-            	}            	             	
+                this._label = value;
+                if (this._label != null) {
+                    this._label.PropertyChanged += OnLabelChanged;
+                }
             }
         }
+
+        [SafeForDependencyAnalysis]
         public string FileName
         {
-            get {  
-        		return (_file == null ? null : _file.FullName);
-        	}
-            set { 
-            	if (FileName != value) {
-            		_file = new FileInfo(value); OnPropertyChanged(value, "FileName", "File");
-            	}
+            get
+            {
+                if (Depends.Guard) {
+                    Depends.On(this.File);
+                }
+                return (this.File == null ? null : this.File.FullName);
+            }
+            set
+            {
+                if (Depends.Guard) {
+                    Depends.On(this.File);
+                }
+                if (!Path.HasExtension(value)) {
+                    value += ".torrent";
+                }
+                if (!Path.IsPathRooted(value)) {
+                    value = Path.Combine(this.File.DirectoryName, value);
+                }
+                if (this.FileName != value) {
+                    this.File = FileUtils.GetInfo(value);
+                }
             }
         }
-        public FileInfo File
-        {
-            get { return _file; }
-            set { if (FileName != value.FullName) { _file = value; OnPropertyChanged(_file == null ? null : _file.FullName, "FileName", "File"); } }
-        }
+
+        public FileInfo File { get; set; }
+
+        [SafeForDependencyAnalysis]
         public TorrentInfo Info
         {
-            get {
-                return UpdateTorrentInfo();
+            get
+            {
+                if (Depends.Guard) {
+                    Depends.On(this.FileName);
+                }
+                return this.UpdateTorrentInfo();
             }
-            set { if (_info != value) { _info = value; OnPropertyChanged(_info, "Info"); } }
+
+            set
+            {
+                if (Depends.Guard) {
+                    Depends.On(this.FileName);
+                }
+                this._info = value;
+            }
         }
-        
+
         public static Func<bool, IEnumerable<string>> getWordsToStrip = null;
-        
-        string TorrentNameStripped => TorrentName.StripFilename(false, getWordsToStrip);
 
-        public string ComputedFileName => Label == null ? FileName : Path.Combine(RootDirectory, Label.Base, (Label.IsExtendable && Label.UseExtendedName ? Label.Extended : TorrentNameStripped) + ".torrent");
+        [SafeForDependencyAnalysis]
+        string TorrentNameStripped
+            => this.TorrentName.StripFilename(false, getWordsToStrip);
 
-        
-        [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE")]
-        void Log(string title, string text = null, string item = null, PadDirection textPadDirection = PadDirection.Default, string textSuffix = null, PadDirection titlePadDirection = PadDirection.Default, string titleSuffix = null, int random = 0)
-            => LogUtils.Log("TorrentItem", title, text, item, textPadDirection, textSuffix, titlePadDirection, titleSuffix, random);
+        [SafeForDependencyAnalysis]
+        public string ComputedFileName
+            => this._label == null
+                   ? CleanedFileName
+                   : Path.Combine(this.RootDirectory, this._label.Base,
+                                  (this._label.IsExtendable && this._label.UseExtendedName
+                                       ? this._label.Extended
+                                       : this.TorrentNameStripped) + ".torrent");
 
-        public async Task UpdatePath() {
-        	if (AllowUpdatePath && FileName != ComputedFileName && File.Exists) {
-        		var result = await FileSystemUtils.MoveFile(File, ComputedFileName);
-        		if (result.Status.IsDupe()) {        			
+        [SafeForDependencyAnalysis]
+        public string CleanedFileName
+            => Path.Combine(this.File.DirectoryName, this.TorrentName.UnescapeHTML()) + ".torrent";
+
+        [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE_EXT")]
+        void Log(string title, string text = null, string item = null,
+                 PadDirection textPadDirection = PadDirection.Default, string textSuffix = null,
+                 PadDirection titlePadDirection = PadDirection.Default, string titleSuffix = null, int random = 0)
+            =>
+                LogUtils.Log("TorrentItem", title, text, item, textPadDirection, textSuffix, titlePadDirection,
+                             titleSuffix, random);
+
+        public Task InitializePath()
+            => UpdatePath(true);
+
+        protected string Base
+            => this._label?.Base ?? Path.GetDirectoryName(this.CleanedFileName)
+                                        ?.Replace(this.OldRootDirectory, "")
+                                        .Replace(this.NewRootDirectory, "").Trim('\\');
+
+        public async Task UpdatePath(bool force = false)
+        {
+            string fileName = force ? CleanedFileName : ComputedFileName;
+            if ((AllowUpdatePath || force) && FileName != fileName && File.Exists) {
+                var result = await FileSystemUtils.MoveFile(File, fileName);
+                if (result.Status.IsDupe()) {
                     // File is an exact dupe and has been deleted
-        			Log("UpdatePath: Dupe", Label.Base, TorrentName);
-        			Valid = false;
-        		}
-        		else if (result.Status == FileSystemUtils.MoveFileResultStatus.Success) {        			         			
-        			Log("UpdatePath: Moved", Label.Base, TorrentName);
-        			FileName = result.NewFileName;        			
-        			Log("", "→", TorrentName, PadDirection.Alternate, " ");
-        		}
-        		else {
-        			Log("UpdatePath: Error", Label.Base, TorrentName);
-        		}
-        	}
+                    Log("UpdatePath: Dupe", this.Base, TorrentName);
+                    Valid = false;
+                } else if (result.Status == FileSystemUtils.MoveFileResultStatus.Success) {
+                    Log("UpdatePath: Moved", this.Base, TorrentName);
+                    FileName = result.NewFileName;
+                    Log("", "→", TorrentName, PadDirection.Alternate, " ");
+                } else {
+                    Log("UpdatePath: Error", this.Base, TorrentName);
+                }
+            }
         }
-        
-        public TorrentItem(string oldRootDirectory, string newRootDirectory, string fileName, TorrentLabel label = null) 
-        {            
-        	this.OldRootDirectory = oldRootDirectory;
+
+        public TorrentItem(string oldRootDirectory, string newRootDirectory, string fileName, TorrentLabel label = null)
+        {
+            this.OldRootDirectory = oldRootDirectory;
             this.NewRootDirectory = newRootDirectory;
             FileName = fileName;
             Label = label;
-            QueueItem.SetLabel(() => Label.Base);
-            QueueItem.SetName(() => TorrentName);        
+            this._queueItem.SetLabel(() => this.Base);
+            this._queueItem.SetName(() => this.TorrentName);
+            this.PropertyChanged += (s, e) =>
+                                    {
+                                        if (e.PropertyName == nameof(TorrentName)) {
+                                            this._queueItem.OnPropertyChanged(nameof(this._queueItem.Name));
+                                        }
+                                        if (AllowUpdatePath && pathDeterminingProperties.Contains(e.PropertyName)) {
+#pragma warning disable 4014
+                                            UpdatePath();
+#pragma warning restore 4014
+                                        }
+                                    };
         }
 
+        [Pure]
         public TorrentInfo UpdateTorrentInfo()
         {
-            if (_info == null || _info.FileName != FileName)
-            {
-                _info = TorrentInfoCache.GetTorrentInfo(File);
+            if (Depends.Guard) {
+                Depends.On(this.FileName, this.File);
+            }
+            if (_info == null || _info.FileName != this.FileName) {
+                _info = TorrentInfoCache.GetTorrentInfo(this.File);
             }
             return _info;
         }
 
-        #pragma warning disable 4014
-        protected override void OnPropertyChanged(object propertyValue, params string[] propertyNames)
-        {
-        	if (pathDeterminingProperties.ContainsAny(propertyNames)) {        		
-        		UpdatePath();        		
-        	}
+        //      #pragma warning disable 4014
+        //      protected override void OnPropertyChanged(object propertyValue, params string[] propertyNames)
+        //      {
+        //      	if (pathDeterminingProperties.ContainsAny(propertyNames)) {        		
+        //      		UpdatePath();        		
+        //      	}
 
-            base.OnPropertyChanged(propertyValue, propertyNames);
-        }
-		#pragma warning restore 4014
-        
+        //          base.OnPropertyChanged(propertyValue, propertyNames);
+        //      }
+        //#pragma warning restore 4014
     }
 }

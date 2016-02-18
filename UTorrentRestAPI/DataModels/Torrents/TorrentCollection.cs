@@ -1,8 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="TorrentCollection.cs" company="Mike Davis">
-//     To the extent possible under law, Mike Davis has waived all copyright and related or neighboring rights to this work.  This work is published from: United States.  See copying.txt for details.  I would appreciate credit when incorporating this work into other works.  However, you are under no legal obligation to do so.
-// </copyright>
-//-----------------------------------------------------------------------
+﻿#define DEBUG_UTORRENT_LABELS
 
 namespace UTorrentRestAPI
 {
@@ -14,20 +10,24 @@ namespace UTorrentRestAPI
     using Torrent;
     using Torrent.Infrastructure;
     using Torrent.Helpers.Utils;
-	using IO = System.IO;
+    using IO = System.IO;
     using RestSharp;
     using RestClient;
-
-    /// <summary>
-    /// Contains all the current torrent jobs
-    /// </summary>
+    using Torrent.Infrastructure.ContextHandlers;
+    using Torrent.Extensions;
+    using System.Diagnostics;    /// <summary>
+                                 /// Contains all the current torrent jobs
+                                 /// </summary>
     public class TorrentCollection : IEnumerable<TorrentJob>
     {
         #region Private Variables        
-    	/// <summary>
+
+        /// <summary>
         /// Provides actual storage for the torrent objects
         /// </summary>
         private InternalTorrentCollection internalCollection = new InternalTorrentCollection();
+
+        
 
         /// <summary>
         /// A reference to the service proxy used to communicate with the
@@ -40,13 +40,15 @@ namespace UTorrentRestAPI
         /// do incremental updates
         /// </summary>
         private string cid = "0";
-        
+
         bool updating = false;
         bool updateInProgress = false;
         bool updated = false;
+
         #endregion
 
         #region Constructor        
+
         /// <summary>
         /// Initializes a new instance of the TorrentCollection class
         /// </summary>
@@ -55,41 +57,54 @@ namespace UTorrentRestAPI
         {
             this.client = client;
         }
+
         #endregion
-        
+
         #region Public Fields
+
         /// <summary>
         /// uTorrent Client is Connected to Web API
         /// </summary>
         public bool IsConnected => client?.IsConnected ?? false;
 
+        public UTorrentLabelCollection Labels { get; set; } = new UTorrentLabelCollection();
+
         /// <summary>
         /// Returns true if BeginUpdate() has been called but Update() has not
         /// </summary>
-        bool ShouldUpdate  => !updating || !updated;
+        bool ShouldUpdate => !updating || !updated;
+
+        public ContextHandlers DeferUpdates { get; } = new ContextHandlers();
 
         /// <summary>
         /// Gets the number of torrents currently tracked by uTorrent, without updating the collection
         /// </summary>
         public int Count => internalCollection.Count;
+
         #endregion
 
         #region Get Count
+
         /// <summary>
         /// Gets the number of torrents currently tracked by uTorrent, after updating the collection
         /// </summary>
-        public async Task<int> GetCount()
+        public async Task<int> GetCount(bool force = false)
         {
-        	await this.Update("CountNew");
+            await this.Update("CountNew", null, force);
             return Count;
         }
-        #endregion                          
-        
+
+        #endregion
+
         #region Actions
+
         #region uTorrent Actions
-		#region Add Torrent by Url or File
-		#region Add Url
-		/// <summary>
+
+        #region Add Torrent by Url or File
+
+        #region Add Url
+
+        /// <summary>
         /// Adds and starts a torrent job based off the supplied url and saves data in the supplied path
         /// </summary>
         /// <param name="url">A url to the torrent file</param>
@@ -97,21 +112,20 @@ namespace UTorrentRestAPI
         /// <exception cref="IO.DirectoryNotFoundException">throws if uTorrent is not configured to be able to save to the supplied path</exception>
         public void AddUrl(string url, string savePath = null)
         {
-            if (string.IsNullOrEmpty(savePath))
-            {
+            if (string.IsNullOrEmpty(savePath)) {
                 client.AddTorrentFromUrl(url);
-            }
-            else
-            {
+            } else {
                 int storageDirectory;
                 string subDirectory;
                 ResolveStorageDirectory(savePath, out storageDirectory, out subDirectory);
                 client.AddTorrentFromUrl(url, storageDirectory, subDirectory);
             }
         }
-		#endregion
-		
-		#region Add File		        
+
+        #endregion
+
+        #region Add File		        
+
         /// <summary>
         /// Adds the specified torrent file to uTorrent
         /// </summary>
@@ -119,16 +133,21 @@ namespace UTorrentRestAPI
         /// <param name="savePath">path to save the downloaded torrent to</param>
         public bool AddFile(string path, string savePath = null)
         {
-        	if (!IO.File.Exists(path)) {
-        		Log("AddFile -> Path DOES NOT EXIST", path);
-        		return false;        		
-        	}
-        	Log("AddFile -> Path", path);
-        	
-        	using (IO.Stream stream = IO.File.OpenRead(path))
-            {
-                return AddFile(stream, savePath);
+            if (!IO.File.Exists(path)) {
+                Log("AddFile -> Path DOES NOT EXIST", path);
+                return false;
             }
+            Log("AddFile -> Path", path);
+
+            if (string.IsNullOrEmpty(savePath)) {
+                client.AddTorrentFromFile(path);
+            } else {
+                int storageDir;
+                string subDir;
+                ResolveStorageDirectory(savePath, out storageDir, out subDir);
+                client.AddTorrentFromFile(path, storageDir, subDir);
+            }
+            return true;
         }
 
         /// <summary>
@@ -138,12 +157,9 @@ namespace UTorrentRestAPI
         /// <param name="savePath">path to save the downloaded torrent to</param>
         public bool AddFile(IO.Stream fileContents, string savePath = null)
         {
-            if (string.IsNullOrEmpty(savePath))
-            {                
+            if (string.IsNullOrEmpty(savePath)) {
                 client.AddTorrentFromFile(fileContents);
-            }
-            else
-            {
+            } else {
                 int storageDir;
                 string subDir;
                 ResolveStorageDirectory(savePath, out storageDir, out subDir);
@@ -151,7 +167,7 @@ namespace UTorrentRestAPI
             }
             return true;
         }
-        
+
         /// <summary>
         /// Add Torrent Item, and update torrent label 
         /// </summary>
@@ -159,28 +175,41 @@ namespace UTorrentRestAPI
         /// <param name="logInfo"></param>
         /// <param name="OnAddTorrentComplete"></param>
         /// <returns></returns>
-        public async Task<bool> AddFile(TorrentItem torrent, bool logInfo=true, Func<string,string,Task> OnAddTorrentComplete = null) {
-            var label = torrent.Label.Computed;
+        public async Task<bool> AddFile(TorrentItem torrent, bool logInfo = true,
+                                        Func<string, string, Task> OnAddTorrentComplete = null)
+        {
+            var labels = new List<string>() { torrent.Label.Base };
+            string label;
+            if (torrent.Label.IsComputed)
+            {
+                labels.Add(torrent.Label.Computed);
+                label = torrent.Label.Base + ": " + torrent.Label.Extended;
+            }
+            else
+            {
+                label = torrent.Label.Base;
+            }
+
+            var baseLabel = torrent.Label.Base;
             if (!IsConnected) {
                 return false;
             }
             Log("AddFile -> Torrent", label, torrent.TorrentName);
             if (!await Contains(torrent, ShouldUpdate)) {
-                AddFile(torrent.FileName);                
+                AddFile(torrent.FileName);
             }
             var success = false;
-            var addedTorrent = await Get(torrent);
+            var addedTorrent = await Get(torrent, force: true);
             if (addedTorrent == null) {
                 return false;
             }
             if (addedTorrent.Label == "") {
                 Log("AddFile -> Label", label);
-            	addedTorrent.Label = label;
+                addedTorrent.Labels = labels.ToArray();
                 success = true;
-            }
-            else if (addedTorrent.Label != label) {
-                Log("AddFile -> Already Has Label", addedTorrent.Label, " vs " + label);
-            	success = false;
+            } else if (!addedTorrent.Labels.ContainsAll(labels)) {
+                Log("AddFile -> Already Has Label", string.Join("; ", addedTorrent.Labels), " vs " + label);
+                success = false;
             }
             if (OnAddTorrentComplete != null) {
                 await OnAddTorrentComplete(torrent.FileName, label);
@@ -189,24 +218,22 @@ namespace UTorrentRestAPI
         }
 
         #endregion
+
         #endregion
-        
+
         #region Remove Torrents
+
         /// <summary>
         /// Removes all of the finished torrents from uTorrent
         /// </summary>
         /// <param name="removalOptions">the removal options to use</param>
         public void RemoveFinished(TorrentRemovalOptions removalOptions = TorrentRemovalOptions.TorrentFile)
         {
-            for (int x = 0; x < this.internalCollection.Count;)
-            {
+            for (int x = 0; x < this.internalCollection.Count;) {
                 TorrentJob t = this.internalCollection[x];
-                if (t.Status == TorrentStatus.FinishedOrStopped && t.ProgressInMils == 1000)
-                {
+                if (t.Status == TorrentStatus.FinishedOrStopped && t.ProgressInMils == 1000) {
                     this.Remove(t, removalOptions);
-                }
-                else
-                {
+                } else {
                     x++;
                 }
             }
@@ -231,8 +258,7 @@ namespace UTorrentRestAPI
         /// <param name="removalOptions">the removal options to use</param>
         public void Remove(string torrentHash, TorrentRemovalOptions removalOptions = TorrentRemovalOptions.TorrentFile)
         {
-            switch (removalOptions)
-            {
+            switch (removalOptions) {
                 case TorrentRemovalOptions.Job:
                     client.Remove(torrentHash);
                     break;
@@ -259,88 +285,113 @@ namespace UTorrentRestAPI
         {
             this.Remove(this.internalCollection[index].Hash, removalOptions);
         }
+
         #endregion
-		#endregion
-        
-		#region TorrentCollection Actions
-		#region Update Torrents        
+
+        #endregion
+
+        #region TorrentCollection Actions
+
+        #region Update Torrents        
+
         #region BeginUpdate/EndUpdate        
+
         /// <summary>
         /// Start Update
         /// </summary>
-        public void BeginUpdate() {
+        public void BeginUpdate()
+        {
             updating = true;
             updated = false;
         }
-        
+
         /// <summary>
         /// End Update
         /// </summary>
-        public void EndUpdate() {
+        public void EndUpdate()
+        {
             updating = false;
             updated = false;
         }
+
         #endregion
 
         #region Update Torrent Collection
+
         #region InternalCollection Shortcuts
+
         public void Add(TorrentJob torrent)
             => internalCollection.Add(torrent);
+
         public void Add(IEnumerable<TorrentJob> torrents)
             => internalCollection.Add(torrents);
+
         public void AddOrReplace(TorrentJob torrent)
             => internalCollection.AddOrReplace(torrent);
+
         public void AddOrReplace(IEnumerable<TorrentJob> torrents)
             => internalCollection.AddOrReplace(torrents);
+
         public void Clear(IEnumerable<TorrentJob> newTorrents = null)
             => internalCollection.Clear(newTorrents);
+
         public void Remove(string hash)
             => internalCollection.Remove(hash);
+
         public void Remove(IEnumerable<string> hashes)
             => internalCollection.Remove(hashes);
+
         #endregion
+
         /// <summary>
         /// Causes the in-memory collection to be updated from uTorrent
         /// </summary>
-        public async Task<int> Update(string source = null, string logText = null, int run = 0)
-        {                    	
-    		if (updateInProgress) {
-    			while (updateInProgress) {
-    				await Task.Delay(1000);
-    			}
-    			return Count;
-    		}
-    		updateInProgress = true;
-		    UTorrentRestClientException ex;
-        	var response = client.ListTorrents(cid, out ex);
-
-		    if (ex) {
-		        if (run > 10) {
-		            throw ex;
-		        }                
+        public async Task<int> Update(string source = null, string logText = null, bool force = false, int run = 0)
+        {
+            if (DeferUpdates && !force) {
+                return Count;
             }
-		    if (ex || response == null) {
-                await Update(source, logText, run + 1);
+            if (updateInProgress) {
+                while (updateInProgress) await Task.Delay(1000);
+                return Count;
+            }
+            updateInProgress = true;
+            UTorrentRestClientException ex;
+            var response = client.ListTorrents(cid, out ex);
+
+            if (ex) {
+                if (run > 10) {
+                    throw ex;
+                }
+            }
+            if (ex || response == null) {
+                await Update(source, logText, force, run + 1);
                 return Count;
             }
 
-        	Log("Update" + (source == null ? "" : " Via " + source + (run > 0 ? new string('*', run) : "")), logText);
-        	
-        	LoadFromResponse(response);
+            Log("Update" + (source == null ? "" : " Via " + source + (run > 0 ? new string('*', run) : "")), logText);
+
+            LoadFromResponse(response);
 
             // Save the newest cacheId
-		    cid = response.torrentc;
+            cid = response.torrentc;
             updated = true;
             updateInProgress = false;
             return Count;
         }
+
         #endregion
+
         #endregion
+
         #endregion
-        #endregion        
-        
+
+        #endregion
+
         #region Individual Torrents: Indexers, Get(), and Contains()
+
         #region Individual Torrents: Indexers
+
         /// <summary>
         /// Gets the torrent job object at the specified index
         /// </summary>
@@ -373,21 +424,22 @@ namespace UTorrentRestAPI
         /// <returns>torrent with the specified hash</returns>
         public TorrentJob this[TorrentItem item]
             => this.internalCollection[item];
-        
-		#endregion
-        
+
+        #endregion
+
         #region Individual Torrents: Get
+
         /// <summary>
         /// Gets Torrent after updating collection if needed
         /// </summary>
         /// <param name="item">A torrent item object</param>
         /// <param name="update">Update Collection before getting torrent</param>
         /// <returns>Torrent Job Object</returns>
-        public async Task<TorrentJob> Get(TorrentItem item, bool update=true)
+        public async Task<TorrentJob> Get(TorrentItem item, bool update = true, bool force = false)
         {
             if (update) {
-        		await Update("Get", item.TorrentName);
-        	}        	
+                await Update("Get", item.TorrentName, force);
+            }
             return this[item];
         }
 
@@ -397,11 +449,11 @@ namespace UTorrentRestAPI
         /// <param name="hash">The infohash of a torrent</param>
         /// <param name="update">Update Collection before getting torrent</param>
         /// <returns>Torrent Job Object</returns>
-        public async Task<TorrentJob> Get(string hash, bool update=true)
+        public async Task<TorrentJob> Get(string hash, bool update = true, bool force = false)
         {
-        	if (update) {
-        		await Update("Get", hash);
-        	}        	
+            if (update) {
+                await Update("Get", hash, force);
+            }
             return this[hash];
         }
 
@@ -411,17 +463,20 @@ namespace UTorrentRestAPI
         /// <param name="item">A torrent object</param>
         /// <param name="update">Update Collection before getting torrent</param>
         /// <returns>Torrent Job Object</returns>
-        public async Task<TorrentJob> Get(Torrent item, bool update=true)
+        public async Task<TorrentJob> Get(Torrent item, bool update = true, bool force = false)
         {
             if (update) {
-        		await Update("Get", item.Name);
-        	}        	
+                await Update("Get", item.Name, force);
+            }
             return this[item];
         }
+
         #endregion
-        
+
         #region Individual Torrents: Contains
+
         #region Contains: Auto
+
         /// <summary>
         /// Determines whether the collection contains a torrent with the given hash, only updating the collection before checking if needed 
         /// </summary>
@@ -441,7 +496,7 @@ namespace UTorrentRestAPI
         {
             return await Contains(item, ShouldUpdate);
         }
-        
+
         /// <summary>
         /// Determines whether the collection contains a given torrent, only updating the collection before checking if needed
         /// </summary>
@@ -451,8 +506,11 @@ namespace UTorrentRestAPI
         {
             return await Contains(item.Info, ShouldUpdate);
         }
+
         #endregion
+
         #region Contains: New
+
         /// <summary>
         /// Determines whether the collection contains a torrent with the given hash, automatically updating the collection before checking
         /// </summary>
@@ -472,7 +530,7 @@ namespace UTorrentRestAPI
         {
             return await Contains(item, true);
         }
-        
+
         /// <summary>
         /// Determines whether the collection contains a given torrent, automatically updating the collection before checking
         /// </summary>
@@ -482,22 +540,25 @@ namespace UTorrentRestAPI
         {
             return await Contains(item.Info, true);
         }
-		#endregion
-		#region Contains: Base
+
+        #endregion
+
+        #region Contains: Base
+
         /// <summary>
         /// Determines whether the collection contains a torrent with the given hash
         /// </summary>
         /// <param name="hash">The infohash of a torrent</param>
         /// <param name = "update">Update Collection Before Checking</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>        
-        public async Task<bool> Contains(string hash, bool update=false)
+        public async Task<bool> Contains(string hash, bool update = false, bool force = false)
         {
             if (update) {
-        		if (this.internalCollection.Contains(hash)) {
-        			return true;
-        		}
-        		await Update("Contains", hash);
-            }        
+                if (this.internalCollection.Contains(hash)) {
+                    return true;
+                }
+                await Update("Contains", hash, force);
+            }
             return this.internalCollection.Contains(hash);
         }
 
@@ -507,49 +568,53 @@ namespace UTorrentRestAPI
         /// <param name="item">A torrent object</param>
         /// <param name = "update">Update Collection Before Checking</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> Contains(Torrent item, bool update=false)
+        public async Task<bool> Contains(Torrent item, bool update = false, bool force = false)
         {
             if (update) {
                 if (this.internalCollection.Contains(item.Hash)) {
-        			return true;
-        		}
-        		await Update("Contains", item.Name);
-            }        
+                    return true;
+                }
+                await Update("Contains", item.Name, force);
+            }
             return this.internalCollection.Contains(item.Hash);
         }
-        
+
         /// <summary>
         /// Determines whether the collection contains a given torrent
         /// </summary>
         /// <param name="item">A torrent item object</param>
         /// <param name = "update">Update Collection Before Checking</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> Contains(TorrentItem item, bool update=false)
+        public async Task<bool> Contains(TorrentItem item, bool update = false, bool force = false)
         {
             if (update) {
                 if (this.internalCollection.Contains(item.Info.Hash)) {
-        			return true;
-        		}
-        		await Update("Contains", item.TorrentName);
-            }        
+                    return true;
+                }
+                await Update("Contains", item.TorrentName, force);
+            }
             return this.internalCollection.Contains(item.Info.Hash);
         }
 
         #endregion
+
         #endregion
+
         #endregion
-        
-		#region Interfaces        
+
+        #region Interfaces        
+
         #region IEnumerable Interface: Get Enumerator
-        #pragma warning disable 4014
-        
+
+#pragma warning disable 4014
+
         /// <summary>
         /// Returns an enumerator of torrents loaded in uTorrent
         /// </summary>
         /// <returns>An enumerator of torrents</returns>
         public IEnumerator<TorrentJob> GetEnumerator()
-        {            
-        	Update("IEnumerator.GetEnumerator");
+        {
+            Update("IEnumerator.GetEnumerator");
             return this.internalCollection.GetEnumerator();
         }
 
@@ -562,29 +627,43 @@ namespace UTorrentRestAPI
             Update("IEnumerable.GetEnumerator");
             return this.internalCollection.GetEnumerator();
         }
-		#pragma warning restore 4014
+#pragma warning restore 4014
+
         #endregion
-		
+
         #region Load From Response
+
         /// <summary>
         /// Updates the in-memory collection from its json representation
         /// </summary>
         /// <param name="response">the response to load</param>
-        void LoadFromResponse(ListTorrentsResponse response)
+        void LoadFromResponse(ListResponse response)
         {
             var torrents = response.torrents;
-
-            if (torrents != null) {
-                Clear(torrents);                
+            if (response.label != null)
+            {
+                Labels = response.label;
+#if DEBUG_UTORRENT_LABELS
+                if (response.torrents != null)
+                {
+                    this.Log("UTorrent Labels: \r\n", string.Join("\n", Labels.Select(l => l.Name)));
+                }
+#endif
+            }
+            if (response.torrents != null) {
+                Clear(response.torrents);
             } else {
                 AddOrReplace(response.torrentp);
                 Remove(response.torrentm);
             }
         }
-		#endregion
-        #endregion
-		
-        #region Directories
+
+#endregion
+
+#endregion
+
+#region Directories
+
         private void ResolveStorageDirectory(string savePath, out int storageDirectory, out string subDirectory)
         {
             var directories = client.ListDirectories();
@@ -592,54 +671,51 @@ namespace UTorrentRestAPI
             storageDirectory = -1;
             for (int x = 0; x < directories.Count(); x++) {
                 var directory = directories[x];
-                if (savePath.StartsWith(directory.Path, StringComparison.OrdinalIgnoreCase))
-                {
+                if (savePath.StartsWith(directory.Path, StringComparison.OrdinalIgnoreCase)) {
                     storageDirectory = x;
                     break;
                 }
             }
 
-            if (storageDirectory < 0)
-            {
+            if (storageDirectory < 0) {
                 throw new IO.DirectoryNotFoundException(
                     $"uTorrent is not configured to allow saving to the supplied directory: {savePath}");
             }
 
             subDirectory = savePath.Substring(directories[storageDirectory].Path.Length);
         }
-		#endregion
-        
-        #region Log
-        [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE")]
-        void Log(string title, string text=null, string item=null) {
-        	LogUtils.Log("UT.Torrents", title, text, item);
-		}
-        #endregion
 
-        #region Private Class: InternalTorrentCollection 
+#endregion
+
+#region Log
+
+        [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE_EXT")]
+        void Log(string title, string text = null, string item = null)
+        {
+            LogUtils.Log("UT.Torrents", title, text, item);
+        }
+
+#endregion
+
+#region Private Class: InternalTorrentCollection 
 
         class InternalTorrentCollection : MyKeyedCollection<string, TorrentJob>
         {
-           
-            public override Dictionary<Type, Func<object, string>> KeySelectors { get; }
+            protected override Dictionary<Type, Func<object, string>> KeySelectors { get; }
                 = new Dictionary<Type, Func<object, string>>()
                   {
-                        [typeof(Torrent)] = (item) => ((Torrent) item).Hash,
-                        [typeof(TorrentItem)] = (item) => ((TorrentItem)item).Info.Hash
-                };
-            /// <summary>
-            /// Retrieves the key to use from a torrent object
-            /// </summary>
-            /// <param name="item">the torrent object from which to extract a key</param>
-            /// <returns>the key of the supplied torrent object</returns>
-            protected override string GetKeyForItem(TorrentJob item)
-                => item.Hash;
+                      [typeof (TorrentJob)] = item => ((TorrentJob) item).Hash,
+                      [typeof (Torrent)] = (item) => ((Torrent) item).Hash,
+                      [typeof (TorrentItem)] = (item) => ((TorrentItem) item).Info.Hash
+                  };
 
             public TorrentJob this[Torrent item]
-                => this[GetKeyForOtherItem(item)];
+                => this[GetKeyForItem(item)];
+
             public TorrentJob this[TorrentItem item]
-                => this[GetKeyForOtherItem(item)];            
+                => this[GetKeyForItem(item)];
         }
-        #endregion
+
+#endregion
     }
 }

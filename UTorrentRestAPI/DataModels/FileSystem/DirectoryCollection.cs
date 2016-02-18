@@ -9,18 +9,18 @@ namespace UTorrentRestAPI
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// A collection of directories that uTorrent can save to.
     /// </summary>
-    [Serializable]
+    //[Serializable]
+    //[XmlSerializerAssembly("UTorrentRestAPI.XmlSerializers")]
     public class DirectoryCollection : IEnumerable<uTorrentDirectory>
     {
         private readonly List<uTorrentDirectory> _internalList = new List<uTorrentDirectory>();
 
-        internal DirectoryCollection() 
-        {
-        }
+        internal DirectoryCollection() { }
 
         /// <summary>
         /// Gets the number of directories that uTorrent can store to

@@ -1,15 +1,16 @@
 namespace UTorrentRestAPI
 {
-    public enum RestType {
-		Unknown=-1,
-		Int,
-		Bool,	
-		String,	
-		Long,
-		Double,
-		Dict,
+    public enum RestType
+    {
+        Unknown = -1,
+        Int,
+        Bool,
+        String,
+        Long,
+        Double,
+        Dict,
         JObject,
-		List,
+        List,
         JArray,
         JToken,
         JsonArray

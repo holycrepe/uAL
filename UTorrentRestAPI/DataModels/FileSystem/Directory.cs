@@ -36,7 +36,7 @@ namespace UTorrentRestAPI
         /// Gets the space available in this directory
         /// </summary>
         [DataMember]
-        [DeserializeAs(Name="available")]
+        [DeserializeAs(Name = "available")]
         public int AvailableMBytes { get; private set; }
     }
 }

@@ -9,11 +9,13 @@ namespace UTorrentRestAPI
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// Holds a collection of files that are contained in a torrent
     /// </summary>
-    [Serializable]
+    //[Serializable]
+    //[XmlSerializerAssembly("UTorrentRestAPI.XmlSerializers")]
     public class FileCollection : IEnumerable<TorrentContentsFile>
     {
         private List<TorrentContentsFile> internalList = new List<TorrentContentsFile>();
@@ -21,9 +23,8 @@ namespace UTorrentRestAPI
         /// <summary>
         /// Initializes a new instance of the FileCollection class.  Internal constructor prevents instantiation outside of this assembly
         /// </summary>
-        internal FileCollection()
-        {
-        }
+        internal FileCollection() { }
+
         internal FileCollection(RestNestedList jsonList) { LoadFromResponse(jsonList); }
 
         /// <summary>
@@ -42,8 +43,7 @@ namespace UTorrentRestAPI
 
         void LoadFromResponse(RestNestedList jsonList)
         {
-            foreach(var j in jsonList)
-            {
+            foreach (var j in jsonList) {
                 this.internalList.Add(new TorrentContentsFile(j));
             }
         }

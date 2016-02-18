@@ -2,43 +2,65 @@
 {
     using Torrent.Properties.Settings.Binding;
     using System.Windows.Data;
+    using LibSettings;
     using Settings;
     using ToggleSettings;
-    using static Settings.LibSettings;
+    using static LibSettings.LibSettings;
     using static ToggleSettings.ToggleSettings;
-    using static ToggleSettings.Toggles;
-    using static ToggleSettings.QueueToggleStatus;
+    using static ToggleSettings.MonitorTypes;
 
     #region General Settings
+
     public class LibExtension : SettingBindingExtensionBase<LibSettings>
     {
-        public LibExtension(string path) : base(path) { }
+        public LibExtension() : base() { }
+        public LibExtension(string path, string format = null) : base(path, format) { }
         protected override LibSettings Value => LibSetting;
+        public override string Format { get; set; }
     }
+
     #endregion
+
     #region Toggles
-    public class ToggleExtension : SettingBindingExtensionBase<ToggleSettingsBase>
+
+    public class ToggleExtension : SettingBindingExtensionBase<MonitorTogglesBase>
     {
+        public ToggleExtension() : base() { }
         public ToggleExtension(string path) : base(path) { }
-        protected override ToggleSettingsBase Value => ToggleSetting;
+        protected override MonitorTogglesBase Value 
+            => Toggles;
     }
 
     public abstract class ToggleBindingExtensionBase : SettingBindingExtensionBase<Toggle>
     {
+        protected ToggleBindingExtensionBase() : base() { }
         protected ToggleBindingExtensionBase(string path) : base(path) { }
-        protected abstract QueueToggleStatus QueueType { get; }
-        protected override Toggle Value => GetActiveToggle(QueueType);
+        protected abstract MonitorTypes QueueType { get; }
+        protected override Toggle Value 
+            => Toggles.GetActiveToggles(QueueType);
         protected override BindingMode DefaultMode => BindingMode.OneWay;
     }
+
     public class TorrentExtension : ToggleBindingExtensionBase
     {
+        public TorrentExtension() : base() { }
         public TorrentExtension(string path) : base(path) { }
-        protected override QueueToggleStatus QueueType => QueueToggleStatus.Torrent;
+        protected override MonitorTypes QueueType => MonitorTypes.Torrent;
     }
+
     public class MetalinkExtension : ToggleBindingExtensionBase
     {
+        public MetalinkExtension() : base() { }
         public MetalinkExtension(string path) : base(path) { }
-        protected override QueueToggleStatus QueueType => Metalink;
+        protected override MonitorTypes QueueType => Metalink;
     }
+
+    public class JobExtension : ToggleBindingExtensionBase
+    {
+        public JobExtension() : base() { }
+        public JobExtension(string path) : base(path) { }
+        protected override MonitorTypes QueueType => Job;
+    }
+
     #endregion
 }

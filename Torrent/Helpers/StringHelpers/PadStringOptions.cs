@@ -15,6 +15,7 @@ namespace Torrent.Helpers.StringHelpers
 
         protected PadDirection AlternateDirection
             => DefaultDirection.GetAlternateDirection();
+
         public object Subject { get; set; }
         public int Width { get; set; } = 0;
         public char PaddingChar { get; set; } = DEFAULT_PADDING_CHAR;
@@ -24,6 +25,7 @@ namespace Torrent.Helpers.StringHelpers
 
         public bool DoPadCenter
             => Direction == PadDirection.Center;
+
         public bool DoPadRight
             => Direction.DoRight(DefaultDirection);
     }

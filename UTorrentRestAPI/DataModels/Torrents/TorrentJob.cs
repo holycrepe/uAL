@@ -5,38 +5,42 @@
     using System.Runtime.Serialization;
     using Torrent;
     using RestClient;
-
-    /// <summary>
-    /// Represents a torrent job in uTorrent
-    /// </summary>
+    using Newtonsoft.Json;
+    using System.Diagnostics;
+    using Serializers.Converters;
+    using Torrent.Infrastructure;
+    using DataModels;
+    using System.Linq;
+    using Torrent.Helpers.Utils;    /// <summary>
+                                    /// Represents a torrent job in uTorrent
+                                    /// </summary>
     [DataContract]
-    public class TorrentJob : Torrent
-    {
-        private static readonly DateTime startOfEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        
-        /// <summary>
-        /// Private storage for the <c>Label</c> field
-        /// </summary>
-        private string label;
-        
+    [DebuggerDisplay("{DebuggerDisplay(1)}")]
+    [JsonConverter(typeof (JsonLoadableArrayConverter<TorrentJob>))]
+    public class TorrentJob : Torrent, IJsonLoadable, IDebuggerDisplay
+    {        
+        private string[] _labels = new string[0];
+
         /// <summary>
         /// A reference to the service proxy used to communicate with the
         /// uTorrent web API
         /// </summary>
-        private UTorrentRestClient client;
-        
+        internal UTorrentRestClient Client;
+
+        public TorrentJob() { }
+
         /// <summary>
         /// Initializes a new instance of the TorrentJob class
         /// </summary>
         /// <param name="json">a json array returned from the web api representing a torrent</param>
         /// <param name="client">the procol client that this torrent should use for updates, etc</param>
-        internal TorrentJob(UTorrentRestClient client)
-        {
-            this.client = client;
-        }
+        internal TorrentJob(UTorrentRestClient client) { this.Client = client; }
+
+        public TorrentJob(RestList json) { LoadFromJson(json); }
+
 
         public bool IsConnected
-            => client?.IsConnected ?? false;
+            => Client?.IsConnected ?? false;
 
         /// <summary>
         /// Gets the current status of the torrent, which is a bitwise or of statuses
@@ -44,22 +48,40 @@
         [DataMember]
         public TorrentStatus Status { get; private set; }
 
+        public string[] Labels {
+            get { return _labels; }
+            set { SaveLabels(value); }
+        }
+
         /// <summary>
         /// Gets or sets the torrent's label
         /// </summary>
         [DataMember]
         public override string Label
         {
-            get
+            get { return Labels.Length == 0 ? "" : Labels[0]; }
+
+            set { SaveLabels(value); }
+        }
+        public void SetLabels(params string[] labels)
+            => _labels = _labels.Union(labels).ToArray();
+        public void SaveLabels(params string[] labels)
+        {
+            SetLabels(labels);
+
+            var len = labels.Length;
+            if (len == 0)
             {
-                return label;
+                throw new ArgumentNullException("No Labels Specified");
             }
 
-            set
+            var properties = new string[labels.Length * 2];
+            for (int i=0; i < len; i++)
             {
-                client?.SetTorrentProperty(Hash, "label", value);
-                label = value;
+                properties[i * 2] = "label";
+                properties[i * 2 + 1] = labels[i];
             }
+            Client?.SetTorrentProperties(Hash, properties);
         }
 
         /// <summary>
@@ -204,8 +226,8 @@
         /// Gets a collection of files included in the torrent
         /// </summary>
         [DataMember]
-        public FileCollection Files
-            => new FileCollection(client.ListFiles(Hash));
+        public List<TorrentContentsFile> Files
+            => Client?.ListFiles(Hash);
 
         /// <summary>
         /// Gets or sets all the trackers for this torrent
@@ -213,15 +235,9 @@
         [DataMember]
         public string[] Trackers
         {
-            get
-            {
-                return client.GetTrackers(Hash);
-            }
-            
-            set
-            {
-                client.SetTorrentProperty(Hash, "trackers", string.Join("\r\n\r\n", value));
-            }
+            get { return Client?.GetTrackers(Hash); }
+
+            set { Client?.SetTorrentProperties(Hash, "trackers", string.Join("\r\n\r\n", value)); }
         }
 
         /// <summary>
@@ -229,7 +245,7 @@
         /// based on the supplied json
         /// </summary>
         /// <param name="json">json object that represents a torrent</param>
-        void LoadFromJson(RestList json)
+        public void LoadFromJson(RestList json)
         {
             var i = 0;
             Hash = json[i++];
@@ -243,42 +259,54 @@
             UploadBytesPerSec = json[i++];
             DownloadBytesPerSec = json[i++];
             EtaInSecs = json[i++];
-            label = json[i++];
+            SetLabels(json[i++]);
             PeersConnected = json[i++];
             PeersInSwarm = json[i++];
-            this.SeedsConnected = json[i++];
-            this.SeedsInSwarm = json[i++];
-            this.Availability = json[i++];
-            this.QueueOrder = json[i++];
-            this.RemainingBytes = json[i++];
+            SeedsConnected = json[i++];
+            SeedsInSwarm = json[i++];
+            Availability = json[i++];
+            QueueOrder = json[i++];
+            RemainingBytes = json[i++];
             if (json.Count > i) // i = 19
             {
-                this.DownloadUrl = json[i++];
-                this.RssFeedUrl = json[i++];
-                this.StatusMessage = json[i++];
-                this.StreamID = json[i++];
-                this.DateAdded = startOfEpoch.AddSeconds(json[i++]);
-                this.DateCompleted = startOfEpoch.AddSeconds(json[i++]);
-                this.AppUpdateUrl = json[i++];
-                this.SavePath = json[i++];
+                DownloadUrl = json[i++];
+                RssFeedUrl = json[i++];
+                StatusMessage = json[i++];
+                StreamID = json[i++];
+                DateAdded = DateUtils.StartOfEpoch.AddSeconds(json[i++]);
+                DateCompleted = DateUtils.StartOfEpoch.AddSeconds(json[i++]);
+                AppUpdateUrl = json[i++];
+                SavePath = json[i++];
             }
         }
 
         #region UTorrentRestClient Shortcuts
 
-        public string[] GetTrackers() => client.GetTrackers(Hash);
-        public RestNestedList ListFiles() => client.ListFiles(Hash);
-        public void Pause() => client.Pause(Hash);
-        public void Recheck() => client.Recheck(Hash);
-        public void Remove() => client.Remove(Hash);
-        public void RemoveData() => client.RemoveData(Hash);
-        public void RemoveTorrent() => client.RemoveTorrent(Hash);
-        public void RemoveTorrentAndData() => client.RemoveTorrentAndData(Hash);
-        public void Start(bool force = false) => client.StartTorrent(Hash, force);
-        public void ForceStart() => client.ForceStartTorrent(Hash);
-        public void Stop() => client.Stop(Hash);
-        public void Unpause() => client.Unpause(Hash);
+        public string[] GetTrackers() => Client?.GetTrackers(Hash);
+        public List<TorrentContentsFile> ListFiles() => Client?.ListFiles(Hash);
+        public void Pause() => Client?.Pause(Hash);
+        public void Recheck() => Client?.Recheck(Hash);
+        public void Remove() => Client?.Remove(Hash);
+        public void RemoveData() => Client?.RemoveData(Hash);
+        public void RemoveTorrent() => Client?.RemoveTorrent(Hash);
+        public void RemoveTorrentAndData() => Client?.RemoveTorrentAndData(Hash);
+        public void Start(bool force = false) => Client?.StartTorrent(Hash, force);
+        public void ForceStart() => Client?.ForceStartTorrent(Hash);
+        public void Stop() => Client?.Stop(Hash);
+        public void Unpause() => Client?.Unpause(Hash);
+
         #endregion
+
+        #region Debugger Display
+
+        public string DebuggerDisplay(int level = 1)
+            => $"<{Hash}> {DebuggerDisplaySimple(level)}";
+
+        public string DebuggerDisplaySimple(int level = 1)
+            => $"{Label + ":",30} {Name}";
+
+        #endregion
+
         #region Operators
 
         public static implicit operator string(TorrentJob value)

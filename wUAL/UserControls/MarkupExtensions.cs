@@ -7,35 +7,43 @@ namespace wUAL
 {
     public abstract class BaseControl<TControl> : MarkupExtension
     {
-
         public abstract TControl GetControl();
 
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return GetControl();
-        }
+        public override object ProvideValue(IServiceProvider serviceProvider) { return GetControl(); }
     }
 
     public class QueueGridHeaderExtension : BaseControl<QueueGridHeaderControl>
     {
+        string _name = null, _label="";
         public QueueGridHeaderExtension() { }
         public QueueGridHeaderExtension(string label) : this(label, null) { }
-        public QueueGridHeaderExtension(string label, string iconName) : this(label, iconName, null) { }
-        public QueueGridHeaderExtension(string label, string iconName, ImageSource icon)
+        public QueueGridHeaderExtension(string label, string name) : this(label, name, null) { }
+
+        public QueueGridHeaderExtension(string label, string name, ImageSource icon)
         {
             Label = label;
-            IconName = iconName;
+            Name = name;
             Icon = icon;
         }
+
         [ConstructorArgument("label")]
-        public string Label { get; set; }
-        [ConstructorArgument("iconName")]
-        public string IconName { get; set; }
+        public string Label {
+            get { return this._label; }
+            set { this._label = value; }
+        }
+
+        [ConstructorArgument("name")]
+        public string Name {
+            get { return this._name ?? this.Label; }
+            set { this._name = value; }
+        }
+
         [ConstructorArgument("icon")]
         public ImageSource Icon { get; set; }
+
         public override QueueGridHeaderControl GetControl()
         {
-            return new QueueGridHeaderControl(Label, IconName, Icon);
+            return new QueueGridHeaderControl(Label, Name, Icon);
         }
     }
 }

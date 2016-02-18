@@ -2,17 +2,24 @@ namespace Torrent.Infrastructure.ContextHandlers
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     using static ContextHandlerType;
-    public class ContextHandler : DisposableBase
+
+    [DebuggerDisplay("{DebuggerDisplay(1)}")]
+    public class ContextHandler : DisposableBase, IDebuggerDisplay
     {
         #region Fields / Properties
+
         readonly ContextHandlerStatus _status;
         Func<ContextHandlerStatus> GetStatus { get; }
         public ContextHandlerStatus Status => GetStatus?.Invoke() ?? _status;
         private bool OriginalStatus { get; set; }
         public ContextHandlerType Type { get; private set; }
+
         #endregion
+
         #region Constructors
+
         protected ContextHandler(ContextHandler original, ContextHandlerType? type = null)
         {
             if (original.GetStatus != null) {
@@ -28,6 +35,7 @@ namespace Torrent.Infrastructure.ContextHandlers
             _status = status;
             Initialize(type);
         }
+
         protected ContextHandler(Func<ContextHandlerStatus> getStatus, ContextHandlerType? type = null)
         {
             GetStatus = getStatus;
@@ -41,36 +49,62 @@ namespace Torrent.Infrastructure.ContextHandlers
                 Begin();
             }
         }
-        #endregion
-        #region Begin / End
-        public bool Begin(bool? value = null) 
-            => OriginalStatus = Status.SetStatus(value ?? Type.IsEnabler());
-        public void End() 
-            => Status.SetStatus(OriginalStatus);
-        #endregion
-        #region Create New Instances
-        public ContextHandler New(ContextHandlerType type = ImmediateEnabler)
-        {
-            return new ContextHandler(this, type);
-        }
-        public static ContextHandler NewDisabling(ContextHandlerStatus status)
-            => new ContextHandler(status, ImmediateDisabler);
-        public ContextHandler NewDisabling() => New(ImmediateDisabler);
-        public static ContextHandler NewDeferredDisabling(ContextHandlerStatus status)
-            => new ContextHandler(status, DeferredDisabler);
-        public ContextHandler NewDeferredDisabling() => New(DeferredDisabler);
-        public static ContextHandler NewDeferred(ContextHandlerStatus status)
-            => new ContextHandler(status, DeferredEnabler);
-        public ContextHandler NewDeferred() =>  New(DeferredEnabler);
 
         #endregion
+
+        #region Begin / End
+
+        public bool Begin(bool? value = null)
+            => OriginalStatus = Status.SetStatus(value ?? Type.IsEnabler());
+
+        public void End()
+            => Status.SetStatus(OriginalStatus);
+
+        #endregion
+
+        #region Create New Instances
+
+        public ContextHandler New(ContextHandlerType type = ImmediateEnabler)
+            => new ContextHandler(this, type);
+
+        public static ContextHandler NewDisabling(ContextHandlerStatus status)
+            => new ContextHandler(status, ImmediateDisabler);
+
+        public ContextHandler NewDisabling()
+            => New(ImmediateDisabler);
+
+        public static ContextHandler NewDeferredDisabling(ContextHandlerStatus status)
+            => new ContextHandler(status, DeferredDisabler);
+
+        public ContextHandler NewDeferredDisabling()
+            => New(DeferredDisabler);
+
+        public static ContextHandler NewDeferred(ContextHandlerStatus status)
+            => new ContextHandler(status, DeferredEnabler);
+
+        public ContextHandler NewDeferred() =>
+            New(DeferredEnabler);
+
+        #endregion
+
         #region Operators
+
         public static implicit operator bool(ContextHandler value) => value.Status.Enabled;
         public static implicit operator ContextHandler(ContextHandlerStatus value) => new ContextHandler(value);
         public static implicit operator ContextHandlerStatus(ContextHandler value) => value.Status;
+
         #endregion
+
         #region Interfaces
+
         protected override void DoDispose() => End();
+
+        public string DebuggerDisplay(int level = 1)
+            => $"<{nameof(ContextHandler)}.{Type}> {DebuggerDisplaySimple()}";
+
+        public string DebuggerDisplaySimple(int level = 1)
+            => Status.DebuggerDisplaySimple();
+
         #endregion
     }
 }
