@@ -149,6 +149,7 @@
     <Compile Include="Converters\EnumMemberTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Converters\TypeTypeConverter.cs" />
+    <Compile Include="Exceptions\ViewModelStateException.cs" />
     <Compile Include="Exceptions\EnumToggleStateException.cs" />
     <Compile Include="Exceptions\DynamicReadOnlyException.cs" />
     <Compile Include="Extensions\Enums\EnumFlagExtensions.cs" />

@@ -15,29 +15,72 @@ using Torrent.Helpers.Utils;
 using Torrent.Infrastructure;
 using Torrent.Infrastructure.Enums;
 using System.Collections.Generic;
+using Torrent.Exceptions;
+using System.Collections.Specialized;
 
 namespace wUAL.UserControls
 {
 
     [NotifyPropertyChanged]
     public class ViewModel<T, TValue> : ViewModelBase
-        where T : class 
+        where T : class
         where TValue : class
     {
+        protected bool IsMultiple { get; }
+        protected virtual bool IS_MULTIPLE_DEFAULT { get; }
+            = false;
         protected T _selectedItem;
         protected ObservableCollection<T> _selectedItems;
         protected TValue _value;
         public ObservableCollection<T> Items { get; set; }
             = new ObservableCollection<T>();
         public ObservableCollection<T> SelectedItems
-            => _selectedItems ?? (_selectedItems = new ObservableCollection<T>());
+        {
+            get
+            {
+                if (!this.IsMultiple)
+                {
+                    throw new ViewModelStateException($"Cannot access {nameof(SelectedItems)} when {nameof(IsMultiple)} is false.");
+                }
+                return _selectedItems ?? (_selectedItems = new ObservableCollection<T>());
+            }
+        }
         public ViewModel()
         {
-            
+            this.IsMultiple = IS_MULTIPLE_DEFAULT;
+            Initialize();
         }
-        #region Value / Value Selector
-        protected virtual TValue GetValueFromItem(T item)
-            => item as TValue;
+        public ViewModel(bool isMultiple)
+        {
+            this.IsMultiple = isMultiple;
+            Initialize();
+        }
+        protected virtual void Initialize()
+        {
+            if (IsMultiple)
+            {
+                this.SelectedItems.CollectionChanged += SelectedItems_OnCollectionChanged;
+            }
+        }
+        protected virtual void OnSelectedItemsChanged(NotifyCollectionChangedEventArgs e) { }
+        protected virtual void OnSelectedItemsChangedComplete(NotifyCollectionChangedEventArgs e) { }
+
+        protected virtual void OnSelectedItemRemoved(T item) { }
+        protected virtual void OnSelectedItemAdded(T item) { }
+        private void SelectedItems_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnSelectedItemsChanged(e);
+            foreach (var item in e.OldItems)
+            {
+                OnSelectedItemRemoved(item as T);
+            }
+            foreach (var item in e.NewItems)
+            {
+                OnSelectedItemAdded(item as T);
+            }
+            OnSelectedItemsChangedComplete(e);
+        }
+        #region Value
         public virtual TValue Value
         {
             get { return this._value; }
@@ -48,7 +91,39 @@ namespace wUAL.UserControls
             }
         }
         #endregion
-        #region Values
+        #region Selected Item
+        [SafeForDependencyAnalysis]
+        public virtual T SelectedItem
+        {
+            get { return this._selectedItem; }
+            set
+            {
+                if (value != null && value != this._selectedItem)
+                {
+                    this._selectedItem = value;
+                    if (this.IsMultiple)
+                    {
+                        this.AddSelectedItem(value);
+                        this.Value = this.GetConsolidatedValue();
+                    }
+                    else
+                    {
+                        this.Value = this.GetValueFromItem(value);
+                    }
+                }
+            }
+        }
+        #endregion
+        #region Properties: Methods
+        #region Properties: Methods: Is Matching Item
+        protected bool IsMatchingItem(T item, TValue match)
+            => this.IsMatchingItem(this.GetValueFromItem(item), match);
+        protected virtual bool IsMatchingItem(TValue item, TValue match)
+            => item.Equals(match);
+        #endregion
+        #region Properties: Methods: Value
+        protected virtual TValue GetValueFromItem(T item)
+            => item as TValue;
         protected virtual IEnumerable<TValue> GetValuesFromItems(IEnumerable<T> items)
             => items.Select(item => this.GetValueFromItem(item));
         protected virtual TValue GetConsolidatedValue(IEnumerable<TValue> values)
@@ -60,75 +135,58 @@ namespace wUAL.UserControls
         protected virtual object GetDisplayValue(IEnumerable<TValue> values)
             => string.Join(", ", values.Select(item => item.ToString()));
         #endregion
-        #region Selected Item
-        public virtual T SelectedItem
-        {
-            get { return this._selectedItem; }
-            set
-            {
-                if (value != null)
-                {
-                    this.Value = this.GetValueFromItem(value);
-                    this._selectedItem = value;
-                }
-            }
-        }
-
-
-        //public virtual TValue Value { get; set; }
-
-        //private T selectedItem;
-        //public virtual T SelectedItem { get; set; }
-        //public T SelectedItem
-        //{
-        //    get
-        //    {
-        //        return this.selectedItem;
-        //    }
-
-        //    set
-        //    {
-        //        if (this.selectedItem != value)
-        //        {
-        //            this.selectedItem = value;
-        //            //this.OnPropertyChanged();
-        //        }
-        //    }
-        //}
-        #endregion
-        #region Properties: Methods: Set Property
-        //protected bool SetProperty<TProperty>(ref TProperty backingField, TProperty newValue, [CallerMemberName] string propertyName = null)
-        //{
-        //    if ((backingField == null && newValue == null) ||
-        //        (backingField != null && backingField.Equals(newValue)))
-        //    {
-        //        return false;
-        //    }
-        //    backingField = newValue;
-        //    this.OnPropertyChanged(propertyName);
-        //    return true;
-        //}
-        //protected void SetProperty<TProperty>(ref TProperty backingField, TProperty newValue, Expression<Func<T>> propertyExpression)
-        //    => SetProperty(ref backingField, newValue, propertyExpression.GetPropertyName());
-        protected bool IsMatchingItem(T item, TValue match)
-            => this.IsMatchingItem(this.GetValueFromItem(item), match);
-        protected virtual bool IsMatchingItem(TValue item, TValue match)
-            => item.Equals(match);
-        protected IEnumerable<T> GetSelectedItems(TValue value)
-            => this.Items.Where(item => this.IsMatchingItem(item, value));
-        protected void SetSelectedItem()
-            => this.SetSelectedItem(this.Value);
-        protected virtual void SetSelectedItem(TValue value)
-        {
-            var selectedItem = this.Items.FirstOrDefault(item => this.GetValueFromItem(item).Equals(value));
-            if (selectedItem != null)
-                this._selectedItem = selectedItem;
-        }
-
+        #region Properties: Methods: Selection
         protected void SetSelection()
             => SetSelection(this.Value);
         protected virtual void SetSelection(TValue value)
             => SetSelectedItem(value);
+        #endregion
+        #region Properties: Methods: Selected Item
+        protected void SetSelectedItem()
+            => this.SetSelectedItem(this.Value);
+        protected virtual void SetSelectedItem(TValue value)
+        {
+            var selectedItem = this.Items.FirstOrDefault(item
+                    => this.IsMatchingItem(item, value));
+            if (selectedItem != null)
+                this._selectedItem = selectedItem;
+
+            if (this.IsMultiple)
+            {
+                SetSelectedItems(value);
+            }
+        }
+        protected void AddSelectedItem(T item)
+        {
+            if (!this.SelectedItems.Contains(item))
+            {
+                this.SelectedItems.Add(item);
+            }
+        }
+        #endregion
+        #region Properties: Methods: Selected Items
+        protected IEnumerable<T> GetSelectedItems(TValue value)
+            => this.Items.Where(item => this.IsMatchingItem(item, value));
+        protected void SetSelectedItems()
+            => SetSelectedItems(this.Value);
+        protected virtual void SetSelectedItems(TValue value)
+        {
+            foreach (var item in this.Items)
+            {
+                if (this.IsMatchingItem(item, value))
+                {
+                    if (!this.SelectedItems.Contains(item))
+                    {
+                        this.SelectedItems.Add(item);
+                    }
+                }
+                else if (this.SelectedItems.Contains(item))
+                {
+                    this.SelectedItems.Remove(item);
+                }
+            }
+        }
+        #endregion
         #endregion
         #region Events
         #region Events: Property Changed
@@ -138,13 +196,6 @@ namespace wUAL.UserControls
         #endregion
         #region Interfaces
         #region Interfaces: IPropertyChanged
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        //    => OnPropertyChanged(e.PropertyName);
-        //protected virtual void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> propertyExpression)
-        //    => this.OnPropertyChanged(propertyExpression.GetPropertyName());
-        //protected override void OnPropertyChanged(string propertyNames)
-        //=> OnPropertyChanged(propertyNames.Split(';'));
         protected new virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => OnPropertiesChanged(propertyName);
         public virtual void OnPropertiesChanged(params string[] propertyNames)
