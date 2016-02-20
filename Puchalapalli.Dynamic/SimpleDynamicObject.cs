@@ -28,6 +28,7 @@ using System;
 namespace Puchalapalli.Dynamic
 {
     using System.ComponentModel;
+    using System.Runtime.Serialization;
     using Utils;
     /// <summary>
     /// Provides a simple class that can be inherited from to create an object with dynamic behavior
@@ -40,6 +41,7 @@ namespace Puchalapalli.Dynamic
 #if !SILVERLIGHT
     [Serializable]
 #endif
+    [DataContract]
     public class SimpleDynamicObject : IDynamicMetaObjectProvider
     {
 

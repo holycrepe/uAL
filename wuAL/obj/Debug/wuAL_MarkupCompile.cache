@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;SETTINGS_USE_ALL_SETTINGS TRACE_EXT TRACE_PROCESS_QUEUE TRACE_FSSU
 D:\Git\uAL\wUAL\App.xaml
-32224805565
+33-1157301842
 1-2138471434
-551976029298
-421191578508
-Assets\Styles\Default.xaml;Assets\Brushes.xaml;Assets\Expander\PlusMinusExpander.xaml;Assets\Styles\Grid\Queue.xaml;Assets\Styles\Grid\Settings.xaml;Assets\Styles\TabHeader.xaml;Assets\Styles\PlusMinusExpander.xaml;Assets\Telerik.xaml;Assets\Styles\Grid\ColumnHeader.xaml;Assets\Templates\RadComboBoxGrid.xaml;Assets\Themes\Current\System.Windows.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Data.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Docking.xaml;Assets\Themes\Current\Telerik.Windows.Controls.GridView.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Input.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Navigation.xaml;Assets\Themes\Current\Telerik.Windows.Controls.xaml;Assets\Themes\OfficeBlack\System.Windows.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.Docking.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.GridView.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.Input.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.Navigation.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.xaml;Assets\Templates\TorrentRowDetails.xaml;Assets\Styles\Selectors\Queue.xaml;Assets\Images.xaml;MainWindow.xaml;UserControls\MyFlagEnumEditor.xaml;UserControls\MyEnumEditor.xaml;UserControls\MyPrompt.xaml;UserControls\QueueGridHeaderControl.xaml;UserControls\QueueToggleSettingControl.xaml;
+62-1246394759
+41-235568781
+Assets\Styles\Default.xaml;Assets\Brushes.xaml;Assets\Expander\PlusMinusExpander.xaml;Assets\Styles\Grid\Queue.xaml;Assets\Styles\Grid\Settings.xaml;Assets\Styles\TabHeader.xaml;Assets\Styles\PlusMinusExpander.xaml;Assets\Telerik.xaml;Assets\Styles\Grid\ColumnHeader.xaml;Assets\Templates\RadComboBoxGrid.xaml;Assets\Themes\Current\System.Windows.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Data.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Docking.xaml;Assets\Themes\Current\Telerik.Windows.Controls.GridView.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Input.xaml;Assets\Themes\Current\Telerik.Windows.Controls.Navigation.xaml;Assets\Themes\Current\Telerik.Windows.Controls.xaml;Assets\Themes\OfficeBlack\System.Windows.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.Docking.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.GridView.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.Input.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.Navigation.xaml;Assets\Themes\OfficeBlack\Telerik.Windows.Controls.xaml;Assets\Templates\TorrentRowDetails.xaml;Assets\Styles\Selectors\Queue.xaml;Assets\Images.xaml;MainWindow.xaml;UserControls\EnumEditor\MyEnumEditorExamples.xaml;UserControls\EnumEditor\MyFlagEnumEditorExamples.xaml;UserControls\EnumEditor\MyEnumEditor.xaml;UserControls\MyPrompt.xaml;UserControls\QueueGridHeaderControl.xaml;UserControls\QueueToggleSettingControl.xaml;
 
 False
 

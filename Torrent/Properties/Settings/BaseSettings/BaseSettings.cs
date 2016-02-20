@@ -47,7 +47,7 @@ namespace Torrent.Properties.Settings
                 fileNamePrefix = "";
             }
             var name = GetNameFromType(t);
-            var dataContract = t.GetCustomAttribute<DataContractAttribute>();
+            var dataContract = t.GetAttribute<DataContractAttribute>();
             if (!string.IsNullOrEmpty(dataContract?.Name))
             {
                 name = dataContract.Name.Replace("Settings","");

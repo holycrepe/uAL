@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Dynamic;
 using System.Reflection;
-using Torrent.Exceptions;
 using System.ComponentModel;
 
 namespace Puchalapalli.Dynamic
 {
+    using System.Runtime.Serialization;
     using Westwind.Utilities;
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace Puchalapalli.Dynamic
     /// Dynamic: dynamic cast allows access to dictionary and native properties/methods
     /// Dictionary: Any of the extended properties are accessible via IDictionary interface
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class SimpleExpando : Expando
     {
         public SimpleExpando() : base() { }
@@ -33,7 +33,7 @@ namespace Puchalapalli.Dynamic
         /// <summary>
         /// Returns and the properties of 
         /// </summary>
-        /// <param name="includeProperties"></param>
+        /// <param name="includeInstanceProperties"></param>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override IEnumerable<KeyValuePair<string, object>> GetProperties(bool includeInstanceProperties = false)

@@ -80,10 +80,6 @@
     <Reference Include="PostSharp.Public">
       <HintPath>..\lib\PostSharp\PostSharp.Public.dll</HintPath>
     </Reference>
-    <Reference Include="Puchalapalli.Dynamic">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Puchalapalli\Puchalapalli.Dynamic.dll</HintPath>
-    </Reference>
     <Reference Include="AddGenericConstraint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\PostSharp\AddGenericConstraint\AddGenericConstraint.dll</HintPath>
@@ -301,7 +297,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Puchalapalli.Dynamic\Puchalapalli.Dynamic.csproj">
+      <Project>{71c16faf-5894-4482-8800-7f33d0d723b5}</Project>
+      <Name>Puchalapalli.Dynamic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\PostSharp.4.2.20\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" />
   <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">

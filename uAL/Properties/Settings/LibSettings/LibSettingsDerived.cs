@@ -60,6 +60,7 @@ namespace uAL.Properties.Settings.LibSettings
             {
                 switch (PreviewMode) {
                     case All:
+                    case AllMonitors:
                         return "[P]";
                     case MonitorTypes.Torrent:
                         return "[TP]";

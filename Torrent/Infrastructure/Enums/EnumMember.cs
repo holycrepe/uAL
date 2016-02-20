@@ -10,6 +10,7 @@ using Torrent.Extensions;
 
 namespace Torrent.Infrastructure.Enums
 {
+    using System.ComponentModel;
     using static Helpers.Utils.DebugUtils;
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class EnumMember : IDebuggerDisplay
@@ -100,10 +101,19 @@ namespace Torrent.Infrastructure.Enums
             => this.QualifiedName;
         #endregion
         #region Static Array Creators
-        public static IEnumerable<EnumMember> GetEnumMembers(Type enumType, bool useCombinedFormat = true)
-            => enumType.GetPublicFields().Select(fi => new EnumMember(enumType, fi, useCombinedFormat));
-        public static EnumMember[] GetEnumMemberArray(Type enumType, bool useCombinedFormat = true)
-            => GetEnumMembers(enumType, useCombinedFormat).ToArray();
+        public static IEnumerable<EnumMember> GetBrowsableEnumMembers(Type enumType, bool useCombinedFormat = true)
+            => GetEnumMembers(enumType, useCombinedFormat, true);
+        public static IEnumerable<EnumMember> GetEnumMembers(Type enumType, bool useCombinedFormat = true, bool requireBrowsable=false)
+        {
+            var fields = enumType.GetPublicFields();
+            if (requireBrowsable)
+            {
+                fields = fields.Where(f => f.GetCustomAttribute<BrowsableAttribute>()?.Browsable != false);
+            }
+            return fields.Select(fi => new EnumMember(enumType, fi, useCombinedFormat));
+        }
+        public static EnumMember[] GetEnumMemberArray(Type enumType, bool useCombinedFormat = true, bool requireBrowsable=false)
+            => GetEnumMembers(enumType, useCombinedFormat, requireBrowsable).ToArray();
         #endregion
     }
 }

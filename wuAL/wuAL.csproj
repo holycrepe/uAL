@@ -18,6 +18,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <DontImportPostSharp>True</DontImportPostSharp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,7 +53,6 @@
     <DefineConstants>TRACE;DEBUG;SETTINGS_USE_ALL_SETTINGS TRACE_EXT TRACE_PROCESS_QUEUE TRACE_FSSU</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <SkipPostSharp>True</SkipPostSharp>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
@@ -63,7 +64,6 @@
     <DefineConstants>TRACE;SETTINGS_USE_ALL_SETTINGS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Assets\Icons\wUAL.ico</ApplicationIcon>
@@ -141,7 +141,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
-    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -165,13 +164,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PostSharp.Public">
-      <HintPath>..\lib\PostSharp\PostSharp.Public.dll</HintPath>
-    </Reference>
-    <Reference Include="Puchalapalli.Dynamic">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Puchalapalli\Puchalapalli.Dynamic.dll</HintPath>
-    </Reference>
     <Reference Include="AddGenericConstraint">
       <HintPath>..\lib\PostSharp\AddGenericConstraint\AddGenericConstraint.dll</HintPath>
     </Reference>
@@ -310,6 +302,13 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CheckedComboBox\CheckedComboBoxDataItem.cs" />
+    <Compile Include="UserControls\CheckedComboBox\CheckedComboBoxSource.cs" />
+    <Compile Include="UserControls\CheckedComboBox\ICheckedComboBoxDataItem.cs" />
+    <Compile Include="UserControls\EnumEditor\EnumMemberViewModel.cs" />
+    <Compile Include="UserControls\EnumEditor\MyEnumEditorExamples.xaml.cs">
+      <DependentUpon>MyEnumEditorExamples.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings\Binding\LibraryExtensions.cs" />
     <Compile Include="Properties\Settings\Binding\ToggleExtensions.cs" />
     <Compile Include="Properties\Settings\AllSettings\AllSettings.cs" />
@@ -337,12 +336,13 @@
     </Compile>
     <Compile Include="Serialization\Namespaces.cs" />
     <Compile Include="UserControls\MarkupExtensions.cs" />
-    <Compile Include="UserControls\ViewModel.cs" />
-    <Compile Include="UserControls\EnumMemberViewModel.cs" />
-    <Compile Include="UserControls\MyFlagEnumEditor.xaml.cs">
-      <DependentUpon>MyFlagEnumEditor.xaml</DependentUpon>
+    <Compile Include="UserControls\ViewModel\ViewModelMultiSelect.cs" />
+    <Compile Include="UserControls\ViewModel\ViewModel.cs" />
+    <Compile Include="UserControls\EnumEditor\FlagEnumMemberViewModel.cs" />
+    <Compile Include="UserControls\EnumEditor\MyFlagEnumEditorExamples.xaml.cs">
+      <DependentUpon>MyFlagEnumEditorExamples.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MyEnumEditor.xaml.cs">
+    <Compile Include="UserControls\EnumEditor\MyEnumEditor.xaml.cs">
       <DependentUpon>MyEnumEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MyPrompt.xaml.cs">
@@ -356,7 +356,8 @@
       <DependentUpon>QueueToggleSettingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings\Binding\EnumBindingExtension.cs" />
-    <Compile Include="WPF\GridMultiEditBehaviour.cs" />
+    <Compile Include="WPF\Behaviors\GridMultiEditBehaviour.cs" />
+    <Compile Include="WPF\Behaviors\GridMultiSelectBehavior.cs" />
     <Compile Include="WPF\ValueConverters\EnumDescription.cs" />
     <Compile Include="WPF\ValueConverters\Count.cs" />
     <Compile Include="WPF\ValueConverters\FileSize.cs" />
@@ -478,6 +479,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Puchalapalli.Dynamic\Puchalapalli.Dynamic.csproj">
+      <Project>{71c16faf-5894-4482-8800-7f33d0d723b5}</Project>
+      <Name>Puchalapalli.Dynamic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Torrent\Torrent.csproj">
       <Project>{2917E84C-B8B0-4308-BCDA-DFDE860A274D}</Project>
       <Name>Torrent</Name>
@@ -597,10 +602,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\MyFlagEnumEditor.xaml">
+    <Page Include="UserControls\EnumEditor\MyEnumEditorExamples.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\MyEnumEditor.xaml">
+    <Page Include="UserControls\EnumEditor\MyFlagEnumEditorExamples.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\EnumEditor\MyEnumEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MyPrompt.xaml">

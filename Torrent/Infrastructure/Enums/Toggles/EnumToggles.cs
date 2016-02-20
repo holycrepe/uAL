@@ -11,11 +11,15 @@ namespace Torrent.Infrastructure.Enums.Toggles
     using System.Dynamic;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Runtime.Serialization;
     using AddGenericConstraint;
     using Extensions;
     using global::Torrent.Exceptions;
+    using PostSharp.Patterns.Model;
     using Puchalapalli.Dynamic;
-
+    using Serialization;
+    [DataContract(Namespace = NamespaceAttribute.Default)]
+    [PostSharp.Patterns.Model.NotifyPropertyChanged]
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class EnumToggles<[AddGenericConstraint(typeof(Enum))] TEnum, TResult>
         : SimpleExpando, IEnumToggles<TEnum, TResult>, IDebuggerDisplay, INotifyPropertyChanged
@@ -40,6 +44,7 @@ namespace Torrent.Infrastructure.Enums.Toggles
         [Browsable(false)]
         Type ResultType { get; }
             = typeof(TResult);
+        [SafeForDependencyAnalysis]
         [Browsable(false)]
         public Type ToggleType
             => this._toggleType ?? this.MakeToggleType(this.GenericType);

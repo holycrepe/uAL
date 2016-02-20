@@ -45,7 +45,8 @@
     {
         public TorrentExtension() : base() { }
         public TorrentExtension(string path) : base(path) { }
-        protected override MonitorTypes QueueType => MonitorTypes.Torrent;
+        protected override MonitorTypes QueueType 
+            => MonitorTypes.Torrent;
     }
 
     public class MetalinkExtension : ToggleBindingExtensionBase

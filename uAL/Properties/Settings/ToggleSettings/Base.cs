@@ -106,8 +106,10 @@ namespace uAL.Properties.Settings.ToggleSettings
     {
         public void y()
         {
-            var x = new MonitorTogglesBase();
-            x.AutoExpandGroups = Main;
+            var x = new MonitorTogglesBase
+            {
+                AutoExpandGroups = Main
+            };
             var xx = x.GetActiveToggles(MonitorTypes.Torrent);
             var filters = xx.Filters;
             var xfilters = x.Filters;

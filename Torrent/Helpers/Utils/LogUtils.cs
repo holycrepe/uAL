@@ -1,4 +1,4 @@
-﻿#define LOG_INCLUDE_TIMESTAMP
+﻿#define LOG_INCLUDE_TIMESTAMP_OFF
 
 using System;
 using System.Linq;
@@ -13,26 +13,26 @@ namespace Torrent.Helpers.Utils
 
     public static class LogUtils
     {
-        const int LOG_CLASS_NAME_LENGTH = 25;
+        private const int LOG_CLASS_NAME_LENGTH = 25;
 #if LOG_INCLUDE_TIMESTAMP
         const int LOG_TIMESTAMP_LENGTH = 11;
 #else
-        const int LOG_TIMESTAMP_LENGTH = -1;
+        private const int LOG_TIMESTAMP_LENGTH = -1;
 #endif
-        const int LOG_PAD_TITLE_LENGTH = 50;
+        private const int LOG_PAD_TITLE_LENGTH = 50;
         public const int LOG_PREFIX_CLASS_NAME_LENGTH = LOG_TIMESTAMP_LENGTH + 1 + LOG_CLASS_NAME_LENGTH + 1;
         public const int LOG_PREFIX_TITLE_LENGTH = LOG_PREFIX_CLASS_NAME_LENGTH + 1 + LOG_PAD_TITLE_LENGTH;
-        static Random rnd;
+        private static Random _rnd;
 
         public static bool AssertRandom(int random)
         {
             if (random == 0) {
                 return true;
             }
-            if (rnd == null) {
-                rnd = new Random();
+            if (_rnd == null) {
+                _rnd = new Random();
             }
-            return rnd.Next(random) + 1 == random;
+            return _rnd.Next(random) + 1 == random;
         }
 
         [Conditional("DEBUG"), Conditional("TRACE_EXT")]
@@ -77,7 +77,7 @@ namespace Torrent.Helpers.Utils
         public static bool debugStripFileName = DEBUGS.STRIP_FILENAME;
         public static readonly bool debugStripFileNameDefault = debugStripFileName;
 
-        const string debugStripFileNameTemplate = "{2}{0,19} {1}";
+        private const string DEBUG_STRIP_FILE_NAME_TEMPLATE = "{2}{0,19} {1}";
 
         [Conditional("DEBUG"), Conditional("TRACE_EXT")]
         public static void DebugLineLabel(string title = "-", string value = null, string extended = null)
@@ -87,9 +87,9 @@ namespace Torrent.Helpers.Utils
                 if (value == null) {
                     Debug.WriteLine(new string(title[0], 80));
                 } else {
-                    Debug.WriteLine(debugStripFileNameTemplate, title + ":", value, " ");
+                    Debug.WriteLine(DEBUG_STRIP_FILE_NAME_TEMPLATE, title + ":", value, " ");
                     if (extended != null) {
-                        Debug.WriteLine(debugStripFileNameTemplate, title + ":", extended, "*");
+                        Debug.WriteLine(DEBUG_STRIP_FILE_NAME_TEMPLATE, title + ":", extended, "*");
                     }
                 }
             }

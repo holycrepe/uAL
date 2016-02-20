@@ -120,11 +120,11 @@
                                        Click="StartTorrentMonitor"
                                        Content="Reset Queue"
                                        Style="{StaticResource TabHeaderButtonStyle}"
-                                       Visibility="{bind:Torrent Path=MONITOR,
+                                       Visibility="{bind:Torrent Path=Monitor,
                                                                  Converter={my:VisibilityConverter}}" />
                     <telerik:RadGridView x:Name="grdTorrents"
                                          Grid.Row="1"
-                                         AutoExpandGroups="{bind:Torrent Path=AUTO_EXPAND_GROUPS}"
+                                         AutoExpandGroups="{bind:Torrent Path=AutoExpandGroups}"
                                          AutoGenerateColumns="False"
                                          ItemsSource="{Binding}"
                                          RowDetailsTemplate="{StaticResource TorrentRowDetailsTemplate}"
@@ -357,11 +357,11 @@
                                        Click="StartMetalinkMonitor"
                                        Content="Reset Queue"
                                        Style="{StaticResource TabHeaderButtonStyle}"
-                                       Visibility="{bind:Metalink Path=MONITOR,
+                                       Visibility="{bind:Metalink Path=Monitor,
                                                                   Converter={my:VisibilityConverter}}" />
                     <controls:RadGridView x:Name="grdMetalinks"
                                           Grid.Row="1"
-                                          AutoExpandGroups="{bind:Metalink Path=AUTO_EXPAND_GROUPS}"
+                                          AutoExpandGroups="{bind:Metalink Path=AutoExpandGroups}"
                                           AutoGenerateColumns="False"
                                           ItemsSource="{Binding}"
                                           RowIndicatorVisibility="Collapsed"
@@ -546,12 +546,12 @@
                                        Click="StartUTorrentJobMonitor"
                                        Content="Reset Queue"
                                        Style="{StaticResource TabHeaderButtonStyle}"
-                                       Visibility="{bind:Job Path=MONITOR,
+                                       Visibility="{bind:Job Path=Monitor,
                                                              Converter={my:VisibilityConverter}}" />
                     <telerik:RadGridView x:Name="grdUTorrent"
                                          Grid.Row="1"
                                          VerticalContentAlignment="Top"
-                                         AutoExpandGroups="{bind:Job Path=AUTO_EXPAND_GROUPS}"
+                                         AutoExpandGroups="{bind:Job Path=AutoExpandGroups}"
                                          AutoGenerateColumns="False"
                                          GridLinesVisibility="None"
                                          ItemsSource="{Binding}"
@@ -1042,77 +1042,17 @@
                         <telerik:Label Grid.Row="10"
                                        Content="Methods"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="11" Content="Get Files" />
-                        <UniformGrid Grid.Row="11"
-                                     Grid.Column="1"
-                                     Columns="4">
-                            <StackPanel>
-                                <telerik:Label HorizontalAlignment="Stretch"
-                                               Content="Telerik: "
-                                               Style="{StaticResource SettingsGridHeadingLabel}" />
-                                <StackPanel Orientation="Horizontal">
-                                    <telerik:Label Width="150"
-                                                   Content="FlagEnumEditor: "
-                                                   Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                                    <telerik:FlagEnumEditor HorizontalAlignment="Stretch"
-                                                            EnumType="enum:GetFileMethod"
-                                                            Value="{bind:My Path=METHODS.GET_FILES}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel>
-                                <telerik:Label HorizontalAlignment="Stretch"
-                                               Content="MyEnumEditor: "
-                                               Style="{StaticResource SettingsGridHeadingLabel}" />
-                                <StackPanel Orientation="Horizontal">
-                                    <telerik:Label Width="150"
-                                                   Content="MyEnumEditor: "
-                                                   Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                                    <myControl:MyEnumEditor HorizontalAlignment="Stretch" Enum="{bind:My Path=METHODS.GET_FILES}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel>
-                                <telerik:Label HorizontalAlignment="Stretch"
-                                               Content="MyFlagEnumEditor: "
-                                               Style="{StaticResource SettingsGridHeadingLabel}" />
-                                <StackPanel Orientation="Horizontal">
-                                    <myControl:MyFlagEnumEditor x:Name="myFlagEnumEditor"
-                                                                Width="500"
-                                                                HorizontalAlignment="Stretch"
-                                                                Enum="{bind:My Path=METHODS.GET_FILES}"
-                                                                Test="12345" />
-                                </StackPanel>
+                        <telerik:Label Grid.Row="11"
+                                       VerticalAlignment="Top"
+                                       VerticalContentAlignment="Top"
+                                       Content="Get Files" />
 
-                            </StackPanel>
-                            <StackPanel>
-                                <telerik:Label HorizontalAlignment="Stretch"
-                                               Content="bind:Enum: "
-                                               Style="{StaticResource SettingsGridHeadingLabel}" />
-
-                                <StackPanel Background="Green" Orientation="Horizontal">
-                                    <telerik:Label Width="150"
-                                                   Content="Use Values: "
-                                                   Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                                    <telerik:RadComboBox HorizontalAlignment="Stretch"
-                                                         DisplayMemberPath=""
-                                                         ItemsSource="{bind:Enum {x:Type enum:GetFileMethod}}"
-                                                         SelectedItem="{bind:My Path=METHODS.GET_FILES}" />
-                                </StackPanel>
-
-                                <StackPanel Background="Purple" Orientation="Horizontal">
-                                    <telerik:Label Width="150"
-                                                   Content="Use Descriptions: "
-                                                   Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                                    <telerik:RadComboBox HorizontalAlignment="Stretch"
-                                                         HorizontalContentAlignment="Stretch"
-                                                         DisplayMemberPath=""
-                                                         ItemsSource="{bind:Enum {x:Type enum:GetFileMethod},
-                                                                                 UseDescriptions=True}"
-                                                         SelectedItem="{bind:My Path=METHODS.GET_FILES,
-                                                                                Mode=OneWay,
-                                                                                Converter={my:EnumDescriptionConverter}}" />
-                                </StackPanel>
-                            </StackPanel>
-                        </UniformGrid>
+                        <myControl:MyEnumEditorExamples x:Name="MyEnumEditorGetFiles"
+                                                        Grid.Row="11"
+                                                        Grid.Column="1"
+                                                        HorizontalAlignment="Stretch"
+                                                        Enum="{bind:My Path=METHODS.GET_FILES,
+                                                                       Mode=TwoWay}" />
                         <!--<telerik:RadComboBox Grid.Row="11"
                                              Grid.Column="1"
                                              Width="150"
@@ -1120,7 +1060,16 @@
                                              DisplayMemberPath=""
                                              ItemsSource="{bind:EnumSource EnumType=Torrent.Enums.GetFileMethod}"
                                              SelectedItem="{bind:My Path=METHODS.GET_FILES}" />-->
-                        <telerik:Label Grid.Row="12" Content="Process Queue" />
+                        <telerik:Label Grid.Row="12"
+                                       VerticalAlignment="Top"
+                                       VerticalContentAlignment="Top"
+                                       Content="Process Queue" />
+                        <!--<myControl:MyFlagEnumEditorExamples x:Name="MyFlagEnumEditorProcessQueue"
+                                                            Grid.Row="12"
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Stretch"
+                                                            Enum="{bind:Toggle Path=Processing.PreProcess,
+                                                                               Mode=TwoWay}" />-->
                         <!--<telerik:RadComboBox Grid.Row="12"
                                              Grid.Column="1"
                                              Width="150"
@@ -1327,7 +1276,7 @@
                         <UniformGrid Grid.Row="5"
                                      Grid.Column="1"
                                      Columns="4">
-                            <CheckBox Content="Check Queued In uTorrent" IsChecked="{bind:Lib Path=Torrent.CheckAlreadyQueuedInUTorrent}" />
+                            <CheckBox Content="Check Queued In uTorrent" IsChecked="{bind:Lib Path=Torrents.CheckAlreadyQueuedInUTorrent}" />
                         </UniformGrid>
                         <telerik:Label Grid.Row="6"
                                        Content="UTorrent Jobs"
@@ -1336,23 +1285,23 @@
                         <UniformGrid Grid.Row="7"
                                      Grid.Column="1"
                                      Columns="4">
-                            <CheckBox Content="Overwrite uTorrent `resume.dat` File" IsChecked="{bind:Lib Path=UTorrentJob.OverwriteUTorrentResumeFile}" />
-                            <CheckBox Content="Move Downloaded Files" IsChecked="{bind:Lib Path=UTorrentJob.MoveDownloadedFiles}" />
+                            <CheckBox Content="Overwrite uTorrent `resume.dat` File" IsChecked="{bind:Lib Path=Jobs.OverwriteUTorrentResumeFile}" />
+                            <CheckBox Content="Move Downloaded Files" IsChecked="{bind:Lib Path=Jobs.MoveDownloadedFiles}" />
                         </UniformGrid>
                         <telerik:Label Grid.Row="8" Content="Labels:" />
                         <UniformGrid Grid.Row="8"
                                      Grid.Column="1"
                                      Columns="4">
-                            <CheckBox Content="Fix Labels" IsChecked="{bind:Lib Path=UTorrentJob.FixLabels}" />
+                            <CheckBox Content="Fix Labels" IsChecked="{bind:Lib Path=Jobs.FixLabels}" />
                             <CheckBox Content="Fix Original Label"
-                                      IsChecked="{bind:Lib Path=UTorrentJob.FixOriginalLabel}"
-                                      IsEnabled="{bind:Lib Path=UTorrentJob.FixLabels}" />
+                                      IsChecked="{bind:Lib Path=Jobs.FixOriginalLabel}"
+                                      IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
                             <CheckBox Content="Fix Secondary Label"
-                                      IsChecked="{bind:Lib Path=UTorrentJob.FixSecondaryLabel}"
-                                      IsEnabled="{bind:Lib Path=UTorrentJob.FixLabels}" />
+                                      IsChecked="{bind:Lib Path=Jobs.FixSecondaryLabel}"
+                                      IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
                             <CheckBox Content="Remove Extra Primary Label"
-                                      IsChecked="{bind:Lib Path=UTorrentJob.RemoveExtraPrimaryLabel}"
-                                      IsEnabled="{bind:Lib Path=UTorrentJob.FixLabels}" />
+                                      IsChecked="{bind:Lib Path=Jobs.RemoveExtraPrimaryLabel}"
+                                      IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
                         </UniformGrid>
                         <telerik:Label Grid.Row="15"
                                        Content="Queue Monitor Toggles"
@@ -1415,11 +1364,11 @@
                     <telerik:FlagEnumEditor x:Name="RadFlagEnum"
                                             HorizontalAlignment="Left"
                                             EnumType="toggles:MonitorTypes"
-                                            Value="{bind:Toggle Path=WatcherQT}" />
+                                            Value="{bind:Toggle Path=Watcher}" />
                     <telerik:FlagEnumEditor x:Name="RadFlagEnum2"
                                             HorizontalAlignment="Right"
                                             EnumType="toggles:MonitorTypes"
-                                            Value="{bind:Toggle Path=WatcherQT}" />
+                                            Value="{bind:Toggle Path=Watcher}" />
 
 
                     <telerik:RadPropertyGrid x:Name="RadPropertyGridToggles1"

@@ -20,8 +20,13 @@ namespace wUAL
             ? string.Empty 
             : EnumUtils.GetDescription(value, value.GetType());
 
-        //public override object ConvertBack(object value, Type targetType,
-        //                                   object parameter, CultureInfo culture)
-        //    => On.Equals(value);
+        public override object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            object converted;
+            return EnumUtils.GetValueFromDescription(value as string, targetType, out converted) 
+                ? converted 
+                : base.ConvertBack(value, targetType, parameter, culture);
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AddGenericConstraint;
 using Torrent.Exceptions;
+using Torrent.Extensions;
 
 namespace Torrent.Helpers.Utils
 {
@@ -56,8 +57,18 @@ namespace Torrent.Helpers.Utils
         /// <returns>True if the enum type is decorated with
         /// FlagsAttribute; False otherwise.</returns>
         public static bool IsFlags<[AddGenericConstraint(typeof(Enum))] T>() where T : struct
-            => EnumInternals<T>.IsFlags;        
+            => EnumInternals<T>.IsFlags;
 
+
+        /// <summary>
+        /// Returns whether or not the specified enum is a "flags" enum,
+        /// i.e. whether it has FlagsAttribute applied to it.
+        /// </summary>
+        /// <typeparam name="T">Enum type</typeparam>
+        /// <returns>True if the enum type is decorated with
+        /// FlagsAttribute; False otherwise.</returns>
+        public static bool IsFlags(Type enumType)
+            => enumType.IsEnum && enumType.GetAttribute<FlagsAttribute>() != null;
         /// <summary>
         /// Returns all the bits used in any flag values
         /// </summary>

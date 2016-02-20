@@ -1,5 +1,6 @@
 ﻿using AddGenericConstraint;
 using System;
+using System.Linq;
 
 namespace Torrent.Helpers.Utils
 {
@@ -27,6 +28,21 @@ namespace Torrent.Helpers.Utils
                 }
             }
             return string.Empty;
+        }
+
+        public static bool GetValueFromDescription<T>(string description, Type t, out T value)
+        {
+            if (description != null)
+            {
+                var values = Enum.GetValues(t);
+                foreach (var item in values.Cast<object>()
+                    .Where(item => item.ToString() == description || GetDescription(item, t) == description)) {
+                    value = (T) item;
+                    return true;
+                }
+            }
+            value = default(T);
+            return false;
         }
     }
 }

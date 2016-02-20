@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Torrent.Infrastructure.Enums.Toggles
 {
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Dynamic;
     using System.Reflection;
     using System.Runtime.Serialization;
@@ -17,6 +18,10 @@ namespace Torrent.Infrastructure.Enums.Toggles
     using Puchalapalli.Dynamic;
     using Serialization;
     using static Serialization.DataContractUtils;
+
+    [DataContract(Namespace = NamespaceAttribute.Default)]
+    [PostSharp.Patterns.Model.NotifyPropertyChanged]
+    [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class EnumToggleSettings<[AddGenericConstraint(typeof(Enum))] TEnum, TResult>
         : EnumToggles<TEnum, TResult>
         where TEnum : struct

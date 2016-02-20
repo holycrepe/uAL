@@ -5,9 +5,11 @@ using System.Dynamic;
 using System.Reflection;
 using Torrent.Exceptions;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Puchalapalli.Dynamic
 {
+    using System.Runtime.Serialization;
     using Westwind.Utilities;
 
     /// <summary>
@@ -24,7 +26,7 @@ namespace Puchalapalli.Dynamic
     /// Dynamic: dynamic cast allows access to dictionary and native properties/methods
     /// Dictionary: Any of the extended properties are accessible via IDictionary interface
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class Expando : SimpleDynamicObject, IDynamicMetaObjectProvider, IExpando
     {
         /// <summary>
@@ -42,6 +44,7 @@ namespace Puchalapalli.Dynamic
         /// Cached type of the instance
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [XmlIgnore]
         protected Type InstanceType;
 
         PropertyInfo[] InstancePropertyInfo
@@ -49,11 +52,13 @@ namespace Puchalapalli.Dynamic
             : _InstancePropertyInfo = _instance.GetType()
             .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly));
 
+        [XmlIgnore]
         PropertyInfo[] _InstancePropertyInfo;
 
         /// <summary>
         /// Enables/Disables Property Setter
         /// </summary>
+        [XmlIgnore]
         protected bool SetterEnabled { get; set; } = true;
 
         /// <summary>
@@ -61,6 +66,7 @@ namespace Puchalapalli.Dynamic
         /// stored on this object/instance
         /// </summary>        
         /// <remarks>Using PropertyBag to support XML Serialization of the dictionary</remarks>
+        [XmlIgnore]
         public virtual PropertyBag Properties { get; }
             = new PropertyBag();
 

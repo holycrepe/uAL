@@ -52,6 +52,7 @@ namespace wUAL.Properties.Settings.AllSettings
         [DataMember(Order = 4)]
         //[XmlElement(Order=4)]
         [XmlIgnore]
+        [SafeForDependencyAnalysis]
         public AppSettingsBase App
         {
             get { return AppSettings.AppSetting; }
@@ -60,6 +61,7 @@ namespace wUAL.Properties.Settings.AllSettings
         [DataMember(Order = 2)]
         //[XmlElement(Order=2)]
         [XmlIgnore]
+        [SafeForDependencyAnalysis]
         public LibSettings Lib
         {
             get { return LibSettings.LibSetting; }
@@ -68,6 +70,7 @@ namespace wUAL.Properties.Settings.AllSettings
         [DataMember(Order = 3)]
         //[XmlElement(Order=3)]
         [XmlIgnore]
+        [SafeForDependencyAnalysis]
         public MonitorTogglesBase Toggle
         {
             get { return ToggleSettings.Toggles; }
@@ -75,6 +78,7 @@ namespace wUAL.Properties.Settings.AllSettings
         }
         [DataMember(Order = 1)]
         [XmlElement(Order = 1)]
+        [SafeForDependencyAnalysis]
         public MySettingsBase My
         {
             get { return MySettings.MySetting; }

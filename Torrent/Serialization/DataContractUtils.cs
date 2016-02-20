@@ -28,7 +28,7 @@ namespace Torrent.Serialization
         {            
             if (!serializers.ContainsKey(t))
             {
-                var dataContract = t.GetCustomAttribute<DataContractAttribute>();
+                var dataContract = t.GetAttribute<DataContractAttribute>();
                 var name = string.IsNullOrEmpty(dataContract?.Name) ? t.Name : dataContract.Name;
                 serializers[t] = new DataContractSerializer(t, name, dataContract.Namespace);
             }
@@ -73,7 +73,7 @@ namespace Torrent.Serialization
                 if (outputStream.CanWrite == false)
                     throw new ArgumentException("Cannot write to output stream");
 
-                var attributes = type.GetCustomAttributes<NamespaceAttribute>();
+                var attributes = type.GetAttributes<NamespaceAttribute>();
 
                 using (var writer = XmlWriter.Create(outputStream, new XmlWriterSettings
                 {

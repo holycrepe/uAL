@@ -19,10 +19,10 @@ namespace uAL.Properties.Settings.ToggleSettings
         Metalink = 1 << 1,
         [Description("uTorrent Job")]
         Job = 1 << 2,
-        [Description("All Monitors: Torrent, Metalink, and uTorrent Job")]
+        [Description("Torrent, Metalink, and uTorrent Job")]
         [Browsable(false)]
         AllMonitors = Torrent | Metalink | Job,
-        [Description("Main Monitors: Torrent & Metalink")]
+        [Description("Torrent & Metalink")]
         [Browsable(false)]
         Main = Torrent | Metalink
     }

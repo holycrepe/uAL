@@ -53,12 +53,12 @@
             => type?.GetPublicFields().Select(x => x.GetDisplay(type)).ToArray();
         #endregion
         #region Attributes
-        static object[] GetCustomAttributesTyped<T>(this Type type) where T : Attribute
+        static object[] GetAttributesTyped<T>(this Type type) where T : Attribute
             => type?.GetCustomAttributes(typeof(T), true);
-        public static T[] GetCustomAttributes<T>(this Type type) where T : Attribute
-            => (T[]) GetCustomAttributesTyped<T>(type);
-        public static T GetCustomAttribute<T>(this Type type) where T : Attribute
-            => (T) GetCustomAttributesTyped<T>(type)?.Where(v => v is T && v != null).FirstOrDefault();
+        public static T[] GetAttributes<T>(this Type type) where T : Attribute
+            => (T[]) GetAttributesTyped<T>(type);
+        public static T GetAttribute<T>(this Type type) where T : Attribute
+            => (T) GetAttributesTyped<T>(type)?.Where(v => v is T && v != null).FirstOrDefault();
         #endregion
         #region Friendly Name
         private static readonly Dictionary<Type, string> _typeToFriendlyName = new Dictionary<Type, string>
