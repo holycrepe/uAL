@@ -20,10 +20,10 @@ namespace Torrent.Helpers.Utils
         public static string GetDescription<[AddGenericConstraint(typeof(Enum))] T>(T? value) where T : struct
                 => value == null ? string.Empty : GetDescription(value.Value, typeof(T));
 
-        public static string GetCombinedDescription(object value, Type t, bool useCombinedFormatIfNotDefined=false)
+        public static string GetCombinedDescription(object value, Type t, EnumMemberDisplayFormat displayFormatIfNotDefined = EnumMemberDisplayFormat.Combined)
             => Enum.IsDefined(t, value) 
             ? value + GetDescription(value, t).Prefix(": ")
-            : new EnumMember(t, value, useCombinedFormatIfNotDefined).Display;
+            : new EnumMember(t, value, displayFormatIfNotDefined).Display;
         public static string GetDescriptionOrValue(object value, Type t)
         {
             var description = GetDescription(value, t);

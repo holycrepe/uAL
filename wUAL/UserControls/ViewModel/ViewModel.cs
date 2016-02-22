@@ -110,19 +110,24 @@ namespace wUAL.UserControls
                 if (value == null || value == this._selectedItem)
                     return;
                 if (this.IsMultiple)
-                {
                     return;
-                    this._selectedItem = value;
-                    this.AddSelectedItem(value);
-                    this.Value = this.GetConsolidatedValue();
-                }
-                else
-                {
-                    this._selectedItem = value;
-                    this.SelectedItems.Clear();
-                    this.SelectedItems.Add(value);
-                    this.Value = this.GetValueFromItem(value);
-                }
+                this._selectedItem = value;
+                this.SelectedItems.Clear();
+                this.SelectedItems.Add(value);
+                this.Value = this.GetValueFromItem(value);
+                //{
+                //    return;
+                //    this._selectedItem = value;
+                //    this.AddSelectedItem(value);
+                //    this.Value = this.GetConsolidatedValue();
+                //}
+                //else
+                //{
+                //    this._selectedItem = value;
+                //    this.SelectedItems.Clear();
+                //    this.SelectedItems.Add(value);
+                //    this.Value = this.GetValueFromItem(value);
+                //}
             }
         }
 

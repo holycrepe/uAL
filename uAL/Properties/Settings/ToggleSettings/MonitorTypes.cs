@@ -9,7 +9,6 @@ namespace uAL.Properties.Settings.ToggleSettings
     [Flags]
     public enum MonitorTypes
     {
-        [Description("None")]
         [Browsable(false)]
         Disabled = 0,
         [Description("All Monitors")]
@@ -23,7 +22,7 @@ namespace uAL.Properties.Settings.ToggleSettings
         //[Description("Torrent, Metalink, and uTorrent Job")]
         //[Browsable(false)]
         //AllMonitors = Torrent | Metalink | Job,
-        [Description("Torrent & Metalink")]
+        [Description("Torrent & Metalink Files")]
         [Browsable(false)]
         Main = Torrent | Metalink
     }

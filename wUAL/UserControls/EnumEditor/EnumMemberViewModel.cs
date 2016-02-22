@@ -16,10 +16,10 @@ using Torrent.Properties.Settings;
 
 namespace wUAL.UserControls
 {
+    [NotifyPropertyChanged]
     public class EnumMemberViewModel : ViewModel<EnumMember, object>
     {
-        bool _useCombinedFormat = true;
-
+        EnumMemberDisplayFormat _displayFormat = EnumMemberDisplayFormat.Combined;
         #region Overrides of ViewModel
         [DebuggerNonUserCode]
         protected override object GetValueFromItem(EnumMember item)
@@ -32,15 +32,15 @@ namespace wUAL.UserControls
         #region Public Properties: Accessors
         public Type Type { get; set; }
         [SafeForDependencyAnalysis]
-        public bool UseCombinedFormat
+        public EnumMemberDisplayFormat DisplayFormat
         {
-            get { return this._useCombinedFormat; }
+            get { return this._displayFormat; }
             set
             {
-                if (this._useCombinedFormat != value)
+                if (this._displayFormat != value)
                 {
-                    this._useCombinedFormat = value;
-                    this.Items?.SetUseCombined(value);
+                    this._displayFormat = value;
+                    this.SetDisplayFormat();
                 }
             }
         }
@@ -48,9 +48,17 @@ namespace wUAL.UserControls
         #region Public Properties
         #region Public Properties: Accessors
         public EnumMember[] Members { get; set; }
+        [SafeForDependencyAnalysis]
+        public EnumMember Member
+            => (this.Type == null || this.Value == null) ? null 
+            : this.Members?.FirstOrDefault(m => m == this.Value)
+               ?? new EnumMember(this.Type, this.Value, this.DisplayFormat);
         #endregion
         #region Public Properties: Methods        
         #region Public Properties: Methods: Enum Type
+        protected virtual void SetDisplayFormat()        
+            => this.Items?.SetDisplayFormat(DisplayFormat);
+        
         protected Type GetEnumType(bool required = true, bool requiresFlags = false)
         {
             var enumType = this.Value?.GetType();
@@ -75,7 +83,7 @@ namespace wUAL.UserControls
         {
             Type = GetEnumType();
             Items.Clear();
-            Members = EnumMember.GetEnumMembers(Type, UseCombinedFormat).ToArray();
+            Members = EnumMember.GetEnumMembers(Type, DisplayFormat).ToArray();
             Items.AddRange(Members.Where(f => f.Browsable));
         }
         public void SetEnum(object value = null, bool requireValue = true)
@@ -107,15 +115,15 @@ namespace wUAL.UserControls
         #endregion
         #endregion
         #endregion
-        public EnumMemberViewModel(bool setDesignEnum)
+        public EnumMemberViewModel(bool setDesignEnum) : base()
         {
 
         }
-        public EnumMemberViewModel()
+        public EnumMemberViewModel() : base()
         {
             if (MainApp.DesignMode)
             {
-                // this.SetEnum(GetFileMethod.Enumerator);
+                this.SetEnum(GetFileMethod.Enumerator);
             }
             else
             {

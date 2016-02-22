@@ -9,8 +9,8 @@ namespace Torrent.Extensions
 {
     public static class EnumMembersExtensions
     {
-        public static void SetUseCombined(this IEnumerable<EnumMember> list, bool value)
-            => list.ForEach(e => e.UseCombinedFormat = value);
+        public static void SetDisplayFormat(this IEnumerable<EnumMember> list, EnumMemberDisplayFormat value = EnumMemberDisplayFormat.Combined)
+            => list.ForEach(e => e.DisplayFormat = value);
 
         public static EnumMember GetAllMember(this IEnumerable<EnumMember> list)
             => list.FirstOrDefault(x => x.IsAll);

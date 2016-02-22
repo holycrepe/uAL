@@ -25,7 +25,7 @@ namespace Torrent.Infrastructure.Enums
             => "{0}: {1}";
         public string ValueFormat
             => "{0}";
-        public bool UseCombinedFormat { get; set; } = true;
+        public EnumMemberDisplayFormat DisplayFormat { get; set; }
         public string Name { get; set; } = null;
         public Type Type { get; set; }
         //public string FieldInfo { get; set; }
@@ -41,7 +41,7 @@ namespace Torrent.Infrastructure.Enums
         public string Description { get; set; }
         #endregion
         #region Constructor
-        public EnumMember(Type enumType, object value, bool useCombinedFormat = true)
+        public EnumMember(Type enumType, object value, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
         {
             if (enumType == null)
             {
@@ -51,7 +51,7 @@ namespace Torrent.Infrastructure.Enums
             {
                 throw new ArgumentException($"Type {enumType.GetFriendlyFullName()} must be an Enum");
             }
-            UseCombinedFormat = useCombinedFormat;
+            DisplayFormat = displayFormat;
             var field = enumType.GetField(value.ToString());
             if (SetFromField(enumType, field) ||
                 enumType.IsEnumDefined(value) && SetFromField(enumType.GetPublicFields().FirstOrDefault(fi => value == fi.Value)))
@@ -68,14 +68,14 @@ namespace Torrent.Infrastructure.Enums
             Browsable = false;
             Description = string.Join(", ", EnumUtils.GetMatchingFields(Type, Value).Select(f => f.Description));
         }
-        public EnumMember(Type enumType, Field<object> field, bool useCombinedFormat = true)
+        public EnumMember(Type enumType, Field<object> field, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
         {
-            UseCombinedFormat = useCombinedFormat;
+            DisplayFormat = displayFormat;
             SetFromField(field);
         }
-        public EnumMember(Type enumType, FieldInfo field, bool useCombinedFormat = true)
+        public EnumMember(Type enumType, FieldInfo field, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
         {
-            UseCombinedFormat = useCombinedFormat;
+            DisplayFormat = displayFormat;
             SetFromField(enumType, field);
         }
 
@@ -96,17 +96,17 @@ namespace Torrent.Infrastructure.Enums
         #endregion
         #region Display String
         public string Display
-            => this.GetDisplay(this.UseCombinedFormat);
+            => this.GetDisplay(this.DisplayFormat);
         public string QualifiedName
             => $"{this.Type?.Name.Suffix(".")}{this.Name}";
-        private string GetStringFormat(bool useCombinedFormat)
-            => this.Description == null
+        private string GetStringFormat(EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
+            => this.Description == null || displayFormat == EnumMemberDisplayFormat.Name
             ? this.ValueFormat
-            : useCombinedFormat
+            : displayFormat == EnumMemberDisplayFormat.Combined
                 ? this.CombinedFormat
                 : this.DescriptionFormat;
-        protected string GetDisplay(bool useCombinedFormat = true)
-            => string.Format(GetStringFormat(useCombinedFormat), this.Value, this.Description);
+        protected string GetDisplay(EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
+            => string.Format(GetStringFormat(displayFormat), this.Value, this.Description);
         #endregion
         #region Interfaces
 
@@ -149,19 +149,19 @@ namespace Torrent.Infrastructure.Enums
             => this.Value?.ToString();
         #endregion
         #region Static Array Creators
-        public static IEnumerable<EnumMember> GetBrowsableEnumMembers(Type enumType, bool useCombinedFormat = true)
-            => GetEnumMembers(enumType, useCombinedFormat, true);
-        public static IEnumerable<EnumMember> GetEnumMembers(Type enumType, bool useCombinedFormat = true, bool requireBrowsable = false)
+        public static IEnumerable<EnumMember> GetBrowsableEnumMembers(Type enumType, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
+            => GetEnumMembers(enumType, displayFormat, true);
+        public static IEnumerable<EnumMember> GetEnumMembers(Type enumType, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined, bool requireBrowsable = false)
         {
             var fields = enumType.GetPublicFields();
             if (requireBrowsable)
             {
                 fields = fields.Where(f => f.Browsable != false);
             }
-            return fields.Select(fi => new EnumMember(enumType, fi, useCombinedFormat));
+            return fields.Select(fi => new EnumMember(enumType, fi, displayFormat));
         }
-        public static EnumMember[] GetEnumMemberArray(Type enumType, bool useCombinedFormat = true, bool requireBrowsable = false)
-            => GetEnumMembers(enumType, useCombinedFormat, requireBrowsable).ToArray();
+        public static EnumMember[] GetEnumMemberArray(Type enumType, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined, bool requireBrowsable = false)
+            => GetEnumMembers(enumType, displayFormat, requireBrowsable).ToArray();
         #endregion
         #region Operators
         public override int GetHashCode()

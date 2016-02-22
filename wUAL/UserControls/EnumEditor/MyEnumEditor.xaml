@@ -7,14 +7,47 @@
              xmlns:my="clr-namespace:wUAL"
              xmlns:myControl="clr-namespace:wUAL.UserControls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             x:Name="myEnumEditor"
-             Grid.Column="1"
-             d:DesignHeight="50"
-             d:DesignWidth="300"
+             x:Name="ControlRoot"
              mc:Ignorable="d">
-  <telerik:FlagEnumEditor 
-    x:Name="RadFlagEnumEditor"
-    DataContext="{Binding Path=DataContext, ElementName=myEnumEditor}"
-    EnumType="{Binding Type}"
-    Value="{Binding Enum}" />
+
+    <!--
+        d:DesignHeight="250"
+        d:DesignWidth="300" DataContext="{d:DesignInstance {x:Type myControl:EnumMemberViewModel}, IsDesignTimeCreatable=True}"
+    -->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Templates/RadComboBoxGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Styles/Grid/Queue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Styles/Grid/Settings.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <myControl:EnumMemberViewModel x:Key="EnumMemberViewModelDataSource" d:IsDataSource="True" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <telerik:RadComboBox x:Name="LayoutRoot"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch"
+                         DataContext="{Binding Path=ViewModel,
+                                               ElementName=ControlRoot,
+                                               Mode=TwoWay}"
+                         DisplayMemberPath="Display"
+                         ItemsSource="{Binding Items,
+                                               Mode=TwoWay}"
+                         NonEditableTemplate="{StaticResource EnumMemberComboBoxGridNonEditableTemplate}"
+                         OpenDropDownOnFocus="True"
+                         SelectedItem="{Binding SelectedItem,
+                                                Mode=TwoWay}"
+                         SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
+                         StaysOpenOnEdit="True"
+                         d:DataContext="{StaticResource EnumMemberViewModelDataSource}">
+        <telerik:RadComboBox.SelectionBoxTemplate>
+            <DataTemplate>
+                <TextBlock DataContext="{Binding Path=DataContext,
+                                                 ElementName=LayoutRoot,
+                                                 Mode=TwoWay}"
+                           FontWeight="Bold"
+                           Text="{Binding SelectedItem.Display}" />
+            </DataTemplate>
+        </telerik:RadComboBox.SelectionBoxTemplate>
+    </telerik:RadComboBox>
 </UserControl>

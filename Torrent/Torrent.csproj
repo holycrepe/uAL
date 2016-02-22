@@ -191,6 +191,7 @@
     <Compile Include="Helpers\Utils\FileSystemSearchUtils.cs" />
     <Compile Include="Helpers\Utils\ResourceUtils.cs" />
     <Compile Include="Exceptions\ArgumentTypeException.cs" />
+    <Compile Include="Infrastructure\Enums\EnumMemberDisplayFormat.cs" />
     <Compile Include="Infrastructure\Enums\Toggles\Extensions.cs" />
     <Compile Include="Infrastructure\Enums\Toggles\EnumToggleSettings.cs" />
     <Compile Include="Infrastructure\Enums\Toggles\EnumToggles.cs" />

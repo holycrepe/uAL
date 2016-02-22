@@ -18,6 +18,7 @@ using System.Diagnostics;
 namespace wUAL.UserControls
 {
     using static Torrent.Helpers.Utils.DebugUtils;
+    [NotifyPropertyChanged]
     public class FlagEnumMemberViewModel : EnumMemberViewModel
     {
 
@@ -35,15 +36,6 @@ namespace wUAL.UserControls
         [DebuggerNonUserCode]
         protected override object GetConsolidatedValue(IEnumerable<object> values)
             => EnumUtils.GetUsedBits(Type, values);
-        //protected override void OnSelectedItemsChangedComplete(NotifyCollectionChangedEventArgs e)
-        //{
-        //    return;
-        //    if (!SelectedItems.Contains(SelectedItem))
-        //    {
-        //        this._selectedItem = SelectedItems.FirstOrDefault();
-        //    }
-        //    SetConsolidatedValue();
-        //}
         
         protected override IEnumerable<EnumMember> GetSelectedItems(object value)
         {
@@ -59,10 +51,15 @@ namespace wUAL.UserControls
             None = Items.FirstOrDefault(x => x.IsDisabled);
             Disabled = None ?? Members.FirstOrDefault(value => value == 0);
             var usedBits = EnumUtils.GetUsedBits(Type, Items, true);
-            Main = new EnumMember(Type, usedBits, UseCombinedFormat);
+            Main = new EnumMember(Type, usedBits, DisplayFormat);
             SelectedItems.AddRange(GetSelectedItems());
         }
-
+        protected override void SetDisplayFormat()
+        {
+            base.SetDisplayFormat();
+            if (Disabled)
+                Disabled.DisplayFormat = DisplayFormat;
+        }
         protected override EnumMember GetItemFromValue(object value)
             //=> base.GetItemFromValue(value)
             //?? Disabled == value
@@ -86,7 +83,7 @@ namespace wUAL.UserControls
         public EnumMember Disabled { get; private set; }
         public EnumMember Main { get; private set; }
         #endregion
-        public FlagEnumMemberViewModel() 
+        public FlagEnumMemberViewModel()  : base(false)
         {
             if (MainApp.DesignMode)
             {

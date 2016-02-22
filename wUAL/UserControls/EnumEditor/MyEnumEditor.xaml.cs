@@ -1,88 +1,154 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#define LOG_PROPERTY_CHANGED
+
+using System;
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Telerik.Windows.Controls.Data.PropertyGrid;
-using AddGenericConstraint;
 
 namespace wUAL.UserControls
 {
+    using PostSharp.Patterns.Model;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Windows.Controls;
+    using Telerik.Windows.Controls;
+    using Torrent.Converters;
+    using Torrent.Enums;
     using Torrent.Extensions;
     using Torrent.Helpers.Utils;
+    using Torrent.Infrastructure;
+    using Torrent.Infrastructure.Enums;
     using static Torrent.Helpers.Utils.DebugUtils;
-
-    public partial class MyEnumEditor : UserControl
+    [NotifyPropertyChanged]
+    public partial class MyEnumEditor : UserControl, INotifyPropertyChanged
     {
-        Type _type;
+        EnumMemberDisplayFormat _displayFormat = EnumMemberDisplayFormat.Combined;
+
         public MyEnumEditor() : base()
         {
+            this.PropertyChanged += MyFlagEnumEditor_PropertyChanged;
             InitializeComponent();
-            SetupComponent();
+            ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
+            //this.DataContext = ViewModel;
+            //(this.Content as FrameworkElement).DataContext = this.ViewModel;
         }
-        public Type Type {
-            get { return _type; }
-            set
+
+        private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.Value))
             {
-                _type = value;
+                Enum = ViewModel.Value;
             }
         }
 
+        #region Public Properties
+        #region Public Properties: Accessors
+        public EnumMemberViewModel ViewModel { get; set; }
+            = new EnumMemberViewModel();
+        public object Test { get; set; }
+        public EnumMemberDisplayFormat DisplayFormat {
+            get { return this._displayFormat; }
+            set { this.ViewModel.DisplayFormat = this._displayFormat = value; }
+        }
+        #endregion
+        #endregion
 
-        #region Enum Dependency Property
-
+        #region Dependency Properties
+        #region Dependency Properties: Set Value
+        protected void SetValueDp(DependencyProperty property, object value, [CallerMemberName] string propertyName=null)
+        {
+            this.SetValue(property, value);
+            OnPropertiesChanged(propertyName, property.Name == propertyName ? string.Empty : property.Name);
+        }
+        #endregion
+        #region Dependency Properties: Enum
+        #region Dependency Properties: Enum: Accessors and Definition
         /// <summary>
         /// Gets or sets the `Enum` Dependency Property
         /// </summary>
+        [SafeForDependencyAnalysis]
         public object Enum
         {
-            get { return (object)GetValue(EnumProperty); }
-            set {
-                SetValue(EnumProperty, value);
-                SetEnumValue();
+            get
+            {
+                if (Depends.Guard)
+                {
+                    Depends.On(this.ViewModel, this.ViewModel.Value, this.ViewModel.SelectedItem);
+                }
+                return (object)this.GetValue(EnumProperty);
             }
+            set { this.SetValueDp(EnumProperty, value); }
         }
-
+        
         /// <summary>
         /// Identifies the `Enum` Dependency Property
         /// </summary>
         public static readonly DependencyProperty EnumProperty =
             DependencyProperty.Register(nameof(Enum), typeof(object),
-              typeof(MyEnumEditor), new PropertyMetadata(null));
-
+              typeof(MyEnumEditor), 
+              new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnEnumChanged, OnEnumCoerced));
         #endregion
-        public void SetupComponent()
-        {
-            SetEnumValue(false);
-        }
-        public void SetEnumValue(bool requireValue=true)
-        {
-            if (Enum == null)
-            {
-                if (requireValue)
-                {
-                    throw new ArgumentNullException(nameof(Enum));
-                }
+        #region Dependency Properties: Enum: Events
+        protected static void OnEnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {            
+            var control = d as MyEnumEditor;
+            var value = e.NewValue;
+            // myFlagEnumEditor.OnDependencyPropertyChanged(e);
+            if (control == null || control.Enum == control.ViewModel.Value)
                 return;
-            }
-            var enumType = Enum.GetType();
-            enumType = Nullable.GetUnderlyingType(enumType) ?? enumType;
-            if (!enumType.IsEnum)
-            {
-                throw new ArgumentException($"Specified Type {enumType.GetFriendlyFullName()} is not an Enum.");
-            }
-            Type = enumType;
-            var values = System.Enum.GetValues(enumType);
-            DEBUG.Break();
+
+            control.ViewModel.SetEnum(value);
         }
+        protected static object OnEnumCoerced(DependencyObject d, object baseValue)
+        {
+            return baseValue;
+        }
+        #endregion
+        #endregion
+        #endregion
+
+        #region Events
+        #region Events: Property Changed
+        protected virtual void OnPropertyChangedLocal(string propertyName)
+        {
+            ViewModel.LogPropertyChanged(propertyName);
+            if (IsInitialized)
+            {
+                DEBUG.Noop();
+            }
+        }
+        #endregion
+        #region Components
+        #region Components: RadComboBoxFlagEnumGrid
+        protected void RadComboBoxFlagEnumGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var control = sender as RadComboBox;
+            if (control != null)
+            {
+                control.IsDropDownOpen = false;
+            }
+        }
+        #endregion
+        #endregion
+        #endregion
+        #region Interfaces
+        #region Interfaces: IPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnDependencyPropertyChanged(DependencyPropertyChangedEventArgs e)
+            => OnPropertiesChanged(e.Property.Name);
+        private void MyFlagEnumEditor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+            => DEBUG.Noop();
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            => OnPropertiesChanged(propertyName);
+        public virtual void OnPropertiesChanged(params string[] propertyNames)
+            => NotifyPropertyChangedBase.DoOnPropertyChanged(this, PropertyChanged, OnPropertyChangedLocal, propertyNames);
+        #endregion
+        #endregion
+
+        private void Label_OnMouseUp(object sender, MouseButtonEventArgs e)
+            => Debugger.Break();
     }
 }

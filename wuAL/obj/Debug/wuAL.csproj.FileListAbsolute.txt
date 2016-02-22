@@ -141,8 +141,6 @@ D:\Git\uAL\wUAL\obj\Debug\Assets\Themes\OfficeBlack\Telerik.Windows.Controls.bam
 D:\Git\uAL\wUAL\obj\Debug\Assets\Images.baml
 D:\Git\uAL\wUAL\obj\Debug\UserControls\MyPrompt.baml
 D:\Git\uAL\wUAL\obj\Debug\MainWindow.g.cs
-D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyEnumEditorExamples.g.cs
-D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyFlagEnumEditorExamples.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyEnumEditor.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\MyPrompt.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueGridHeaderControl.g.cs
@@ -158,8 +156,6 @@ D:\Git\uAL\wUAL\obj\Debug\Assets\Templates\RadComboBoxGrid.baml
 D:\Git\uAL\wUAL\obj\Debug\Assets\Templates\TorrentRowDetails.baml
 D:\Git\uAL\wUAL\obj\Debug\Assets\Styles\Selectors\Queue.baml
 D:\Git\uAL\wUAL\obj\Debug\MainWindow.baml
-D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyEnumEditorExamples.baml
-D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyFlagEnumEditorExamples.baml
 D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyEnumEditor.baml
 D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueGridHeaderControl.baml
 D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueToggleSettingControl.baml

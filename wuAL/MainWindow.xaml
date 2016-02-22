@@ -1047,12 +1047,13 @@
                                        VerticalContentAlignment="Top"
                                        Content="Get Files" />
 
-                        <!--<myControl:MyEnumEditorExamples x:Name="MyEnumEditorGetFiles"
-                                                        Grid.Row="11"
-                                                        Grid.Column="1"
-                                                        HorizontalAlignment="Stretch"
-                                                        Enum="{bind:My Path=METHODS.GET_FILES,
-                                                                       Mode=TwoWay}" />-->
+                        <myControl:MyEnumEditor x:Name="MyEnumEditorGetFiles"
+                                                Grid.Row="11"
+                                                Grid.Column="1"
+                                                Width="200"
+                                                HorizontalAlignment="Left"
+                                                Enum="{bind:My Path=METHODS.GET_FILES,
+                                                               Mode=TwoWay}" />
                         <!--<telerik:RadComboBox Grid.Row="11"
                                              Grid.Column="1"
                                              Width="150"
@@ -1064,12 +1065,19 @@
                                        VerticalAlignment="Top"
                                        VerticalContentAlignment="Top"
                                        Content="Process Queue" />
-                        <myControl:MyFlagEnumEditorExamples x:Name="MyFlagEnumEditorProcessQueue"
-                                                            Grid.Row="12"
-                                                            Grid.Column="1"
-                                                            HorizontalAlignment="Stretch"
-                                                            Enum="{bind:Toggle Path=Processing.PreProcess,
-                                                                               Mode=TwoWay}" />
+                        <myControl:MyFlagEnumEditor x:Name="MyFlagEnumEditorProcessQueue"
+                                                    Grid.Row="12"
+                                                    Grid.Column="1"
+                                                    Width="200"
+                                                    HorizontalAlignment="Left"
+                                                    Enum="{bind:Toggle Path=Processing.PreProcess,
+                                                                       Mode=TwoWay}" />
+                        <myControl:QueueToggleSettingControl x:Name="MyFlagEnumEditorProcessQueue2"
+                                                             Grid.Row="12"
+                                                             Grid.Column="1"
+                                                             HorizontalAlignment="Center"
+                                                             Enum="{bind:Toggle Path=Processing.PreProcess,
+                                                                                Mode=TwoWay}" />
                         <!--<telerik:RadComboBox Grid.Row="12"
                                              Grid.Column="1"
                                              Width="150"

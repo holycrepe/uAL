@@ -20,6 +20,7 @@
     </ResourceDictionary.MergedDictionaries>-->
     <myControl:EnumMemberViewModel x:Key="EnumMemberViewModel" />
     <myControl:FlagEnumMemberViewModel x:Key="FlagEnumMemberViewModel" />
+
     <ControlTemplate x:Key="EnumMemberComboBoxGridNonEditableTemplate" TargetType="telerik:RadComboBox">
         <Grid x:Name="VisualRoot">
             <VisualStateManager.VisualStateGroups>

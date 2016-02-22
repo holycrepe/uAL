@@ -23,221 +23,37 @@
             </ResourceDictionary.MergedDictionaries>
             <myControl:FlagEnumMemberViewModel x:Key="FlagEnumMemberViewModelDataSource" d:IsDataSource="True" />
             <DataTemplate x:Key="FlagEnumMemberComboBoxGridSelectionBoxTemplate">
-                <TextBlock DataContext="{Binding Path=DataContext,
-                                                 ElementName=LayoutRoot,
-                                                 Mode=TwoWay}"
-                           FontWeight="Bold"
-                           Text="{Binding Value,
-                                          Converter={my:EnumCombinedConverter}}" />
+                <StackPanel>
+                    <TextBlock DataContext="{Binding Path=DataContext,
+                                                     ElementName=LayoutRoot,
+                                                     Mode=TwoWay}"
+                               FontWeight="Bold"
+                               Text="{Binding Member.Display}" />
+                    <TextBlock DataContext="{Binding Path=DataContext,
+                                                     ElementName=LayoutRoot,
+                                                     Mode=TwoWay}"
+                               FontWeight="Bold"
+                               Text="{Binding Value,
+                                              Converter={my:EnumCombinedConverter}}" />
+                </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <UniformGrid x:Name="LayoutRoot"
-                 VerticalAlignment="Top"
-                 Columns="3"
-                 DataContext="{Binding Path=ViewModel,
-                                       ElementName=ControlRoot,
-                                       Mode=TwoWay}"
-                 d:DataContext="{StaticResource FlagEnumMemberViewModelDataSource}">
-        <StackPanel>
-            <telerik:Label Content="Summary:" Style="{StaticResource SettingsGridHeadingLabel}" />
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="Value: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                <telerik:Label Content="{Binding Path=Value, Mode=OneWay}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="SelectedItem: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                <telerik:Label Content="{Binding Path=SelectedItem, Mode=OneWay}" />
-            </StackPanel>
-            <telerik:Label Content="Telerik:" Style="{StaticResource SettingsGridHeadingLabel}" />
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="Value: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:FlagEnumEditor x:Name="RadFlagEnumEditor1"
-                                        HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Stretch"
-                                        EnumType="{Binding Type,
-                                                           Mode=TwoWay}"
-                                        Value="{Binding Value,
-                                                        Mode=TwoWay}" />
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="SelectedItem: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:FlagEnumEditor x:Name="RadFlagEnumEditor3"
-                                        HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Stretch"
-                                        EnumType="{Binding Type,
-                                                           Mode=TwoWay}"
-                                        Value="{Binding SelectedItem.Value,
-                                                        Mode=TwoWay}" />
-
-            </StackPanel>
-        </StackPanel>
-        <StackPanel>
-            <telerik:Label Content="RadComboBox: Value" Style="{StaticResource SettingsGridHeadingLabel}" />
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="Value: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-
-                <telerik:RadComboBox x:Name="RadComboBoxValueValue"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Value"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     SelectedValue="{Binding Value,
-                                                             Mode=TwoWay}"
-                                     SelectedValuePath="Value" />
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="SelectedItem: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:RadComboBox x:Name="RadComboBoxValueItem"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Value"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     SelectedItem="{Binding SelectedItem,
-                                                            Mode=TwoWay}" />
-
-            </StackPanel>
-            <telerik:Label Content="RadComboBox: Description" Style="{StaticResource SettingsGridHeadingLabel}" />
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="Value: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:RadComboBox x:Name="RadComboBoxDescriptionValue"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Description"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     SelectedValue="{Binding Value,
-                                                             Mode=TwoWay}"
-                                     SelectedValuePath="Value" />
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="SelectedItem: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:RadComboBox x:Name="RadComboBoxDescriptionItem"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Description"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     SelectedItem="{Binding SelectedItem,
-                                                            Mode=TwoWay}" />
-
-            </StackPanel>
-        </StackPanel>
-        <StackPanel>
-
-            <telerik:Label Content="RadComboBox: Display" Style="{StaticResource SettingsGridHeadingLabel}" />
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="Value: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:RadComboBox x:Name="RadComboBoxDisplayValue"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Display"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     SelectedValue="{Binding Value,
-                                                             Mode=TwoWay}"
-                                     SelectedValuePath="Value" />
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="SelectedItem: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:RadComboBox x:Name="RadComboBoxDisplayItem"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Display"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     SelectedItem="{Binding SelectedItem,
-                                                            Mode=TwoWay}" />
-
-            </StackPanel>
-            <telerik:Label Content="Grid:"
-                           MouseUp="Label_MouseUp"
-                           Style="{StaticResource SettingsGridHeadingLabel}" />
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="Value: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <!--<telerik:RadComboBox x:Name="RadComboBoxFlagEnumGrid"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Display"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     NonEditableTemplate="{StaticResource FlagEnumMemberComboBoxGridNonEditableTemplate}"
-                                     OpenDropDownOnFocus="True"
-                                     SelectedValue="{Binding Value,
-                                                             Mode=TwoWay}"
-                                     SelectedValuePath="Value"
-                                     SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
-                                     StaysOpenOnEdit="True">
-                    <telerik:RadComboBox.SelectionBoxTemplate>
-                        <DataTemplate>
-                            <TextBlock DataContext="{Binding Path=DataContext,
-                                                             ElementName=LayoutRoot,
-                                                             Mode=TwoWay}"
-                                       FontWeight="Bold"
-                                       Text="{Binding Value,
-                                                      Converter={my:EnumCombinedConverter}}" />
-                        </DataTemplate>
-                    </telerik:RadComboBox.SelectionBoxTemplate>
-                </telerik:RadComboBox>-->
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <telerik:Label Width="150"
-                               Content="SelectedItem: "
-                               Style="{StaticResource SettingsGridSubHeadingLabel}" />
-
-                <telerik:RadComboBox x:Name="RadComboBoxFlagEnumGridItem3"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Stretch"
-                                     DisplayMemberPath="Display"
-                                     EmptySelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
-                                     ItemsSource="{Binding Items,
-                                                           Mode=TwoWay}"
-                                     NonEditableTemplate="{StaticResource FlagEnumMemberComboBoxGridNonEditableTemplate}"
-                                     OpenDropDownOnFocus="True"
-                                     SelectedItem="{Binding SelectedItem,
-                                                            Mode=TwoWay}"
-                                     SelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
-                                     SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
-                                     StaysOpenOnEdit="True" />
-            </StackPanel>
-        </StackPanel>
-    </UniformGrid>
+    <telerik:RadComboBox x:Name="LayoutRoot"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch"
+                         DataContext="{Binding Path=ViewModel,
+                                               ElementName=ControlRoot,
+                                               Mode=TwoWay}"
+                         DisplayMemberPath="Display"
+                         EmptySelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
+                         ItemsSource="{Binding Items,
+                                               Mode=TwoWay}"
+                         NonEditableTemplate="{StaticResource FlagEnumMemberComboBoxGridNonEditableTemplate}"
+                         OpenDropDownOnFocus="True"
+                         SelectedItem="{Binding SelectedItem,
+                                                Mode=TwoWay}"
+                         SelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
+                         StaysOpenOnEdit="True"
+                         d:DataContext="{StaticResource FlagEnumMemberViewModelDataSource}" />
 </UserControl>

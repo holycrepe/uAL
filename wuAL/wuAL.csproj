@@ -306,8 +306,8 @@
     <Compile Include="UserControls\CheckedComboBox\CheckedComboBoxSource.cs" />
     <Compile Include="UserControls\CheckedComboBox\ICheckedComboBoxDataItem.cs" />
     <Compile Include="UserControls\EnumEditor\EnumMemberViewModel.cs" />
-    <Compile Include="UserControls\EnumEditor\MyEnumEditorExamples.xaml.cs">
-      <DependentUpon>MyEnumEditorExamples.xaml</DependentUpon>
+    <Compile Include="UserControls\EnumEditor\MyEnumEditor.xaml.cs">
+      <DependentUpon>MyEnumEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings\Binding\LibraryExtensions.cs" />
     <Compile Include="Properties\Settings\Binding\ToggleExtensions.cs" />
@@ -341,12 +341,6 @@
     <Compile Include="UserControls\MarkupExtensions.cs" />
     <Compile Include="UserControls\ViewModel\ViewModel.cs" />
     <Compile Include="UserControls\EnumEditor\FlagEnumMemberViewModel.cs" />
-    <Compile Include="UserControls\EnumEditor\MyFlagEnumEditorExamples.xaml.cs">
-      <DependentUpon>MyFlagEnumEditorExamples.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\EnumEditor\MyEnumEditor.xaml.cs">
-      <DependentUpon>MyEnumEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\MyPrompt.xaml.cs">
       <DependentUpon>MyPrompt.xaml</DependentUpon>
     </Compile>
@@ -606,20 +600,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\EnumEditor\MyEnumEditorExamples.xaml">
+    <Page Include="UserControls\EnumEditor\MyEnumEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\EnumEditor\MyFlagEnumEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\EnumEditor\MyFlagEnumEditorExamples.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\EnumEditor\MyEnumEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MyPrompt.xaml">
       <Generator>MSBuild:Compile</Generator>

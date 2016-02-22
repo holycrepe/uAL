@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using Telerik.Windows.Controls.Data.PropertyGrid;
 
@@ -24,7 +25,7 @@ namespace wUAL.UserControls
     [NotifyPropertyChanged]
     public partial class MyFlagEnumEditor : UserControl, INotifyPropertyChanged
     {
-        bool _useCombinedFormat = true;
+        EnumMemberDisplayFormat _displayFormat = EnumMemberDisplayFormat.Combined;
 
         public MyFlagEnumEditor() : base()
         {
@@ -52,9 +53,9 @@ namespace wUAL.UserControls
         public FlagEnumMemberViewModel ViewModel { get; set; }
             = new FlagEnumMemberViewModel();
         public object Test { get; set; }
-        public bool UseCombinedFormat {
-            get { return this._useCombinedFormat; }
-            set { this.ViewModel.UseCombinedFormat = this._useCombinedFormat = value; }
+        public EnumMemberDisplayFormat DisplayFormat {
+            get { return this._displayFormat; }
+            set { this.ViewModel.DisplayFormat = this._displayFormat = value; }
         }
 
         public ObservableCollection<EnumMember> SelectedItems
@@ -99,13 +100,13 @@ namespace wUAL.UserControls
         /// </summary>
         public static readonly DependencyProperty EnumProperty =
             DependencyProperty.Register(nameof(Enum), typeof(object),
-              typeof(MyFlagEnumEditorExamples), 
+              typeof(MyFlagEnumEditor), 
               new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnEnumChanged, OnEnumCoerced));
         #endregion
         #region Dependency Properties: Enum: Events
         protected static void OnEnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {            
-            var control = d as MyFlagEnumEditorExamples;
+            var control = d as MyFlagEnumEditor;
             var value = e.NewValue;
             // myFlagEnumEditor.OnDependencyPropertyChanged(e);
             if (control == null || 
@@ -140,7 +141,7 @@ namespace wUAL.UserControls
             var control = sender as RadComboBox;
             if (control != null)
             {
-                control.IsDropDownOpen = false;
+                //control.IsDropDownOpen = false;
             }
         }
         #endregion
@@ -162,8 +163,6 @@ namespace wUAL.UserControls
         #endregion
 
         private void Label_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            DEBUG.Break();
-        }
+            => Debugger.Break();
     }
 }

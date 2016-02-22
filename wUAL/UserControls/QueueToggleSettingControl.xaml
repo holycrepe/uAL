@@ -6,20 +6,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:my="clr-namespace:wUAL"
              xmlns:myControl="clr-namespace:wUAL.UserControls"
-             xmlns:toggles="clr-namespace:uAL.Properties.Settings.ToggleSettings;assembly=uAL"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             x:Name="myQueueToggleSettingControl"
+             xmlns:toggles="clr-namespace:uAL.Properties.Settings.ToggleSettings;assembly=uAL"
+             x:Name="ControlRoot"
              Grid.Column="1"
              d:DataContext="{bind:Toggle Path=Monitors}"
-             d:DesignHeight="50"
-             d:DesignWidth="300"
+             d:DesignWidth="200"
              mc:Ignorable="d">
-    <Grid DataContext="{Binding DataContext, ElementName=myQueueToggleSettingControl}">                    
-            <telerik:FlagEnumEditor
+    <Grid x:Name="LayoutRoot" DataContext="{Binding DataContext, ElementName=ControlRoot}">
+        <myControl:MyFlagEnumEditor x:Name="MyFlagEnumEditor"
+                                    Width="200"
+                                    HorizontalAlignment="Left"
+                                    DisplayFormat="Description"
+                                    Enum="{Binding Enum,
+                                                   ElementName=ControlRoot}" />
+        <!--<telerik:FlagEnumEditor
                 x:Name="RadFlagEnumEditor"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 EnumType="toggles:MonitorTypes"
-                Value="{Binding}" />
+                Value="{Binding}" />-->
     </Grid>
 </UserControl>
