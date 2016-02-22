@@ -17,15 +17,15 @@ namespace Puchalapalli.Dynamic.Utils
         /// <returns>The array of expressions.</returns>
         public static Expression[] GetExpressions(DynamicMetaObject[] objects)
         {
-            ContractUtils.RequiresNotNull(objects, "objects");
+            ContractUtils.RequiresNotNull(objects, nameof(objects));
 
             Expression[] res = new Expression[objects.Length];
             for (int i = 0; i < objects.Length; i++)
             {
                 DynamicMetaObject mo = objects[i];
-                ContractUtils.RequiresNotNull(mo, "objects");
+                ContractUtils.RequiresNotNull(mo, nameof(objects));
                 Expression expr = mo.Expression;
-                ContractUtils.RequiresNotNull(expr, "objects");
+                ContractUtils.RequiresNotNull(expr, nameof(objects));
                 res[i] = expr;
             }
 

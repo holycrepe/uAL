@@ -15,10 +15,10 @@
         public static T[] GetCustomAttributes<T>(this FieldInfo field) where T : Attribute
             => (T[])GetCustomAttributesTyped<T>(field);
         public static T GetCustomAttribute<T>(this FieldInfo field) where T : Attribute
-            => (T)GetCustomAttributesTyped<T>(field).Where(v => v is T && v != null).FirstOrDefault();
+            => (T)GetCustomAttributesTyped<T>(field).FirstOrDefault(v => v is T && v != null);
         public static object GetDisplay(this FieldInfo field, Type enumType)
-            => field.GetDescription(enumType) ?? field.GetValue(enumType);
-        public static string GetDescription(this FieldInfo field, Type enumType)
+            => field.GetDescription() ?? field.GetValue(enumType);
+        public static string GetDescription(this FieldInfo field)
             => field.GetCustomAttribute<DescriptionAttribute>()?.Description;
     }
 }

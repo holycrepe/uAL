@@ -73,7 +73,7 @@ namespace Torrent.Helpers.Utils
             T value;
             if (!TryParseName(name, out value))
             {
-                throw new ArgumentException("Unknown name", "name");
+                throw new ArgumentException("Unknown name", nameof(name));
             }
             return value;
         }

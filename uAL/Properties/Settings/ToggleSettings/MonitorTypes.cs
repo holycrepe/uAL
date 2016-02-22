@@ -10,6 +10,7 @@ namespace uAL.Properties.Settings.ToggleSettings
     public enum MonitorTypes
     {
         [Description("None")]
+        [Browsable(false)]
         Disabled = 0,
         [Description("All Monitors")]
         All = -1,
@@ -19,9 +20,9 @@ namespace uAL.Properties.Settings.ToggleSettings
         Metalink = 1 << 1,
         [Description("uTorrent Job")]
         Job = 1 << 2,
-        [Description("Torrent, Metalink, and uTorrent Job")]
-        [Browsable(false)]
-        AllMonitors = Torrent | Metalink | Job,
+        //[Description("Torrent, Metalink, and uTorrent Job")]
+        //[Browsable(false)]
+        //AllMonitors = Torrent | Metalink | Job,
         [Description("Torrent & Metalink")]
         [Browsable(false)]
         Main = Torrent | Metalink
@@ -39,7 +40,7 @@ namespace uAL.Properties.Settings.ToggleSettings
             => value == Job;
 
         public static bool IncludesAll(this MonitorTypes value)
-            => value.IsAll() || value.Has(AllMonitors);
+            => value.IsAll(); // || value.Has(AllMonitors);
         public static bool Includes(this MonitorTypes value, MonitorTypes flag)
             => value.IncludesAll() || value.Has(flag);
         public static bool IncludesTorrent(this MonitorTypes value)

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Torrent.Infrastructure
 {
@@ -15,6 +16,7 @@ namespace Torrent.Infrastructure
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual Dictionary<string, string[]> DerivedProperties { get; } = null;
+        [DebuggerNonUserCode]
         public static void DoOnPropertyChanged(object sender, PropertyChangedEventHandler propertyChanged,
                                                LocalPropertyChangedEventHandler propertyChangedLocal,
                                                params string[] propertyNames)
@@ -28,6 +30,7 @@ namespace Torrent.Infrastructure
                 }
             }
         }
+        [DebuggerNonUserCode]
         public static void DoOnPropertyChanged(object sender, PropertyChangedEventHandler propertyChanged,
                                                params string[] propertyNames)
         {
@@ -37,7 +40,7 @@ namespace Torrent.Infrastructure
                 }
             }
         }
-
+        [DebuggerNonUserCode]
         public static void DoOnPropertyChanged(object sender, PropertyChangedEventHandler propertyChanged,
                                                Dictionary<string, string[]> derivedProperties,
                                                params string[] propertyNames)
@@ -45,7 +48,7 @@ namespace Torrent.Infrastructure
             DoOnPropertyChanged(sender, propertyChanged, propertyNames);
             DoOnPropertyChangedDerived(sender, propertyChanged, derivedProperties, propertyNames);
         }
-
+        [DebuggerNonUserCode]
         public static void DoOnPropertyChangedDerived(object sender, PropertyChangedEventHandler propertyChanged,
                                                       Dictionary<string, string[]> derivedProperties,
                                                       params string[] propertyNames)
@@ -58,10 +61,10 @@ namespace Torrent.Infrastructure
                 }
             }
         }
-
+        [DebuggerNonUserCode]
         protected virtual void OnPropertyChanged(string propertyName) 
             => OnPropertyChanged(propertyName.Split(';'));
-
+        [DebuggerNonUserCode]
         public virtual void OnPropertyChanged(params string[] propertyNames)
             => DoOnPropertyChanged(this, PropertyChanged, DerivedProperties, propertyNames);
     }

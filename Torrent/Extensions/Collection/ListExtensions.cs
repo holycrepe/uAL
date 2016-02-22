@@ -32,9 +32,19 @@ namespace Torrent.Extensions
         }
         public static T[] ToArray<T>(this IEnumerator<T> enumerator, int start = 0, int end = -1)
             => enumerator.ToEnumerable(start, end).ToArray();
-    }
+    }    
     public static class ListExtensions
     {
+        public static long GetPositiveBitwiseOr(this IEnumerable<object> values)
+            => values.GetBitwiseOr(true);
+        public static long GetBitwiseOr(this IEnumerable<object> values, bool excludeNegativeValues=false)
+            => values.Aggregate<object, long>(0, (current, flag) =>
+            {
+                var value = Convert.ToInt64(flag);
+                if (excludeNegativeValues && value < 0)
+                    return current;
+                return current | value;
+            });
         public static void ForEach<T>(this IEnumerable<T> list, Action<T> action)
         {
             foreach (var item in list)
@@ -43,7 +53,7 @@ namespace Torrent.Extensions
             }
         }
         public static string ToIndentedList(this IEnumerable<string> list, string padding = "      ", string defaultValue="")
-            => list.Count() == 0 ? defaultValue : "\n" + padding + string.Join("\n" + padding, list) + "\n  ";
+            => !list.Any() ? defaultValue : "\n" + padding + string.Join("\n" + padding, list) + "\n  ";
         public static void AddRange<T>(this Collection<T> enumerable, IEnumerable<T> newItems)
         {
             foreach (var newItem in newItems)
@@ -204,7 +214,8 @@ namespace Torrent.Extensions
                                            int indent = 4, char indentChar = ' ',
                                            bool combineDelimAndSep = true, NumberPadder padder = null,
                                            Func<T, string> formatter = null,
-                                           int linePadding = LogUtils.LOG_PREFIX_TITLE_LENGTH)
+                                           int linePadding = LogUtils.LOG_PREFIX_TITLE_LENGTH,
+                                           bool includeName=false)
         {
             if (list == null) {
                 return null;
@@ -217,7 +228,7 @@ namespace Torrent.Extensions
                 formatter = (s) => s.ToString().PrefixNewLines(formatterPrefix);
             }
             var count = list.Count();
-            return $"{list.GetType().Name}: " +
+            return includeName ? $"{list.GetType().Name}: " : "" +
                    (count == 0
                         ? "Empty"
                         : $"<{count}>{sep}" +

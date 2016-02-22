@@ -22,6 +22,14 @@
                 <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Styles/Grid/Settings.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <myControl:FlagEnumMemberViewModel x:Key="FlagEnumMemberViewModelDataSource" d:IsDataSource="True" />
+            <DataTemplate x:Key="FlagEnumMemberComboBoxGridSelectionBoxTemplate">
+                <TextBlock DataContext="{Binding Path=DataContext,
+                                                 ElementName=LayoutRoot,
+                                                 Mode=TwoWay}"
+                           FontWeight="Bold"
+                           Text="{Binding Value,
+                                          Converter={my:EnumCombinedConverter}}" />
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <UniformGrid x:Name="LayoutRoot"
@@ -30,7 +38,7 @@
                  DataContext="{Binding Path=ViewModel,
                                        ElementName=ControlRoot,
                                        Mode=TwoWay}"
-                 d:DataContext="{StaticResource EnumMemberViewModelDataSource}">
+                 d:DataContext="{StaticResource FlagEnumMemberViewModelDataSource}">
         <StackPanel>
             <telerik:Label Content="Summary:" Style="{StaticResource SettingsGridHeadingLabel}" />
             <StackPanel Orientation="Horizontal">
@@ -176,7 +184,9 @@
                                                             Mode=TwoWay}" />
 
             </StackPanel>
-            <telerik:Label Content="Grid:" Style="{StaticResource SettingsGridHeadingLabel}" />
+            <telerik:Label Content="Grid:"
+                           MouseUp="Label_MouseUp"
+                           Style="{StaticResource SettingsGridHeadingLabel}" />
             <StackPanel Orientation="Horizontal">
                 <telerik:Label Width="150"
                                Content="Value: "
@@ -186,6 +196,7 @@
                                      HorizontalAlignment="Stretch"
                                      HorizontalContentAlignment="Stretch"
                                      DisplayMemberPath="Display"
+                                     EmptySelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
                                      ItemsSource="{Binding Items,
                                                            Mode=TwoWay}"
                                      NonEditableTemplate="{StaticResource FlagEnumMemberComboBoxGridNonEditableTemplate}"
@@ -193,6 +204,7 @@
                                      SelectedValue="{Binding Value,
                                                              Mode=TwoWay}"
                                      SelectedValuePath="Value"
+                                     SelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
                                      SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
                                      StaysOpenOnEdit="True" />
 
@@ -206,15 +218,16 @@
                                      HorizontalAlignment="Stretch"
                                      HorizontalContentAlignment="Stretch"
                                      DisplayMemberPath="Display"
+                                     EmptySelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
                                      ItemsSource="{Binding Items,
                                                            Mode=TwoWay}"
                                      NonEditableTemplate="{StaticResource FlagEnumMemberComboBoxGridNonEditableTemplate}"
                                      OpenDropDownOnFocus="True"
                                      SelectedItem="{Binding SelectedItem,
                                                             Mode=TwoWay}"
+                                     SelectionBoxTemplate="{StaticResource FlagEnumMemberComboBoxGridSelectionBoxTemplate}"
                                      SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
                                      StaysOpenOnEdit="True" />
-
             </StackPanel>
         </StackPanel>
     </UniformGrid>

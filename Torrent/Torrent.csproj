@@ -197,6 +197,7 @@
     <Compile Include="Infrastructure\Enums\Toggles\IEnumToggles.cs" />
     <Compile Include="Infrastructure\Exceptions\ExceptionSummary.cs" />
     <Compile Include="Infrastructure\Generics\Union.cs" />
+    <Compile Include="Infrastructure\Reflection\Field.cs" />
     <Compile Include="Serialization\DataContractUtils.cs" />
     <Compile Include="Serialization\NamespaceAttribute.cs" />
     <Compile Include="Infrastructure\Collections\MyKeyedCollection.cs" />

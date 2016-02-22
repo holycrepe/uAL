@@ -28,13 +28,13 @@ namespace Torrent.Converters
             if (sourceType == typeof(string))
             {
                 var source = value.ToString();
-                foreach (var field in EnumType.GetPublicFields())
+                foreach (var field in EnumType.GetPublicFieldInfo())
                 {
                     if (field.Name == source)
                     {
                         return field.GetValue(EnumType);
                     }
-                    if (field.GetDescription(EnumType) == source)
+                    if (field.GetDescription() == source)
                     {
                         return field.GetValue(EnumType);
                     }

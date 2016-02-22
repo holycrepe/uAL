@@ -1,7 +1,9 @@
 ﻿#define LOG_PROPERTY_CHANGED
 
 using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 using Telerik.Windows.Controls.Data.PropertyGrid;
 
 namespace wUAL.UserControls
@@ -145,5 +147,8 @@ namespace wUAL.UserControls
             => NotifyPropertyChangedBase.DoOnPropertyChanged(this, PropertyChanged, OnPropertyChangedLocal, propertyNames);
         #endregion
         #endregion
+
+        private void Label_OnMouseUp(object sender, MouseButtonEventArgs e)
+            => Debugger.Break();
     }
 }

@@ -1,13 +1,17 @@
 ﻿using AddGenericConstraint;
 using System;
+using System.Collections;
 using System.Linq;
+using Torrent.Infrastructure.Enums;
+using Torrent.Infrastructure.Reflection;
 
 namespace Torrent.Helpers.Utils
 {
     using Extensions;
     using System.ComponentModel;
     using System.Reflection;
-
+    using System.Collections.Generic;
+    using static DebugUtils;
     public static partial class EnumUtils
     {
         //public static T[] GetValues<[AddGenericConstraint(typeof(Enum))] T>() where T : struct
@@ -15,7 +19,16 @@ namespace Torrent.Helpers.Utils
         [Obsolete("Use extension method", true)]
         public static string GetDescription<[AddGenericConstraint(typeof(Enum))] T>(T? value) where T : struct
                 => value == null ? string.Empty : GetDescription(value.Value, typeof(T));
-        
+
+        public static string GetCombinedDescription(object value, Type t, bool useCombinedFormatIfNotDefined=false)
+            => Enum.IsDefined(t, value) 
+            ? value + GetDescription(value, t).Prefix(": ")
+            : new EnumMember(t, value, useCombinedFormatIfNotDefined).Display;
+        public static string GetDescriptionOrValue(object value, Type t)
+        {
+            var description = GetDescription(value, t);
+            return string.IsNullOrEmpty(description) ? value.ToString() : description;
+        }
         public static string GetDescription(object value, Type t)
         {
             if (value != null)
@@ -44,5 +57,38 @@ namespace Torrent.Helpers.Utils
             value = default(T);
             return false;
         }
+
+        public static object[] GetMatchingValues(Type t, object flags)
+        {
+            var flagValues = Convert.ToInt64(flags);
+            return Enum.GetValues(t).Cast<object>().Where(item =>
+            {
+                var value = Convert.ToInt64(item);
+                return value > 0 && flagValues.Has(value);
+            }).ToArray();
+        }
+        public static Field<long>[] GetMatchingFields(Type t, object flags)
+        {
+            var flagValues = Convert.ToInt64(flags);
+            var fields = t.GetPublicFields(Convert.ToInt64)
+                .Where(fi => fi.Cast > 0)
+                .OrderByDescending(fi => fi.Cast);
+            var list = new List<Field<long>>();
+            while (flagValues > 0)
+            {
+                var match = fields.FirstOrDefault(field => flagValues.Has(field.Cast));
+                if ((match?.Cast ?? 0) == 0)
+                    DEBUG.Break();
+                var obj = Enum.ToObject(t, match);
+                list.Add(match);
+                flagValues -= match;
+            }
+            return list.OrderBy(field => field.Cast).ToArray();
+        }
+        public static object GetUsedBits(Type t, bool excludeNegativeValues=false)
+            => GetUsedBits(t, Enum.GetValues(t).Cast<object>(), excludeNegativeValues);
+
+        public static object GetUsedBits(Type t, IEnumerable<object> values, bool excludeNegativeValues = false)
+            => Enum.ToObject(t, values.GetBitwiseOr(excludeNegativeValues));
     }
 }

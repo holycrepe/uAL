@@ -15,9 +15,7 @@ namespace Torrent.Infrastructure.InfoReporters
         }
 
         [Conditional("DEBUG")]
-        [DebuggerHidden]
         [DebuggerNonUserCode]
-        [DebuggerStepThrough]
         public void Break()
             => Debugger.Break();
 

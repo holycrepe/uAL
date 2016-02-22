@@ -62,7 +62,6 @@
         #region Properties
 
         #region Public Properties
-
         public ContextHandlers ThrowExceptions { get; } = new ContextHandlers(DEFAULT_THROW_EXTENSIONS);
         public UTorrentRestClientException GetTokenException;
         public string Token => token ?? (token = GetToken(out GetTokenException));

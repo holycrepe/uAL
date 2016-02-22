@@ -175,7 +175,9 @@
                                                             Mode=TwoWay}" />
 
             </StackPanel>
-            <telerik:Label Content="Grid:" Style="{StaticResource SettingsGridHeadingLabel}" />
+            <telerik:Label Content="Grid:"
+                           MouseUp="Label_OnMouseUp"
+                           Style="{StaticResource SettingsGridHeadingLabel}" />
             <StackPanel Orientation="Horizontal">
                 <telerik:Label Width="150"
                                Content="Value: "
@@ -212,8 +214,17 @@
                                      SelectedItem="{Binding SelectedItem,
                                                             Mode=TwoWay}"
                                      SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
-                                     StaysOpenOnEdit="True" />
-
+                                     StaysOpenOnEdit="True">
+                    <telerik:RadComboBox.SelectionBoxTemplate>
+                        <DataTemplate>
+                            <TextBlock DataContext="{Binding Path=DataContext,
+                                                             ElementName=LayoutRoot,
+                                                             Mode=TwoWay}"
+                                       FontWeight="Bold"
+                                       Text="{Binding SelectedItem.Display}" />
+                        </DataTemplate>
+                    </telerik:RadComboBox.SelectionBoxTemplate>
+                </telerik:RadComboBox>
             </StackPanel>
         </StackPanel>
     </UniformGrid>

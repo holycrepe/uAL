@@ -17,6 +17,9 @@ using Torrent.Infrastructure.Enums;
 using System.Collections.Generic;
 using Torrent.Exceptions;
 using System.Collections.Specialized;
+using System.Collections;
+using System.Diagnostics;
+using Torrent.Infrastructure.ContextHandlers;
 
 namespace wUAL.UserControls
 {
@@ -27,6 +30,9 @@ namespace wUAL.UserControls
         where TValue : class
     {
         protected bool IsMultiple { get; }
+
+        public ContextHandlers IgnoreSelectedItemsChanged { get; }
+            = new ContextHandlers();
         protected virtual bool IS_MULTIPLE_DEFAULT { get; }
             = false;
         protected T _selectedItem;
@@ -40,7 +46,7 @@ namespace wUAL.UserControls
             {
                 if (!this.IsMultiple)
                 {
-                    throw new ViewModelStateException($"Cannot access {nameof(SelectedItems)} when {nameof(IsMultiple)} is false.");
+                    // throw new ViewModelStateException($"Cannot access {nameof(SelectedItems)} when {nameof(IsMultiple)} is false.");
                 }
                 return _selectedItems ?? (_selectedItems = new ObservableCollection<T>());
             }
@@ -57,10 +63,8 @@ namespace wUAL.UserControls
         }
         protected virtual void Initialize()
         {
-            if (IsMultiple)
-            {
-                this.SelectedItems.CollectionChanged += SelectedItems_OnCollectionChanged;
-            }
+            if (IsMultiple)            
+                this.SelectedItems.CollectionChanged += SelectedItems_OnCollectionChanged;            
         }
         protected virtual void OnSelectedItemsChanged(NotifyCollectionChangedEventArgs e) { }
         protected virtual void OnSelectedItemsChangedComplete(NotifyCollectionChangedEventArgs e) { }
@@ -69,15 +73,16 @@ namespace wUAL.UserControls
         protected virtual void OnSelectedItemAdded(T item) { }
         private void SelectedItems_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (IgnoreSelectedItemsChanged)
+                return;
             OnSelectedItemsChanged(e);
-            foreach (var item in e.OldItems)
-            {
-                OnSelectedItemRemoved(item as T);
-            }
-            foreach (var item in e.NewItems)
-            {
-                OnSelectedItemAdded(item as T);
-            }
+            IList items;
+            if ((items = e.OldItems) != null)
+                foreach (var item in items)
+                    OnSelectedItemRemoved(item as T);
+            if ((items = e.NewItems) != null)
+                foreach (var item in items)
+                    OnSelectedItemAdded(item as T);
             OnSelectedItemsChangedComplete(e);
         }
         #region Value
@@ -95,23 +100,55 @@ namespace wUAL.UserControls
         [SafeForDependencyAnalysis]
         public virtual T SelectedItem
         {
-            get { return this._selectedItem; }
+            get
+            {
+                return this._selectedItem 
+                    ?? GetDefaultSelectedItem();
+            }
             set
             {
-                if (value != null && value != this._selectedItem)
+                if (value == null || value == this._selectedItem)
+                    return;
+                if (this.IsMultiple)
+                {
+                    return;
+                    this._selectedItem = value;
+                    this.AddSelectedItem(value);
+                    this.Value = this.GetConsolidatedValue();
+                }
+                else
                 {
                     this._selectedItem = value;
-                    if (this.IsMultiple)
-                    {
-                        this.AddSelectedItem(value);
-                        this.Value = this.GetConsolidatedValue();
-                    }
-                    else
-                    {
-                        this.Value = this.GetValueFromItem(value);
-                    }
+                    this.SelectedItems.Clear();
+                    this.SelectedItems.Add(value);
+                    this.Value = this.GetValueFromItem(value);
                 }
             }
+        }
+
+        protected virtual T GetDefaultSelectedItem()
+            => this.IsMultiple ? this.SelectedItems?.FirstOrDefault() : null;
+        public void SetConsolidatedValue()
+        {
+            this._value = GetConsolidatedValue();
+            OnPropertyChanged(nameof(Value));
+        }
+        public void SetSelectedItem(object selectedItem)
+        {
+            var selectedValue = selectedItem as TValue;
+            var item = selectedItem as T
+                ?? GetItemFromValue(selectedValue);
+            if (item == null)
+                return;
+            //this._selectedItem = item;
+            //OnPropertyChanged();
+            var value = selectedValue ?? GetValueFromItem(item);
+            this._value = IsMultiple
+                ? GetConsolidatedValue()
+                : value;
+            this._selectedItem = item;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(Value));
         }
         #endregion
         #region Properties: Methods
@@ -122,10 +159,13 @@ namespace wUAL.UserControls
             => item.Equals(match);
         #endregion
         #region Properties: Methods: Value
+        protected virtual T GetItemFromValue(TValue value)
+            => this.Items.FirstOrDefault(item
+                => this.IsMatchingItem(item, value));
         protected virtual TValue GetValueFromItem(T item)
             => item as TValue;
         protected virtual IEnumerable<TValue> GetValuesFromItems(IEnumerable<T> items)
-            => items.Select(item => this.GetValueFromItem(item));
+            => items.Select(this.GetValueFromItem);
         protected virtual TValue GetConsolidatedValue(IEnumerable<TValue> values)
             => values.FirstOrDefault();
         protected TValue GetConsolidatedValue(IEnumerable<T> items)
@@ -136,26 +176,50 @@ namespace wUAL.UserControls
             => string.Join(", ", values.Select(item => item.ToString()));
         #endregion
         #region Properties: Methods: Selection
+        [DebuggerNonUserCode]
         protected void SetSelection()
             => SetSelection(this.Value);
+        [DebuggerNonUserCode]
         protected virtual void SetSelection(TValue value)
             => SetSelectedItem(value);
         #endregion
         #region Properties: Methods: Selected Item
+        [DebuggerNonUserCode]
+        protected void SetSelectedItemOnly()
+            => SetSelectedItemOnly(this.Value);
+        protected void SetSelectedItemOnly(TValue value)
+        {
+            var selectedItem = GetItemFromValue(value);
+            if (selectedItem == null)
+                return;
+
+            this._selectedItem = selectedItem;
+            OnPropertyChanged(nameof(SelectedItem));
+
+            
+            if (IsMultiple)
+                return;
+            SelectedItems.Clear();
+            SelectedItems.Add(SelectedItem);
+        }
+        [DebuggerNonUserCode]
         protected void SetSelectedItem()
             => this.SetSelectedItem(this.Value);
         protected virtual void SetSelectedItem(TValue value)
         {
-            var selectedItem = this.Items.FirstOrDefault(item
-                    => this.IsMatchingItem(item, value));
-            if (selectedItem != null)
-                this._selectedItem = selectedItem;
-
-            if (this.IsMultiple)
-            {
-                SetSelectedItems(value);
-            }
+            SetSelectedItemOnly(value);
+            SetSelectedItems(value);
         }
+        //protected virtual void SetSelectedItem(T selectedItem)
+        //{
+        //    if (selectedItem == null)
+        //        return;
+
+        //    var value = GetValueFromItem(selectedItem);
+        //    this._selectedItem = selectedItem;
+        //    OnPropertyChanged();
+        //    SetSelectedItems(value);
+        //}
         protected void AddSelectedItem(T item)
         {
             if (!this.SelectedItems.Contains(item))
@@ -165,24 +229,67 @@ namespace wUAL.UserControls
         }
         #endregion
         #region Properties: Methods: Selected Items
-        protected IEnumerable<T> GetSelectedItems(TValue value)
+        protected bool GetMatchingItem(TValue value, out T matchingItem)
+        {
+            foreach (var item in Items)
+            {
+                if (GetValueFromItem(item) == value)
+                {
+                    matchingItem = item;
+                    return true;
+                }
+            }
+            matchingItem = default(T);
+            return false;
+        }
+        [DebuggerNonUserCode]
+        protected IEnumerable<T> GetSelectedItems()
+            => this.GetSelectedItems(Value);
+
+        [DebuggerNonUserCode]
+        protected virtual IEnumerable<T> GetSelectedItems(TValue value)
             => this.Items.Where(item => this.IsMatchingItem(item, value));
+        [DebuggerNonUserCode]
         protected void SetSelectedItems()
             => SetSelectedItems(this.Value);
         protected virtual void SetSelectedItems(TValue value)
         {
-            foreach (var item in this.Items)
+            if (!IsMultiple)
+                return;
+            using (IgnoreSelectedItemsChanged.On)
             {
-                if (this.IsMatchingItem(item, value))
+                T matchingItem;
+                if (GetMatchingItem(value, out matchingItem))
                 {
-                    if (!this.SelectedItems.Contains(item))
+                    _selectedItem = matchingItem;
+                    if (!SelectedItems.Contains(matchingItem))
                     {
-                        this.SelectedItems.Add(item);
+                        SelectedItems.Clear();
+                        SelectedItems.Add(matchingItem);
+                        return;
                     }
+                    for (var i = SelectedItems.Count - 1; i >= 0; i--)
+                    {
+                        if (SelectedItems[i] != matchingItem)
+                        {
+                            SelectedItems.RemoveAt(i);
+                        }
+                    }
+                    return;
                 }
-                else if (this.SelectedItems.Contains(item))
+                foreach (var item in this.Items)
                 {
-                    this.SelectedItems.Remove(item);
+                    if (this.IsMatchingItem(item, value))
+                    {
+                        if (!this.SelectedItems.Contains(item))
+                        {
+                            this.SelectedItems.Add(item);
+                        }
+                    }
+                    else if (this.SelectedItems.Contains(item))
+                    {
+                        this.SelectedItems.Remove(item);
+                    }
                 }
             }
         }
@@ -190,26 +297,31 @@ namespace wUAL.UserControls
         #endregion
         #region Events
         #region Events: Property Changed
+        [DebuggerNonUserCode]
         protected virtual void OnPropertyChangedLocal(string propertyName)
             => LogPropertyChanged(propertyName);
         #endregion
         #endregion
         #region Interfaces
         #region Interfaces: IPropertyChanged
+        [DebuggerNonUserCode]
         protected new virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => OnPropertiesChanged(propertyName);
+            => OnPropertiesChanged(propertyName.TrimStart("Set"));
+        [DebuggerNonUserCode]
         public virtual void OnPropertiesChanged(params string[] propertyNames)
             => NotifyPropertyChangedBase.DoOnPropertyChanged(this,
-                (s, e) => base.OnPropertyChanged(e.PropertyName), 
+                (s, e) => base.OnPropertyChanged(e.PropertyName),
                 OnPropertyChangedLocal, propertyNames);
         #endregion
         #endregion
         #region Logging
         [System.Diagnostics.Conditional("LOG_PROPERTY_CHANGED"), System.Diagnostics.Conditional("LOG_ALL")]
+        [DebuggerNonUserCode]
         public void LogPropertyChanged(string propertyName)
             => Log("Δ ", propertyName);
         [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE_EXT")]
-        public virtual void Log(string prefix = "+", object status=null, object title = null, object text=null, object info=null,  PadDirection textPadDirection = PadDirection.Default,
+        [DebuggerNonUserCode]
+        public virtual void Log(string prefix = "+", object status = null, object title = null, object text = null, object info = null, PadDirection textPadDirection = PadDirection.Default,
                         string textSuffix = null, PadDirection titlePadDirection = PadDirection.Default,
                         string titleSuffix = null, int random = 0)
         {

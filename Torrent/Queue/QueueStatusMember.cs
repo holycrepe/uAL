@@ -4,8 +4,9 @@ using System;
 namespace Torrent.Queue
 {
     [NotifyPropertyChanged]
-    public class QueueStatusMember : IComparable<QueueStatusMember>, IComparable<int>, IComparable,
-                                     IEquatable<int>, IEquatable<QueueStatusMember>, IEquatable<string>
+    public class QueueStatusMember
+        : IComparable<QueueStatusMember>, IComparable<int>, IComparable,
+            IEquatable<int>, IEquatable<QueueStatusMember>, IEquatable<string>
     {
         public string Name { get; }
 
@@ -13,7 +14,7 @@ namespace Torrent.Queue
 
         public int Value { get; }
 
-        public QueueStatusMember(string name, int value) : this(name, name, value) { }
+        public QueueStatusMember(string name, int value) : this(name, name, value) {}
 
         public QueueStatusMember(string name, string title, int value)
         {
@@ -29,74 +30,89 @@ namespace Torrent.Queue
         {
             this.Name = name.Replace(" ", "");
             this.Title = title;
-            if (previous == null) {
+            if (previous == null)
+            {
                 throw new ArgumentNullException(nameof(previous),
                                                 $"{nameof(QueueStatusMember)}.ctor({nameof(name)}, {nameof(previous)}, {nameof(offset)})");
             }
             this.Value = previous.Value + offset;
         }
 
-        public override string ToString() { return Title; }
+        public override string ToString()
+            => Title;
 
-        public override int GetHashCode() => Name.GetHashCode() ^ Title.GetHashCode() ^ Value;
+        public override int GetHashCode()
+            => Name.GetHashCode() ^ Title.GetHashCode() ^ Value;
 
         public override bool Equals(object o)
         {
-            if (o == null) {
+            if (o == null)
+            {
                 return false;
             }
             var member = o as QueueStatusMember;
-            if (member != null) {
+            if (member != null)
+            {
                 return this.Equals(member);
             }
             var name = o as string;
-            if (name != null) {
+            if (name != null)
+            {
                 return this.Equals(name);
             }
             var value = o as int?;
-            if (value.HasValue) {
+            if (value.HasValue)
+            {
                 return this.Equals(value.Value);
             }
             return false;
         }
 
-        public bool Equals(QueueStatusMember other) { return other.Name == this.Name && other.Value == this.Value; }
+        public bool Equals(QueueStatusMember other)
+            => other.Name == this.Name && other.Value == this.Value;
 
-        public bool Equals(string other) { return other == this.Name || other == this.Title; }
+        public bool Equals(string other)
+            => other == this.Name || other == this.Title;
 
-        public bool Equals(int other) { return other == this.Value; }
+        public bool Equals(int other)
+            => other == this.Value;
 
         #region IComparable implementation
 
         int IComparable<QueueStatusMember>.CompareTo(QueueStatusMember other)
-        {
-            return other == null ? 1 : this.Value.CompareTo(other.Value);
-        }
+            => other == null ? 1 : this.Value.CompareTo(other.Value);
 
 
-        int IComparable<int>.CompareTo(int other) { return this.Value.CompareTo(other); }
+        int IComparable<int>.CompareTo(int other)
+            => this.Value.CompareTo(other);
 
-        int IComparable.CompareTo(object obj) { return CompareTo(obj); }
+        int IComparable.CompareTo(object obj)
+            => CompareTo(obj);
 
         public int CompareTo(object obj)
         {
             var member = obj as QueueStatusMember;
-            if (member != null) {
+            if (member != null)
+            {
                 return this.Value.CompareTo(member.Value);
             }
-            if (obj is int) {
+            if (obj is int)
+            {
                 return this.Value.CompareTo((int) obj);
             }
             throw new NotImplementedException();
         }
 
-        public int CompareTo(QueueStatusMember obj) { return this.Value.CompareTo(obj.Value); }
+        public int CompareTo(QueueStatusMember obj)
+            => this.Value.CompareTo(obj.Value);
 
-        public int CompareTo(int obj) { return this.Value.CompareTo(obj); }
+        public int CompareTo(int obj)
+            => this.Value.CompareTo(obj);
 
         public static implicit operator int(QueueStatusMember member)
         {
-            if (member == null) {
+            if (member == null)
+            {
                 throw new NotImplementedException();
             }
             return member.Value;
@@ -105,12 +121,14 @@ namespace Torrent.Queue
         public static bool operator ==(QueueStatusMember a, QueueStatusMember b)
         {
             // If both are null, or both are same instance, return true.
-            if (System.Object.ReferenceEquals(a, b)) {
+            if (ReferenceEquals(a, b))
+            {
                 return true;
             }
 
             // If one is null, but not both, return false.
-            if (((object) a == null) || ((object) b == null)) {
+            if ((a == null) || (b == null))
+            {
                 return false;
             }
 
@@ -121,12 +139,14 @@ namespace Torrent.Queue
         public static bool operator ==(int a, QueueStatusMember b)
         {
             // If both are null, or both are same instance, return true.
-            if (System.Object.ReferenceEquals(b, null)) {
+            if (System.Object.ReferenceEquals(b, null))
+            {
                 return false;
             }
 
             // If one is null, but not both, return false.
-            if (((object) a == null)) {
+            if (((object) a == null))
+            {
                 return false;
             }
 
@@ -134,72 +154,48 @@ namespace Torrent.Queue
             return a.Equals(b.Value);
         }
 
-        public static bool operator ==(QueueStatusMember a, int b) { return b == a; }
+        public static bool operator ==(QueueStatusMember a, int b)
+            => b == a;
 
-        public static bool operator !=(QueueStatusMember a, QueueStatusMember b) { return !(a == b); }
-        public static bool operator !=(QueueStatusMember a, int b) { return !(a == b); }
-        public static bool operator !=(int a, QueueStatusMember b) { return !(a == b); }
+        public static bool operator !=(QueueStatusMember a, QueueStatusMember b)
+            => !(a == b);
+
+        public static bool operator !=(QueueStatusMember a, int b)
+            => !(a == b);
+
+        public static bool operator !=(int a, QueueStatusMember b)
+            => !(a == b);
 
 
         public static bool operator <(QueueStatusMember operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) < 0;
-        }
+            => operand1.CompareTo(operand2) < 0;
 
         public static bool operator <(int operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) < 0;
-        }
+            => operand1.CompareTo(operand2) < 0;
 
         public static bool operator <(QueueStatusMember operand1, int operand2)
-        {
-            return operand1.CompareTo(operand2) < 0;
-        }
+            => operand1.CompareTo(operand2) < 0;
 
         public static bool operator >(QueueStatusMember operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) > 0;
-        }
+            => operand1.CompareTo(operand2) > 0;
 
-        public static bool operator >(int operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) > 0;
-        }
+        public static bool operator >(int operand1, QueueStatusMember operand2) => operand1.CompareTo(operand2) > 0;
 
-        public static bool operator >(QueueStatusMember operand1, int operand2)
-        {
-            return operand1.CompareTo(operand2) > 0;
-        }
+        public static bool operator >(QueueStatusMember operand1, int operand2) => operand1.CompareTo(operand2) > 0;
 
         public static bool operator <=(QueueStatusMember operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) <= 0;
-        }
+            => operand1.CompareTo(operand2) <= 0;
 
-        public static bool operator <=(int operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) <= 0;
-        }
+        public static bool operator <=(int operand1, QueueStatusMember operand2) => operand1.CompareTo(operand2) <= 0;
 
-        public static bool operator <=(QueueStatusMember operand1, int operand2)
-        {
-            return operand1.CompareTo(operand2) <= 0;
-        }
+        public static bool operator <=(QueueStatusMember operand1, int operand2) => operand1.CompareTo(operand2) <= 0;
 
         public static bool operator >=(QueueStatusMember operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) >= 0;
-        }
+            => operand1.CompareTo(operand2) >= 0;
 
-        public static bool operator >=(int operand1, QueueStatusMember operand2)
-        {
-            return operand1.CompareTo(operand2) >= 0;
-        }
+        public static bool operator >=(int operand1, QueueStatusMember operand2) => operand1.CompareTo(operand2) >= 0;
 
-        public static bool operator >=(QueueStatusMember operand1, int operand2)
-        {
-            return operand1.CompareTo(operand2) >= 0;
-        }
+        public static bool operator >=(QueueStatusMember operand1, int operand2) => operand1.CompareTo(operand2) >= 0;
 
         #endregion
 
@@ -209,7 +205,8 @@ namespace Torrent.Queue
         {
             get
             {
-                if (!_error.HasValue) {
+                if (!_error.HasValue)
+                {
                     _error = new QueueStatusRegion(QueueStatus.LoadError, QueueStatus.Invalid);
                 }
                 return _error.Value;
@@ -222,7 +219,8 @@ namespace Torrent.Queue
         {
             get
             {
-                if (!_loadError.HasValue) {
+                if (!_loadError.HasValue)
+                {
                     _loadError = new QueueStatusRegion(error.Start, QueueStatus.TorrentInfoError);
                 }
                 return _loadError.Value;
@@ -235,7 +233,8 @@ namespace Torrent.Queue
         {
             get
             {
-                if (!_torrentError.HasValue) {
+                if (!_torrentError.HasValue)
+                {
                     _torrentError = new QueueStatusRegion(loadError.End, error.End);
                 }
                 return _torrentError.Value;
@@ -249,7 +248,8 @@ namespace Torrent.Queue
         {
             get
             {
-                if (!_invalid.HasValue) {
+                if (!_invalid.HasValue)
+                {
                     _invalid = new QueueStatusRegion(QueueStatus.Invalid, validStart);
                 }
                 return _invalid.Value;
@@ -262,37 +262,50 @@ namespace Torrent.Queue
         {
             get
             {
-                if (!_dupe.HasValue) {
+                if (!_dupe.HasValue)
+                {
                     _dupe = new QueueStatusRegion(QueueStatus.Dupe, validStart);
                 }
                 return _dupe.Value;
             }
         }
 
-        public QueueStatusMember SetReady() { return this == QueueStatus.Queued ? QueueStatus.Ready : this; }
-        bool isBetween(QueueStatusRegion region) { return region.Start <= this && this < region.End; }
+        public QueueStatusMember SetReady() => this == QueueStatus.Queued ? QueueStatus.Ready : this;
+        bool isBetween(QueueStatusRegion region) => region.Start <= this && this < region.End;
+
         [SafeForDependencyAnalysis]
         public bool IsPending => this == QueueStatus.Pending;
+
         [SafeForDependencyAnalysis]
         public bool IsActive => this == QueueStatus.Active;
+
         [SafeForDependencyAnalysis]
         public bool IsRunning => this.IsPending || this.IsActive;
+
         [SafeForDependencyAnalysis]
         public bool IsInProgress => (!this.IsSuccess && validStart <= this);
+
         [SafeForDependencyAnalysis]
         public bool IsSuccess => this == QueueStatus.Success;
+
         [SafeForDependencyAnalysis]
         public bool IsInvalid => isBetween(invalid);
+
         [SafeForDependencyAnalysis]
         public bool IsDupe => isBetween(dupe);
+
         [SafeForDependencyAnalysis]
         public bool IsActivatable => (this == QueueStatus.Ready || this == QueueStatus.Queued);
+
         [SafeForDependencyAnalysis]
         public bool IsQueued => (this == QueueStatus.Queued);
+
         [SafeForDependencyAnalysis]
         public bool IsError => isBetween(error);
+
         [SafeForDependencyAnalysis]
         public bool IsLoadError => isBetween(loadError);
+
         [SafeForDependencyAnalysis]
         public bool IsTorrentError => isBetween(torrentError);
     }

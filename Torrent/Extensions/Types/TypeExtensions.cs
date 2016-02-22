@@ -1,4 +1,6 @@
-﻿namespace Torrent.Extensions
+﻿using Torrent.Infrastructure.Reflection;
+
+namespace Torrent.Extensions
 {
     using Infrastructure.Enums;
     using System;
@@ -41,16 +43,21 @@
             .MakeGenericType(typeParameters);
         #endregion
         #region Field Info
-        public static IEnumerable<FieldInfo> GetPublicFields(this Type type)
+        public static IEnumerable<FieldInfo> GetPublicFieldInfo(this Type type)
             => type?.GetFields(BindingFlags.Public | BindingFlags.Static);
+
+        public static IEnumerable<Field<object>> GetPublicFields(this Type type)
+            => type.GetPublicFields<object>();
+        public static IEnumerable<Field<T>> GetPublicFields<T>(this Type type, Func<object, T> valueSelector = null)
+            => type?.GetPublicFieldInfo().Select(fi => new Field<T>(fi, type, valueSelector));
         public static string[] GetNames(this Type type)
-            => type?.GetPublicFields().Select(x => x.Name).ToArray();
+            => type?.GetPublicFieldInfo().Select(x => x.Name).ToArray();
         public static object[] GetValues(this Type type)
-            => type?.GetPublicFields().Select(x => x.GetValue(type)).ToArray();
+            => type?.GetPublicFieldInfo().Select(x => x.GetValue(type)).ToArray();
         public static string[] GetDescriptions(this Type type)
-            => type?.GetPublicFields().Select(x => x.GetDescription(type)).ToArray();
+            => type?.GetPublicFieldInfo().Select(x => x.GetDescription()).ToArray();
         public static object[] GetDisplays(this Type type)
-            => type?.GetPublicFields().Select(x => x.GetDisplay(type)).ToArray();
+            => type?.GetPublicFieldInfo().Select(x => x.GetDisplay(type)).ToArray();
         #endregion
         #region Attributes
         static object[] GetAttributesTyped<T>(this Type type) where T : Attribute
@@ -58,7 +65,7 @@
         public static T[] GetAttributes<T>(this Type type) where T : Attribute
             => (T[]) GetAttributesTyped<T>(type);
         public static T GetAttribute<T>(this Type type) where T : Attribute
-            => (T) GetAttributesTyped<T>(type)?.Where(v => v is T && v != null).FirstOrDefault();
+            => (T) GetAttributesTyped<T>(type).FirstOrDefault(v => v is T && v != null);
         #endregion
         #region Friendly Name
         private static readonly Dictionary<Type, string> _typeToFriendlyName = new Dictionary<Type, string>

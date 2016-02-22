@@ -60,7 +60,7 @@ namespace uAL.Properties.Settings.LibSettings
             {
                 switch (PreviewMode) {
                     case All:
-                    case AllMonitors:
+                    //case AllMonitors:
                         return "[P]";
                     case MonitorTypes.Torrent:
                         return "[TP]";
@@ -80,7 +80,7 @@ namespace uAL.Properties.Settings.LibSettings
                     case Disabled:
                         return "";
                     case All:
-                    case AllMonitors:
+                    //case AllMonitors:
                         return " in Preview Mode";
                     default:
                         return

@@ -1,6 +1,8 @@
 ﻿#define LOG_PROPERTY_CHANGED
 
 using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using Telerik.Windows.Controls.Data.PropertyGrid;
 
@@ -29,16 +31,20 @@ namespace wUAL.UserControls
         {
             this.PropertyChanged += MyFlagEnumEditor_PropertyChanged;
             InitializeComponent();
-            ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
+            ViewModel.PropertyChanged += ViewModel_OnPropertyChanged;
             //this.DataContext = ViewModel;
             //(this.Content as FrameworkElement).DataContext = this.ViewModel;
         }
 
-        private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ViewModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.Value))
+            if (e.PropertyName == nameof(Value))
             {
-                Enum = ViewModel.Value;
+                var strEnum = Enum?.ToString();
+                var strValue = Value?.ToString();
+                var isDiff = strEnum != strValue;
+                if (isDiff)
+                    Enum = Value;
             }
         }
 
@@ -51,6 +57,13 @@ namespace wUAL.UserControls
             get { return this._useCombinedFormat; }
             set { this.ViewModel.UseCombinedFormat = this._useCombinedFormat = value; }
         }
+
+        public ObservableCollection<EnumMember> SelectedItems
+            => this.ViewModel.SelectedItems;
+        public EnumMember SelectedItem
+            => this.ViewModel.SelectedItem;
+        public object Value
+            => this.ViewModel.Value;
         #endregion
         #endregion
 
@@ -69,6 +82,7 @@ namespace wUAL.UserControls
         /// </summary>
         [SafeForDependencyAnalysis]
         public object Enum
+        //{ get; set; }
         {
             get
             {
@@ -80,7 +94,7 @@ namespace wUAL.UserControls
             }
             set { this.SetValueDp(EnumProperty, value); }
         }
-        
+
         /// <summary>
         /// Identifies the `Enum` Dependency Property
         /// </summary>
@@ -95,9 +109,10 @@ namespace wUAL.UserControls
             var control = d as MyFlagEnumEditorExamples;
             var value = e.NewValue;
             // myFlagEnumEditor.OnDependencyPropertyChanged(e);
-            if (control == null || control.Enum == control.ViewModel.Value)
+            if (control == null || 
+                control?.Value?.ToString() == value?.ToString())
                 return;
-
+            //control.Enum = value;
             control.ViewModel.SetEnum(value);
         }
         protected static object OnEnumCoerced(DependencyObject d, object baseValue)
@@ -126,7 +141,7 @@ namespace wUAL.UserControls
             var control = sender as RadComboBox;
             if (control != null)
             {
-                control.IsDropDownOpen = false;
+                //control.IsDropDownOpen = false;
             }
         }
         #endregion
@@ -144,6 +159,10 @@ namespace wUAL.UserControls
         public virtual void OnPropertiesChanged(params string[] propertyNames)
             => NotifyPropertyChangedBase.DoOnPropertyChanged(this, PropertyChanged, OnPropertyChangedLocal, propertyNames);
         #endregion
+
         #endregion
+
+        private void Label_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+            => Debugger.Break();
     }
 }

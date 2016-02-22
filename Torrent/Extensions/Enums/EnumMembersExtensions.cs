@@ -11,5 +11,21 @@ namespace Torrent.Extensions
     {
         public static void SetUseCombined(this IEnumerable<EnumMember> list, bool value)
             => list.ForEach(e => e.UseCombinedFormat = value);
+
+        public static EnumMember GetAllMember(this IEnumerable<EnumMember> list)
+            => list.FirstOrDefault(x => x.IsAll);
+        public static EnumMember GetDisabledMember(this IEnumerable<EnumMember> list)
+            => list.FirstOrDefault(x => x.IsDisabled);
+
+        public static bool HasAllMember(this IEnumerable<EnumMember> list)
+            => list.Any(x => x.IsAll);
+        public static bool HasDisabledMember(this IEnumerable<EnumMember> list)
+            => list.Any(x => x.IsDisabled);
+        public static bool HasEnabledMember(this IEnumerable<EnumMember> list)
+            => list.Any(x => !x.IsDisabled);
+        public static bool HasMainMember(this IEnumerable<EnumMember> list)
+            => list.Any(x => x.IsMain);
+        public static bool HasMainMembersOnly(this IEnumerable<EnumMember> list)
+            => list.All(x => x.IsMain);
     }
 }

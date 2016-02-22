@@ -18,11 +18,18 @@ namespace wUAL
                                        object parameter, CultureInfo culture)
             => value == null 
             ? string.Empty 
-            : EnumUtils.GetDescription(value, value.GetType());
+            : EnumUtils.GetDescriptionOrValue(value, value.GetType());
 
         public override object ConvertBack(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
+            try
+            {
+                return Enum.Parse(targetType, value.ToString());
+            }
+            catch (Exception ex) 
+            when (ex is ArgumentException || ex is OverflowException) { }
+
             object converted;
             return EnumUtils.GetValueFromDescription(value as string, targetType, out converted) 
                 ? converted 

@@ -1,7 +1,9 @@
 ﻿using PostSharp.Patterns.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Telerik.Windows.Controls;
 using Torrent.Enums;
@@ -9,6 +11,7 @@ using Torrent.Extensions;
 using Torrent.Helpers.Utils;
 using Torrent.Infrastructure;
 using Torrent.Infrastructure.Enums;
+using Torrent.Infrastructure.Reflection;
 using Torrent.Properties.Settings;
 
 namespace wUAL.UserControls
@@ -18,8 +21,10 @@ namespace wUAL.UserControls
         bool _useCombinedFormat = true;
 
         #region Overrides of ViewModel
+        [DebuggerNonUserCode]
         protected override object GetValueFromItem(EnumMember item)
             => item.Value;
+        [DebuggerNonUserCode]
         protected override void SetSelection(object value)
             => this.SetSelectedItem(value);
         #endregion
@@ -31,7 +36,7 @@ namespace wUAL.UserControls
         {
             get { return this._useCombinedFormat; }
             set
-            {                
+            {
                 if (this._useCombinedFormat != value)
                 {
                     this._useCombinedFormat = value;
@@ -40,11 +45,14 @@ namespace wUAL.UserControls
             }
         }
         #endregion
+        #region Public Properties
+        #region Public Properties: Accessors
+        public EnumMember[] Members { get; set; }
+        #endregion
         #region Public Properties: Methods        
         #region Public Properties: Methods: Enum Type
-        protected Type GetEnumType(bool required = true, bool requiresFlags=false)
+        protected Type GetEnumType(bool required = true, bool requiresFlags = false)
         {
-
             var enumType = this.Value?.GetType();
             if (enumType == null)
             {
@@ -55,19 +63,26 @@ namespace wUAL.UserControls
             if (enumType.IsEnum && isFlags)
                 return enumType;
 
-            if (required)
-            {
+            if (required)            
                 throw new ArgumentException($"Specified Type {enumType.GetFriendlyFullName()} is not {(enumType.IsEnum ? "a Flags" : "an")} Enum.");
-            }
+            
             return null;
         }
         #endregion
         #region Public Properties: Methods: Enum
-        public void SetEnum(object value=null, bool requireValue = true)
+
+        protected virtual void InitializeEnumItems()
+        {
+            Type = GetEnumType();
+            Items.Clear();
+            Members = EnumMember.GetEnumMembers(Type, UseCombinedFormat).ToArray();
+            Items.AddRange(Members.Where(f => f.Browsable));
+        }
+        public void SetEnum(object value = null, bool requireValue = true)
         {
             if (value != null)
             {
-                Value = value;
+                _value = value;
             }
             if (Value == null)
             {
@@ -79,12 +94,16 @@ namespace wUAL.UserControls
             }
             if (Type == null)
             {
-                Type = GetEnumType();
-                Items.Clear();
-                Items.AddRange(EnumMember.GetBrowsableEnumMembers(Type, UseCombinedFormat));
+                InitializeEnumItems();
+                SetSelection();
+                SetSelectedItemOnly();
+            }
+            else
+            {
                 SetSelection();
             }
         }
+        #endregion
         #endregion
         #endregion
         #endregion
@@ -104,12 +123,16 @@ namespace wUAL.UserControls
             }
         }
         #region Logging
+        [DebuggerNonUserCode]
         public override void Log(string prefix = "+", object status = null, object title = null, object text = null, object info = null, PadDirection textPadDirection = PadDirection.Default,
-                        string textSuffix = null, PadDirection titlePadDirection = PadDirection.Default,
-                        string titleSuffix = null, int random = 0)
+                       string textSuffix = null, PadDirection titlePadDirection = PadDirection.Default,
+                       string titleSuffix = null, int random = 0)
         {
 #if DEBUG || TRACE_EXT
-            base.Log(prefix, Type?.Name, text, Value, SelectedItem);
+            base.Log(prefix, status, 
+                title ?? Type?.Name, text ?? Value, 
+                info ?? (IsMultiple ? $"{SelectedItem?.ToString().Suffix(": ")}[{SelectedItems?.GetDebuggerDisplaySimple()}]" : SelectedItem?.ToString()), 
+                textPadDirection, textSuffix, titlePadDirection, titleSuffix, random);
 #endif
         }
 

@@ -53,7 +53,7 @@
     <DefineConstants>TRACE;DEBUG;SETTINGS_USE_ALL_SETTINGS TRACE_EXT TRACE_PROCESS_QUEUE TRACE_FSSU</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -335,8 +335,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Serialization\Namespaces.cs" />
+    <Compile Include="UserControls\EnumEditor\MyFlagEnumEditor.xaml.cs">
+      <DependentUpon>MyFlagEnumEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\MarkupExtensions.cs" />
-    <Compile Include="UserControls\ViewModel\ViewModelMultiSelect.cs" />
     <Compile Include="UserControls\ViewModel\ViewModel.cs" />
     <Compile Include="UserControls\EnumEditor\FlagEnumMemberViewModel.cs" />
     <Compile Include="UserControls\EnumEditor\MyFlagEnumEditorExamples.xaml.cs">
@@ -357,8 +359,10 @@
     </Compile>
     <Compile Include="Properties\Settings\Binding\EnumBindingExtension.cs" />
     <Compile Include="WPF\Behaviors\GridMultiEditBehaviour.cs" />
+    <Compile Include="WPF\Behaviors\GridMultiSelectBehaviorFlagEnumMember.cs" />
     <Compile Include="WPF\Behaviors\GridMultiSelectBehavior.cs" />
     <Compile Include="WPF\ValueConverters\EnumDescription.cs" />
+    <Compile Include="WPF\ValueConverters\EnumCombined.cs" />
     <Compile Include="WPF\ValueConverters\Count.cs" />
     <Compile Include="WPF\ValueConverters\FileSize.cs" />
     <Compile Include="WPF\ValueConverters\Filename.cs" />
@@ -603,6 +607,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\EnumEditor\MyEnumEditorExamples.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\EnumEditor\MyFlagEnumEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

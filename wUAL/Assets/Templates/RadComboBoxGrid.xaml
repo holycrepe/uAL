@@ -106,9 +106,13 @@
                                                  RowIndicatorVisibility="Collapsed"
                                                  SelectedItem="{Binding SelectedItem,
                                                                         Mode=TwoWay}"
+                                                 SelectionUnit="FullRow"
                                                  ShowColumnHeaders="False"
                                                  ShowGroupPanel="False"
                                                  d:DataContext="{StaticResource EnumMemberViewModel}">
+                                <i:Interaction.Behaviors>
+                                    <wpf:GridMultiSelectBehaviorEnumMember />
+                                </i:Interaction.Behaviors>
                                 <telerik:RadGridView.Columns>
                                     <telerik:GridViewDataColumn DataMemberBinding="{Binding Value}" />
                                     <telerik:GridViewDataColumn DataMemberBinding="{Binding Description}" />
@@ -208,12 +212,12 @@
                                                  SelectedItem="{Binding SelectedItem,
                                                                         Mode=TwoWay}"
                                                  SelectionMode="Extended"
+                                                 SelectionUnit="FullRow"
                                                  ShowColumnHeaders="False"
                                                  ShowGroupPanel="False"
                                                  d:DataContext="{StaticResource FlagEnumMemberViewModel}">
-
                                 <i:Interaction.Behaviors>
-                                    <wpf:GridMultiSelectBehavior SelectedItems="{Binding SelectedItems, Mode=TwoWay}" />
+                                    <wpf:GridMultiSelectBehaviorFlagEnumMember />
                                 </i:Interaction.Behaviors>
                                 <telerik:RadGridView.Columns>
                                     <telerik:GridViewSelectColumn />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -96,13 +97,16 @@ namespace Torrent.Extensions
         }
 
         [Pure]
+        [DebuggerNonUserCode]
         public static string TrimAll(this string subject)
             => subject.Trim(trimChars);
         [Pure]
+        [DebuggerNonUserCode]
         public static string TrimStart(this string subject, string find)
             => subject.StartsWith(find) ? subject.Substring(find.Length) : subject;
 
         [Pure]
+        [DebuggerNonUserCode]
         public static string TrimEnd(this string subject, string find)
             => subject.EndsWith(find) ? subject.Substring(0, subject.Length - find.Length) : subject;
         public static string Format(this string template, Dictionary<string, string> formats)

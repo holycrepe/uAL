@@ -8,6 +8,14 @@ namespace Torrent.Extensions
 
     public static class NumberExtensions
     {
+        public static bool Has(this int bits, object flag)
+            => bits.Has(Convert.ToInt32(flag));
+        public static bool Has(this int bits, int flag)
+            => (bits & flag) == flag;
+        public static bool Has(this long bits, object flag)
+            => bits.Has(Convert.ToInt64(flag));
+        public static bool Has(this long bits, long flag)
+            => (bits & flag) == flag;
         public static string PadIndex(this int index, bool useValue = true, int width = 0)
             => new NumberPadder(index, useValue, width);
 
