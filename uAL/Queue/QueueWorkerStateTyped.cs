@@ -7,7 +7,7 @@ namespace uAL.Queue
 
     public class QueueWorkerState<TQueueItem> : IQueueWorkerState<TQueueItem> where TQueueItem : QueueItemBase
     {
-        public MonitorTypes FileType { get; private set; }
+        public MonitorTypes FileType { get; }
         public TQueueItem QueueItem { get; private set; } = null;
         public string Name { get; private set; } = null;
         public string Label { get; private set; } = null;

@@ -144,7 +144,6 @@ D:\Git\uAL\wUAL\obj\Debug\MainWindow.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyEnumEditor.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\MyPrompt.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueGridHeaderControl.g.cs
-D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueToggleSettingControl.g.cs
 D:\Git\uAL\wUAL\obj\Debug\App.g.cs
 D:\Git\uAL\wUAL\obj\Debug\wUAL_Content.g.cs
 D:\Git\uAL\wUAL\obj\Debug\GeneratedInternalTypeHelper.g.cs
@@ -158,7 +157,6 @@ D:\Git\uAL\wUAL\obj\Debug\Assets\Styles\Selectors\Queue.baml
 D:\Git\uAL\wUAL\obj\Debug\MainWindow.baml
 D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyEnumEditor.baml
 D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueGridHeaderControl.baml
-D:\Git\uAL\wUAL\obj\Debug\UserControls\QueueToggleSettingControl.baml
 D:\Git\uAL\wUAL\obj\Debug\wUAL.g.resources
 D:\Git\uAL\wUAL\obj\Debug\wUAL.Properties.Resources.resources
 D:\Git\uAL\wUAL\obj\Debug\wUAL.csproj.GenerateResource.Cache
@@ -171,3 +169,5 @@ D:\Git\uAL\wUAL\obj\Debug\wUAL.exe
 D:\Git\uAL\wUAL\obj\Debug\wUAL.pdb
 D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyFlagEnumEditor.g.cs
 D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\MyFlagEnumEditor.baml
+D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\QueueToggleSettingControl.g.cs
+D:\Git\uAL\wUAL\obj\Debug\UserControls\EnumEditor\QueueToggleSettingControl.baml

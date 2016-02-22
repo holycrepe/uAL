@@ -188,6 +188,6 @@ namespace wUAL.Infrastructure
             return line;
         }
 
-        Line GetSep() { return GetLine(10); }
+        Line GetSep() => GetLine(10);
     }
 }

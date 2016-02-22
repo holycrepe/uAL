@@ -15,7 +15,7 @@
              mc:Ignorable="d">
     <Grid x:Name="LayoutRoot" DataContext="{Binding DataContext, ElementName=ControlRoot}">
         <myControl:MyFlagEnumEditor x:Name="MyFlagEnumEditor"
-                                    Width="200"
+                                    Width="170"
                                     HorizontalAlignment="Left"
                                     DisplayFormat="Description"
                                     Enum="{Binding Enum,

@@ -62,10 +62,7 @@ namespace uAL.Metalinks
         static LogEventInfoCloneable logEventClassBase = new LogEventInfoCloneable(LogLevel.Info, logger.Name,
                                                                                    "Metalink Info");
 
-        static LogEventInfoCloneable getLogEventSubject(string subject, Dictionary<string, object> newEventDict = null)
-        {
-            return logEventClassBase.Clone(subject: subject, newEventDict: newEventDict);
-        }
+        static LogEventInfoCloneable getLogEventSubject(string subject, Dictionary<string, object> newEventDict = null) => logEventClassBase.Clone(subject: subject, newEventDict: newEventDict);
 
 
         static string lastCategory = "";

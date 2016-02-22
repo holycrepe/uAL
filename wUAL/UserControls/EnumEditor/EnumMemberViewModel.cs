@@ -115,11 +115,8 @@ namespace wUAL.UserControls
         #endregion
         #endregion
         #endregion
-        public EnumMemberViewModel(bool setDesignEnum) : base()
-        {
-
-        }
-        public EnumMemberViewModel() : base()
+        public EnumMemberViewModel(bool setDesignEnum) : base() { }
+        public EnumMemberViewModel() : this(false)
         {
             if (MainApp.DesignMode)
             {

@@ -70,10 +70,7 @@ namespace uAL.Torrents
         static LogEventInfoCloneable logEventClassBase = new LogEventInfoCloneable(LogLevel.Info, logger.Name,
                                                                                    "Torrent Info");
 
-        static LogEventInfoCloneable getLogEventSubject(string subject, Dictionary<string, object> newEventDict = null)
-        {
-            return logEventClassBase.Clone(subject: subject, newEventDict: newEventDict);
-        }
+        static LogEventInfoCloneable getLogEventSubject(string subject, Dictionary<string, object> newEventDict = null) => logEventClassBase.Clone(subject: subject, newEventDict: newEventDict);
 
         bool doLogInfo = false;
 

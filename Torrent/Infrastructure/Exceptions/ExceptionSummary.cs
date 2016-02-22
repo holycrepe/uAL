@@ -14,14 +14,14 @@ namespace Torrent.Infrastructure.Exceptions
     {
         public Exception Error { get; set; }
         public string Title { get; set; }
-        string[] Details { get; set; }
-        string Prefix { get; set; }
-        int Padding { get; set; }
-        int HeadingPadding { get; set; }
-        char Separator { get; set; }
-        string PrefixLine { get; set; }
-        string SeparatorLine { get; set; }
-        string PaddingLine { get; set; }
+        string[] Details { get; }
+        string Prefix { get; }
+        int Padding { get; }
+        int HeadingPadding { get; }
+        char Separator { get; }
+        string PrefixLine { get; }
+        string SeparatorLine { get; }
+        string PaddingLine { get; }
 
         public ExceptionSummary(Exception ex, string prefix = "# ", char sep = '-', int padding = 11, int headingPadding = 15)
         {

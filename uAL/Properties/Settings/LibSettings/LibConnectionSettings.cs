@@ -46,7 +46,7 @@ namespace uAL.Properties.Settings.LibSettings
 
             static LibConnectionSettings()
             {
-                var pwFile = MainApp.MakeRelativePath($"{nameof(Password)}.txt");
+                var pwFile = MainApp.MakeRelativePath($"Settings.{nameof(Password)}.txt");
                 if (File.Exists(pwFile)) {
                     _pw = File.ReadAllText(pwFile);
                 }
@@ -76,7 +76,9 @@ namespace uAL.Properties.Settings.LibSettings
 
             [SafeForDependencyAnalysis]
             public string PASSWORD
-                => this.Password ?? (this.Password = _pw);
+                => string.IsNullOrWhiteSpace(this.Password) 
+                ? (this.Password = _pw)
+                : this.Password;
 
             public string HOST
                 =>

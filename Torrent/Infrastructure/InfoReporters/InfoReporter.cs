@@ -17,10 +17,7 @@ namespace Torrent.Infrastructure.InfoReporters
             reportError(title, getErrorText(ex, title, text));
         }
 
-        public virtual string getErrorText(Exception ex, string title, string text)
-        {
-            return (text == null ? "" : text + ": \n") + ex.GetSummaryText();
-        }
+        public virtual string getErrorText(Exception ex, string title, string text) => (text == null ? "" : text + ": \n") + ex.GetSummaryText();
 
         public void ReportAndLogBanner(string title, int? width = null, bool log = true)
         {

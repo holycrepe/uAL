@@ -42,10 +42,7 @@ namespace Puchalapalli.Dynamic.Utils
             }
         }
 
-        internal static Type GetReturnType(this MethodBase mi)
-        {
-            return (mi.IsConstructor) ? mi.DeclaringType : ((MethodInfo)mi).ReturnType;
-        }
+        internal static Type GetReturnType(this MethodBase mi) => (mi.IsConstructor) ? mi.DeclaringType : ((MethodInfo)mi).ReturnType;
 
         private static readonly CacheDict<MethodBase, ParameterInfo[]> _ParamInfoCache = new CacheDict<MethodBase, ParameterInfo[]>(75);
 

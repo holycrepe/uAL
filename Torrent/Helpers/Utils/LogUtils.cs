@@ -14,13 +14,14 @@ namespace Torrent.Helpers.Utils
     public static class LogUtils
     {
         private const int LOG_CLASS_NAME_LENGTH = 25;
+        private const int LOG_PAD_CLASS_NAME_LENGTH = 20;
 #if LOG_INCLUDE_TIMESTAMP
         const int LOG_TIMESTAMP_LENGTH = 11;
 #else
         private const int LOG_TIMESTAMP_LENGTH = -1;
 #endif
         private const int LOG_PAD_TITLE_LENGTH = 50;
-        public const int LOG_PREFIX_CLASS_NAME_LENGTH = LOG_TIMESTAMP_LENGTH + 1 + LOG_CLASS_NAME_LENGTH + 1;
+        public const int LOG_PREFIX_CLASS_NAME_LENGTH = LOG_TIMESTAMP_LENGTH + 1 + LOG_PAD_CLASS_NAME_LENGTH + 1;
         public const int LOG_PREFIX_TITLE_LENGTH = LOG_PREFIX_CLASS_NAME_LENGTH + 1 + LOG_PAD_TITLE_LENGTH;
         private static Random _rnd;
 
@@ -53,15 +54,16 @@ namespace Torrent.Helpers.Utils
                 finalText = new TitlePadder(title, item, LOG_PAD_TITLE_LENGTH + TitlePadder.DEFAULT_WIDTH + 1,
                                             titlePadDirection, titleSuffix);
             }
+            var classNameFmt = className?.Suffix(":").PadRight(LOG_PAD_CLASS_NAME_LENGTH);
 #if LOG_INCLUDE_TIMESTAMP
-            Debug.WriteLine(@"{0} {1,15} {2}",
+            Debug.WriteLine(@"{0} {1} {2}",
                             DateUtils.Timestamp,
-                            className + ":",
+                            classNameFmt,
                             finalText
                 );
 #else
-            Debug.WriteLine(@"{0,15} {1}",
-                            className + ":",
+            Debug.WriteLine(@"{0} {1}",
+                            classNameFmt,
                             finalText
                 );
 #endif

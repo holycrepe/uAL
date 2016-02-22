@@ -7,8 +7,8 @@
     {
         private AsyncOperation _operation;
         private IAsyncTaskId<TItem, TArguments> _id;
-        public AsyncOperation AsyncOp { get { return _operation; } }        
-        public IAsyncTaskId<TItem, TArguments> Id { get { return _id; } }
+        public AsyncOperation AsyncOp => _operation;
+        public IAsyncTaskId<TItem, TArguments> Id => _id;
         public TItem Item
             => Id.Item;
         public TArguments Arguments

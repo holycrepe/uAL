@@ -524,18 +524,12 @@ namespace uAL.UTorrentJobs
         }
 #pragma warning disable 1998
         internal async Task<UTorrentJob> AddFile(string fileName, bool liveFile = true, int fileNumber = 0,
-                                                      QueueOnCompleteHandler<UTorrentJob> OnQueueFileComplete =
-                                                          null)
-        {
-            return null;
-        }
+                                          QueueOnCompleteHandler<UTorrentJob> OnQueueFileComplete =
+                                              null) => null;
 #pragma warning restore 1998
 #pragma warning disable 1998
         async Task<UTorrentJob> AddFile(UTorrentJob newQueueItem, bool liveFile = true,
-                                             QueueOnCompleteHandler<UTorrentJob> OnQueueFileComplete = null)
-        {
-            return null;
-        }
+                                 QueueOnCompleteHandler<UTorrentJob> OnQueueFileComplete = null) => null;
 #pragma warning restore 1998
 #pragma warning disable 1998
         //async Task<QueueStatusMember> CheckDupes(UTorrentJob queueItem, string label = null)

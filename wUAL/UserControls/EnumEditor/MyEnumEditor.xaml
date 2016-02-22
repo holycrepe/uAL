@@ -22,6 +22,13 @@
                 <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Styles/Grid/Settings.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <myControl:EnumMemberViewModel x:Key="EnumMemberViewModelDataSource" d:IsDataSource="True" />
+            <DataTemplate x:Key="EnumMemberComboBoxGridSelectionBoxTemplate">
+                <TextBlock DataContext="{Binding Path=DataContext,
+                                                 ElementName=LayoutRoot,
+                                                 Mode=TwoWay}"
+                           FontWeight="Bold"
+                           Text="{Binding Member.Display}" />
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <telerik:RadComboBox x:Name="LayoutRoot"
@@ -31,23 +38,15 @@
                                                ElementName=ControlRoot,
                                                Mode=TwoWay}"
                          DisplayMemberPath="Display"
+                         EmptySelectionBoxTemplate="{StaticResource EnumMemberComboBoxGridSelectionBoxTemplate}"
                          ItemsSource="{Binding Items,
                                                Mode=TwoWay}"
                          NonEditableTemplate="{StaticResource EnumMemberComboBoxGridNonEditableTemplate}"
                          OpenDropDownOnFocus="True"
                          SelectedItem="{Binding SelectedItem,
                                                 Mode=TwoWay}"
+                         SelectionBoxTemplate="{StaticResource EnumMemberComboBoxGridSelectionBoxTemplate}"
                          SelectionChanged="RadComboBoxFlagEnumGrid_SelectionChanged"
                          StaysOpenOnEdit="True"
-                         d:DataContext="{StaticResource EnumMemberViewModelDataSource}">
-        <telerik:RadComboBox.SelectionBoxTemplate>
-            <DataTemplate>
-                <TextBlock DataContext="{Binding Path=DataContext,
-                                                 ElementName=LayoutRoot,
-                                                 Mode=TwoWay}"
-                           FontWeight="Bold"
-                           Text="{Binding SelectedItem.Display}" />
-            </DataTemplate>
-        </telerik:RadComboBox.SelectionBoxTemplate>
-    </telerik:RadComboBox>
+                         d:DataContext="{StaticResource EnumMemberViewModelDataSource}" />
 </UserControl>

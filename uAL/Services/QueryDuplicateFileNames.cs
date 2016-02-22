@@ -13,8 +13,8 @@ namespace uAL.Services
     using static Properties.Settings.LibSettings.LibSettings;
     public struct QueryDuplicateFileNamesResult
     {
-        public bool Matched { get; private set; }
-        public FileInfo Dupe { get; private set; }
+        public bool Matched { get; }
+        public FileInfo Dupe { get; }
         public QueryDuplicateFileNamesResult(bool matched=false, FileInfo dupe=null)
         {
             Matched = matched;

@@ -240,33 +240,13 @@ namespace wUAL
             SetDefaultTab(true);
             var timer = new Timer();
             timer.Interval = 10000;
-            timer.Tick += (s, e) => { WindowSettings.Instances.FirstOrDefault()?.LoadWindowState();
-                RadPropertyGridToggles.Item = RadPropertyGridToggles1.Item = ToggleSettings.Toggles;
-                RadPropertyGridToggles.DataContext = RadPropertyGridToggles1.DataContext = ToggleSettings.Toggles;
-                RadFlagEnum.Value = ToggleSettings.Toggles.Watcher.ToString();
-                RadFlagEnum.EnumType = typeof(MonitorTypes);
+            timer.Tick += (s, e) =>
+            {
+                WindowSettings.Instances.FirstOrDefault()?.LoadWindowState();
                 timer.Stop(); timer = null;
             };
-            this.PropertyGrid1.Item = new Employee()
-            {
-                FirstName = "Sarah",
-                LastName = "Blake",
-                Occupation = "Supplied Manager",
-            };
-            }
-        public class Employee
-        {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string Occupation { get; set; }
         }
-        private void PropertyGrid1_AutoGeneratingPropertyDefinition(object sender, Telerik.Windows.Controls.Data.PropertyGrid.AutoGeneratingPropertyDefinitionEventArgs e)
-        {
-            if (e.PropertyDefinition.DisplayName == "Background")
-            {
-                e.PropertyDefinition.Description = "This property displays the background property of the RadButton";
-            }
-        }
+
         #endregion
         #region Initialization: Start()
         async Task Start()
@@ -634,16 +614,13 @@ namespace wUAL
         //			}
         //		}
 
-        async Task<QueueMonitorBase> InitializeMonitor(MonitorTypes fileType)
-        {
-            return await Task.Run(() =>
-                                  fileType.IsTorrent()
-                                  ? uTorrentClient?.IsConnected ?? false ? (QueueMonitorBase)(TorrentMonitor = new TorrentQueueMonitor(uTorrentClient, InfoReporter)) : null
-                                  : fileType.IsMetalink()
-                                  ? (QueueMonitorBase)(MetalinkMonitor = new MetalinkQueueMonitor(InfoReporter))
-                                  : (QueueMonitorBase)(UTorrentJobMonitor = new UTorrentJobQueueMonitor(InfoReporter))
-                                 );
-        }
+        async Task<QueueMonitorBase> InitializeMonitor(MonitorTypes fileType) => await Task.Run(() =>
+                                                                                                                 fileType.IsTorrent()
+                                                                                                                 ? uTorrentClient?.IsConnected ?? false ? (QueueMonitorBase)(TorrentMonitor = new TorrentQueueMonitor(uTorrentClient, InfoReporter)) : null
+                                                                                                                 : fileType.IsMetalink()
+                                                                                                                 ? (QueueMonitorBase)(MetalinkMonitor = new MetalinkQueueMonitor(InfoReporter))
+                                                                                                                 : (QueueMonitorBase)(UTorrentJobMonitor = new UTorrentJobQueueMonitor(InfoReporter))
+                     );
         #endregion        
         #region File System: Monitors: Get Monitor
         public static bool IsTorrent(Type t)

@@ -31,6 +31,6 @@ namespace Torrent.Helpers.Utils
             return false;
         }
 
-        public bool FileEquals(string path) { return FileEquals(File.ReadAllBytes(path)); }
+        public bool FileEquals(string path) => FileEquals(File.ReadAllBytes(path));
     }
 }

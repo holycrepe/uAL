@@ -7,10 +7,7 @@ namespace wUAL
 {
     public class GridLengthConverter : BaseConverter
     {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return (GridLength) (new System.Windows.GridLengthConverter().ConvertFrom(value));
-        }
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (GridLength)(new System.Windows.GridLengthConverter().ConvertFrom(value));
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

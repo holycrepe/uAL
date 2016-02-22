@@ -9,8 +9,8 @@
     <StackPanel Height="32"
                 VerticalAlignment="Center"
                 DataContext="{Binding ElementName=queueGridHeaderControlParent}"
-                ToolTip="{Binding QueueIconName}"
-                Orientation="Horizontal">
+                Orientation="Horizontal"
+                ToolTip="{Binding QueueIconName}">
         <Image Width="28"
                Margin="0,0,5,0"
                VerticalAlignment="Center"

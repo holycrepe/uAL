@@ -8,10 +8,7 @@ namespace Torrent.Infrastructure
     {
         public static TaskScheduler TaskScheduler;
 
-        public static Task StartNewUI(Action action)
-        {
-            return Task.Factory.StartNew(action, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler);
-        }
+        public static Task StartNewUI(Action action) => Task.Factory.StartNew(action, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler);
 
         public async static Task StartNew(Action action)
         {
@@ -22,10 +19,7 @@ namespace Torrent.Infrastructure
             }
         }
 
-        public static Task<T> StartNewUI<T>(Func<T> func)
-        {
-            return Task.Factory.StartNew(func, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler);
-        }
+        public static Task<T> StartNewUI<T>(Func<T> func) => Task.Factory.StartNew(func, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler);
 
         public async static Task<T> StartNew<T>(Func<T> func)
         {

@@ -23,15 +23,12 @@ namespace Torrent.Helpers.Utils
             }
         }
 
-        public static string CreateBoundary(string pattern)
-        {
-            return string.Format(@"{0}(?:{2}){1}", WORD_BOUNDARY_START, WORD_BOUNDARY_END, pattern);
-        }
+        public static string CreateBoundary(string pattern) => string.Format(@"{0}(?:{2}){1}", WORD_BOUNDARY_START, WORD_BOUNDARY_END, pattern);
 
-        static string createGroup(IEnumerable<string> patterns) { return $@"(?:{string.Join("|", patterns)})"; }
-        public static string CreateGroup(StringCollection patterns) { return createGroup(patterns.Cast<string>()); }
-        public static string CreateGroup(IEnumerable<string> patterns) { return createGroup(patterns); }
-        public static string CreateGroup(params string[] patterns) { return createGroup(patterns); }
+        static string createGroup(IEnumerable<string> patterns) => $@"(?:{string.Join("|", patterns)})";
+        public static string CreateGroup(StringCollection patterns) => createGroup(patterns.Cast<string>());
+        public static string CreateGroup(IEnumerable<string> patterns) => createGroup(patterns);
+        public static string CreateGroup(params string[] patterns) => createGroup(patterns);
 
         public static string[] GetDates(string subject)
         {

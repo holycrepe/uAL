@@ -186,15 +186,9 @@ namespace Torrent.Extensions
             return q;
         }
 
-        public static MatchCollection Regex(this IEnumerable<string> patterns, string subject)
-        {
-            return RegexUtils.CreateGroup(patterns).Regex(subject);
-        }
+        public static MatchCollection Regex(this IEnumerable<string> patterns, string subject) => RegexUtils.CreateGroup(patterns).Regex(subject);
 
-        public static MatchCollection Regex(this StringCollection patterns, string subject)
-        {
-            return RegexUtils.CreateGroup(patterns).Regex(subject);
-        }
+        public static MatchCollection Regex(this StringCollection patterns, string subject) => RegexUtils.CreateGroup(patterns).Regex(subject);
 
         public static T Get<T>(this IEnumerable<T> list, Func<T, bool> predicate)
         {

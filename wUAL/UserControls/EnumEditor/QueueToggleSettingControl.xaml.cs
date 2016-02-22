@@ -58,10 +58,7 @@ namespace wUAL.UserControls
             ////control.Enum = value;
             //control.ViewModel.SetEnum(value);
         }
-        protected static object OnEnumCoerced(DependencyObject d, object baseValue)
-        {
-            return baseValue;
-        }
+        protected static object OnEnumCoerced(DependencyObject d, object baseValue) => baseValue;
         #endregion
         #endregion
         #region EnableMetalinks Dependency Property

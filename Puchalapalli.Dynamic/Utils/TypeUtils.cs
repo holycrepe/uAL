@@ -23,13 +23,11 @@ namespace Puchalapalli.Dynamic.Utils
     
     internal static class TypeUtils
     {
-        internal static bool AreEquivalent(Type t1, Type t2)
-        {
 #if CLR2 || SILVERLIGHT
-            return t1 == t2;
+            
+        internal static bool AreEquivalent(Type t1, Type t2) => t1 == t2;
 #else
-            return t1 == t2 || t1.IsEquivalentTo(t2);
+        internal static bool AreEquivalent(Type t1, Type t2) => t1 == t2 || t1.IsEquivalentTo(t2);
 #endif
-        }
     }
 }

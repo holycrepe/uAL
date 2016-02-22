@@ -55,10 +55,7 @@ namespace uAL.Queue
         [
             Browsable(false),
         ]
-        public bool CancellationPending
-        {
-            get { return cancellationPending; }
-        }
+        public bool CancellationPending => cancellationPending;
 
         public void CancelAsync()
         {
@@ -78,10 +75,7 @@ namespace uAL.Queue
         [
             Browsable(false),
         ]
-        public bool IsBusy
-        {
-            get { return isRunning; }
-        }
+        public bool IsBusy => isRunning;
 
         protected async virtual Task OnDoWork(DoWorkEventArgs e)
         {

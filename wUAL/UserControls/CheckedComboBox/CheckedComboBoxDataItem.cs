@@ -25,10 +25,7 @@ namespace wUAL.UserControls.CheckedComboBox
         private int indexLoadNeeded;
 
         //getter
-        static public bool getloadAllNeeded(int index)
-        {
-            return loadsAllNeeded[index];
-        }
+        static public bool getloadAllNeeded(int index) => loadsAllNeeded[index];
 
         //setter
         static public void setloadAllNeeded(bool value, int index)

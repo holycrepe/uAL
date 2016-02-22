@@ -43,7 +43,7 @@ ResourceDictionaryLocation.SourceAssembly//where the generic resource dictionary
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.264")]
-[assembly: AssemblyFileVersion("1.0.0.264")]
+[assembly: AssemblyVersion("1.0.0.296")]
+[assembly: AssemblyFileVersion("1.0.0.296")]
 [assembly: Guid("4da12a3f-4b7d-4343-81f4-ec6d2ecfd4d1")]
 [assembly: NeutralResourcesLanguage("en-US")]

@@ -23,7 +23,13 @@
             </ResourceDictionary.MergedDictionaries>
             <myControl:FlagEnumMemberViewModel x:Key="FlagEnumMemberViewModelDataSource" d:IsDataSource="True" />
             <DataTemplate x:Key="FlagEnumMemberComboBoxGridSelectionBoxTemplate">
-                <StackPanel>
+                <TextBlock DataContext="{Binding Path=DataContext,
+                                                 ElementName=LayoutRoot,
+                                                 Mode=TwoWay}"
+                           FontWeight="Bold"
+                           Text="{Binding Member.Display}" />
+            </DataTemplate>
+            <!--<StackPanel>
                     <TextBlock DataContext="{Binding Path=DataContext,
                                                      ElementName=LayoutRoot,
                                                      Mode=TwoWay}"
@@ -35,8 +41,7 @@
                                FontWeight="Bold"
                                Text="{Binding Value,
                                               Converter={my:EnumCombinedConverter}}" />
-                </StackPanel>
-            </DataTemplate>
+                </StackPanel>-->
         </ResourceDictionary>
     </UserControl.Resources>
     <telerik:RadComboBox x:Name="LayoutRoot"

@@ -33,9 +33,15 @@ namespace uAL.Properties.Settings.LibSettings
         public class LibLabelSettings : BaseSubSettings
         {
             #region Primary
+
+            private LibLabelDefaultSettings _defaults = null;
+
             [XmlIgnore]
-            internal LibLabelDefaultSettings Defaults { get; set; }
-                = new LibLabelDefaultSettings();
+            internal LibLabelDefaultSettings Defaults
+            {
+                get { return this._defaults ?? (this._defaults = new LibLabelDefaultSettings()); }
+                set { this._defaults = value; }
+            }
 
             [DataMember]
             public string[] RootLabels
@@ -75,10 +81,10 @@ namespace uAL.Properties.Settings.LibSettings
                 = @"D:\Scripts\Python\torrent";
             [XmlIgnore]
             protected string GeneratorFileName
-                => FileUtils.Resolve(GeneratorFolder, _generatorFileName);
+                => FileUtils.Resolve(this.GeneratorFolder, this._generatorFileName);
             [XmlIgnore]
             protected string GeneratorOutput
-                => FileUtils.Resolve(GeneratorFolder, _generatorOutput);
+                => FileUtils.Resolve(this.GeneratorFolder, this._generatorOutput);
 
             [DataMember(Name=nameof(GeneratorFileName))]
             protected string _generatorFileName { get; set; }
@@ -96,15 +102,15 @@ namespace uAL.Properties.Settings.LibSettings
             public LibLabelSettings() : this($"Initializing.{nameof(LibLabelSettings)}") { }
             public LibLabelSettings(string name) : base(name)
             {
-                Defaults = LoadDataContract<LibLabelDefaultSettings>();
+                this.Defaults = LoadDataContract<LibLabelDefaultSettings>();
                 //Defaults.GetLists();
                 //Defaults.Save();
-                if (Defaults == null)
+                if (this.Defaults == null)
                 {
                     Debugger.Break();
                 }
                 UpdateRootLabels();
-                this.PropertyChanged += (s, e) => {
+                PropertyChanged += (s, e) => {
                     if (FilterDeterminingSettings.Contains(e.PropertyName))
                     {
                         this.FilterResults.Clear();
@@ -120,16 +126,23 @@ namespace uAL.Properties.Settings.LibSettings
             #region Derived
             protected override object[] DebuggerDisplayProperties => new object[]
             {                
-                nameof(Include), Include,
-                nameof(Exclude), Exclude,
-                nameof(RootLabels), RootLabels,
-                nameof(Collection), Collection == null ? "Empty" : $"{Collection.Count} Labels",
-                nameof(Queue), Queue == null ? "Empty" : $"{Queue.Count} Labels",
-                nameof(Generated), Generated == null ? "Empty" : $"{Generated.Count()} Labels"
+                nameof(this.Include), this.Include,
+                nameof(this.Exclude), this.Exclude,
+                nameof(this.RootLabels), this.RootLabels,
+                nameof(this.Collection), this.Collection == null ? "Empty" : $"{this.Collection.Count} Labels",
+                nameof(this.Queue), this.Queue == null ? "Empty" : $"{this.Queue.Count} Labels",
+                nameof(this.Generated), this.Generated == null ? "Empty" : $"{this.Generated.Count()} Labels"
             };
+
+            private List<string> _labels = null;
             public static string[] FilterDeterminingSettings = {nameof(Include), nameof(Exclude)};
             public readonly ConcurrentDictionary<string, bool> FilterResults = new ConcurrentDictionary<string, bool>();
-            public List<string> Labels = new List<string>();            
+
+            public List<string> Labels
+            {
+                get { return this._labels ?? (this._labels = new List<string>()); }
+                set { this._labels = value; }
+            }
 
             [SafeForDependencyAnalysis]
             public string[] WORDS_TO_STRIP
@@ -139,8 +152,8 @@ namespace uAL.Properties.Settings.LibSettings
                     var defaultWords =
                         @"(?:HD)?\d{3,}[dpk]|\d{3,}x\d{3,}|\d+(?:\.\d+)? ?[MG]B|DVD ?Rip|x264|MP4|WMV|MKV|AVC|REQ|SD|HD|New|REQ|Request(?:ed)?|WEB\-DL|included|^ \-+ | \-+ $"
                             .Split('|');
-                    if (Defaults?.LabelsWordsToStrip?.Length > 0) {
-                        defaultWords = defaultWords.Union(Defaults.LabelsWordsToStrip).ToArray();
+                    if (this.Defaults?.LabelsWordsToStrip?.Length > 0) {
+                        defaultWords = defaultWords.Union(this.Defaults.LabelsWordsToStrip).ToArray();
                     }
                     var words = this.WordsToStrip;
                     defaultWords = defaultWords.Union(this.TORRENT_NAME_WORDS_TO_STRIP).ToArray();
@@ -155,8 +168,8 @@ namespace uAL.Properties.Settings.LibSettings
                 get
                 {
                     var defaultWords = @"Scenes?".Split('|');
-                    if (Defaults?.LabelsWordsToStripExtended?.Length > 0) {
-                        defaultWords = defaultWords.Union(Defaults.LabelsWordsToStripExtended).ToArray();
+                    if (this.Defaults?.LabelsWordsToStripExtended?.Length > 0) {
+                        defaultWords = defaultWords.Union(this.Defaults.LabelsWordsToStripExtended).ToArray();
                     }
                     var words = this.WordsToStripExtended;
                     return words == null ? defaultWords : defaultWords.Union(words).ToArray();
@@ -169,8 +182,8 @@ namespace uAL.Properties.Settings.LibSettings
                 get
                 {
                     var defaultWords = new string[] {}; //@"".Split('|');
-                    if (Defaults?.TorrentWordsToStrip?.Length > 0) {
-                        defaultWords = defaultWords.Union(Defaults.TorrentWordsToStrip).ToArray();
+                    if (this.Defaults?.TorrentWordsToStrip?.Length > 0) {
+                        defaultWords = defaultWords.Union(this.Defaults.TorrentWordsToStrip).ToArray();
                     }
                     var words = this.TorrentNameWordsToStrip;
                     return words == null ? defaultWords : defaultWords.Union(words).ToArray();
@@ -180,7 +193,7 @@ namespace uAL.Properties.Settings.LibSettings
             #endregion
             #region Methods            
             public string[] GetLabelsWordsToStrip(bool extended)
-                => extended ? WordsToStrip.Union(this.WORDS_TO_STRIP_EXTENDED).ToArray() : this.WORDS_TO_STRIP;
+                => extended ? this.WordsToStrip.Union(this.WORDS_TO_STRIP_EXTENDED).ToArray() : this.WORDS_TO_STRIP;
             public void UpdateRootLabels(string[] values = null)
             {
                 this._rootLabels = values ?? new string[0];
@@ -188,17 +201,17 @@ namespace uAL.Properties.Settings.LibSettings
                 {
                     this._rootLabels = this._rootLabels.Union(this.Labels.Select(s => $"*{s}")).ToArray();
                 }
-                if (Defaults?.RootLabels?.Length > 0)
+                if (this.Defaults?.RootLabels?.Length > 0)
                 {
-                    this._rootLabels = this._rootLabels.Union(Defaults.RootLabels).ToArray();
+                    this._rootLabels = this._rootLabels.Union(this.Defaults.RootLabels).ToArray();
                 }
-                if (Defaults?.RootLabelsExcluded?.Length > 0)
+                if (this.Defaults?.RootLabelsExcluded?.Length > 0)
                 {
                     this._rootLabels = this._rootLabels.Union(
                         this.Labels.SelectMany(label =>
                         Directory.EnumerateDirectories(Path.Combine(LibSetting.Directories.DOWNLOAD, label))
                                 .Select(subDirectory => subDirectory.Replace(LibSetting.Directories.DOWNLOAD, "").Trim('\\'))
-                                .Where(s => !Defaults.RootLabelsExcluded.Contains(s))))
+                                .Where(s => !this.Defaults.RootLabelsExcluded.Contains(s))))
                                 .ToArray();
                 }
             }
@@ -215,7 +228,7 @@ namespace uAL.Properties.Settings.LibSettings
                 if (!TOGGLES.Filters.Global || (!doFilterIncludes && !doFilterExcludes)) {
                     return true;
                 }
-                if (FilterResults.ContainsKey(label)) {
+                if (this.FilterResults.ContainsKey(label)) {
                     return this.FilterResults[label];
                 }
 
@@ -248,12 +261,12 @@ namespace uAL.Properties.Settings.LibSettings
             {
                 if (!string.IsNullOrEmpty(label))
                 {
-                    this.Add(label);
+                    Add(label);
                 }
                 IEnumerable<string> labels = this.Generated;
-                if (Queue != null)
+                if (this.Queue != null)
                 {
-                    labels = labels.Union(Queue);
+                    labels = labels.Union(this.Queue);
                 }
                 this.Collection = new ObservableCollection<string>(labels.OrderBy(s => s));
             }
@@ -266,13 +279,13 @@ namespace uAL.Properties.Settings.LibSettings
                     WindowStyle = ProcessWindowStyle.Hidden,
                     CreateNoWindow = true
                 });
-                this.Generated = File.ReadAllLines(GeneratorOutput).Select(l => GeneratorPrefix + l).ToArray();
+                this.Generated = File.ReadAllLines(this.GeneratorOutput).Select(l => this.GeneratorPrefix + l).ToArray();
                 Update();
                 OnComplete?.Invoke(this.Generated.Length, stopwatch.Elapsed);
             }
 
             public bool Add(TorrentLabel label)
-                => this.Add(label.Base);
+                => Add(label.Base);
             public bool Add(string label)
             {
                 if (!this.Queue.Contains(label) && !this.Generated.Contains(label))
@@ -286,7 +299,7 @@ namespace uAL.Properties.Settings.LibSettings
 
             #region Logging 
 
-            [System.Diagnostics.Conditional("TRACE_LABEL_FILTERS")]
+            [Conditional("TRACE_LABEL_FILTERS")]
             private static void LogLabelFilter(string title, string text = null, string item = null,
                                                PadDirection textPadDirection = PadDirection.Default,
                                                string textSuffix = null,

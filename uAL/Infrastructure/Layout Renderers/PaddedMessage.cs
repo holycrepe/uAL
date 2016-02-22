@@ -22,9 +22,9 @@ namespace uAL.Infrastructure
 
         public PaddedMessage() { Char = ' '; }
 
-        string GetLine(char c = '-', int width = 80) { return new string(c, width); }
+        string GetLine(char c = '-', int width = 80) => new string(c, width);
 
-        string GetSep() { return GetLine('='); }
+        string GetSep() => GetLine('=');
 
         void AppendLine(string text, string prefix = "  ", int pad = 0)
         {

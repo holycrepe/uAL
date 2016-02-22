@@ -9,7 +9,7 @@ namespace wUAL
     {
         public abstract TControl GetControl();
 
-        public override object ProvideValue(IServiceProvider serviceProvider) { return GetControl(); }
+        public override object ProvideValue(IServiceProvider serviceProvider) => GetControl();
     }
 
     public class QueueGridHeaderExtension : BaseControl<QueueGridHeaderControl>
@@ -41,9 +41,6 @@ namespace wUAL
         [ConstructorArgument("icon")]
         public ImageSource Icon { get; set; }
 
-        public override QueueGridHeaderControl GetControl()
-        {
-            return new QueueGridHeaderControl(Label, Name, Icon);
-        }
+        public override QueueGridHeaderControl GetControl() => new QueueGridHeaderControl(Label, Name, Icon);
     }
 }

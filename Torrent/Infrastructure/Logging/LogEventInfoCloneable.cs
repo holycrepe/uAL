@@ -40,23 +40,14 @@ namespace Torrent.Infrastructure
             return this;
         }
 
-        public LogEventInfoCloneable Clone(Exception ex, Dictionary<string, object> newEventDict)
-        {
-            return Clone(newEventDict: newEventDict, ex: ex);
-        }
+        public LogEventInfoCloneable Clone(Exception ex, Dictionary<string, object> newEventDict) => Clone(newEventDict: newEventDict, ex: ex);
 
-        public LogEventInfoCloneable Clone(Dictionary<string, object> newEventDict = null)
-        {
-            return Clone(null, newEventDict);
-        }
+        public LogEventInfoCloneable Clone(Dictionary<string, object> newEventDict = null) => Clone(null, newEventDict);
 
         public LogEventInfoCloneable Clone(Exception ex, string newMessage = null,
-                                           Dictionary<string, object> newEventDict = null, string[] keysToDelete = null,
-                                           string group = null, string subject = null, string titleSuffix = null,
-                                           string titleValue = null, LogLevel level = null)
-        {
-            return Clone(newMessage, newEventDict, keysToDelete, group, subject, titleSuffix, titleValue, level, ex);
-        }
+                               Dictionary<string, object> newEventDict = null, string[] keysToDelete = null,
+                               string group = null, string subject = null, string titleSuffix = null,
+                               string titleValue = null, LogLevel level = null) => Clone(newMessage, newEventDict, keysToDelete, group, subject, titleSuffix, titleValue, level, ex);
 
         public LogEventInfoCloneable Clone(string newMessage = null, Dictionary<string, object> newEventDict = null,
                                            string[] keysToDelete = null,

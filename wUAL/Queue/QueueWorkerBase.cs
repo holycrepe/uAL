@@ -70,7 +70,7 @@ namespace wUAL.Queue
 
         #region Properties
 
-        public QueueWorkerMethod Method { get; private set; }
+        public QueueWorkerMethod Method { get; }
         public string QualifiedName => $"{Type}.{Method}";
 
         protected internal QueueMonitorBase Monitor => _monitor ?? (_monitor = GetMonitor(Type));

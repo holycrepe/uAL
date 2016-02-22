@@ -44,21 +44,18 @@ namespace wUAL.Queue
         }
 
         public static int Run(QueueWorkerMethod name,
-                              MonitorTypes type,
-                              ListBoxInfoReporter infoReporter,
-                              WorkerStopwatch stopwatch,
-                              Func<MonitorTypes, QueueMonitorBase> getMonitor,
-                              Func<MonitorTypes, RadGridView> getGridView,
-                              QueueWorker.DoQueueWorkEventHandler DoWork,
-                              QueueWorkerOptions Options = null,
-                              QueueWorker.RunWorkerCompletedEventHandler RunWorkerCompleted = null,
-                              QueueWorker.ProgressChangedEventHandler ProgressChanged = null
-            )
-        {
-            return Create(name, type,
-                          infoReporter, stopwatch,
-                          getMonitor, getGridView,
-                          DoWork, Options, RunWorkerCompleted, ProgressChanged).TryRunWorkerAsync();
-        }
+                  MonitorTypes type,
+                  ListBoxInfoReporter infoReporter,
+                  WorkerStopwatch stopwatch,
+                  Func<MonitorTypes, QueueMonitorBase> getMonitor,
+                  Func<MonitorTypes, RadGridView> getGridView,
+                  QueueWorker.DoQueueWorkEventHandler DoWork,
+                  QueueWorkerOptions Options = null,
+                  QueueWorker.RunWorkerCompletedEventHandler RunWorkerCompleted = null,
+                  QueueWorker.ProgressChangedEventHandler ProgressChanged = null
+) => Create(name, type,
+              infoReporter, stopwatch,
+              getMonitor, getGridView,
+              DoWork, Options, RunWorkerCompleted, ProgressChanged).TryRunWorkerAsync();
     }
 }

@@ -68,7 +68,7 @@
             RegexUtils.GetLabelsWordsToStrip = libSetting.Labels.GetLabelsWordsToStrip;
             TorrentItem.getWordsToStrip = e => libSetting.Labels.TORRENT_NAME_WORDS_TO_STRIP;
             Toggles.Filters.PropertyChanged +=
-                (s, e) => libSetting.Labels.FilterResults.Clear();
+                (s, e) => libSetting.Labels.FilterResults?.Clear();
             return libSetting;
         }
 

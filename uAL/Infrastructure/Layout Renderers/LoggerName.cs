@@ -47,7 +47,7 @@ namespace uAL.Infrastructure
         public bool ReverseGroup { get; set; }
         public bool ShortName { get; set; }
 
-        internal string[] names() { return MyLogger().Split('.'); }
+        internal string[] names() => MyLogger().Split('.');
 
         internal string shortName()
         {

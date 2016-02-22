@@ -30,13 +30,13 @@ namespace UTorrentRestAPI
         /// Gets the path that is used for saving
         /// </summary>
         [DataMember]
-        public string Path { get; private set; }
+        public string Path { get; }
 
         /// <summary>
         /// Gets the space available in this directory
         /// </summary>
         [DataMember]
         [DeserializeAs(Name = "available")]
-        public int AvailableMBytes { get; private set; }
+        public int AvailableMBytes { get; }
     }
 }

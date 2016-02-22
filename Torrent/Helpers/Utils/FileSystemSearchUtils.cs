@@ -375,8 +375,6 @@ namespace Torrent.Helpers.Utils
 
         #region Find File Base Methods
 
-        public static T FindFileName<T>(IEnumerable<T> files)
-        {
 #if TRACE_FSSU
             var count = files.Count();    
             if (count == 0) {
@@ -386,8 +384,7 @@ namespace Torrent.Helpers.Utils
             Log($"***FindFileName", files.FirstOrDefault().ToString(), count.ToString());
             }
 #endif
-            return files.FirstOrDefault();
-        }
+        public static T FindFileName<T>(IEnumerable<T> files) => files.FirstOrDefault();
 
         public static FileInfo FindFile(IEnumerable<FileInfo> files, Func<FileInfo, bool> predicate1 = null,
                                         Func<FileInfo, bool> predicate2 = null)
@@ -426,10 +423,7 @@ namespace Torrent.Helpers.Utils
         #region Find File Implementations
 
         public static string FindFileName(DirectoryInfo rootDirectory, string searchPattern,
-                                          GetFileMethod method = GetFileMethod.Default)
-        {
-            return FindFileName(rootDirectory.FullName, searchPattern, method);
-        }
+                              GetFileMethod method = GetFileMethod.Default) => FindFileName(rootDirectory.FullName, searchPattern, method);
 
         public static string FindFileName(string rootDirectory, string searchPattern,
                                           GetFileMethod method = GetFileMethod.Default)
@@ -462,11 +456,8 @@ namespace Torrent.Helpers.Utils
         }
 
         public static FileInfo FindFile(DirectoryInfo rootDirectory, string searchPattern,
-                                        Func<FileInfo, bool> predicate = null,
-                                        GetFileMethod method = GetFileMethod.Default)
-        {
-            return FindFile(rootDirectory.FullName, searchPattern, predicate, method);
-        }
+                            Func<FileInfo, bool> predicate = null,
+                            GetFileMethod method = GetFileMethod.Default) => FindFile(rootDirectory.FullName, searchPattern, predicate, method);
 
         public static FileInfo FindFile(string rootDirectory, string searchPattern,
                                         Func<FileInfo, bool> predicate = null,
@@ -499,71 +490,35 @@ namespace Torrent.Helpers.Utils
             }
         }
 
-        public static string FindFileNamePlain(string rootDirectory, string searchPattern)
-        {
-            return FindFileName(GetFileNamesPlain(rootDirectory, searchPattern));
-        }
+        public static string FindFileNamePlain(string rootDirectory, string searchPattern) => FindFileName(GetFileNamesPlain(rootDirectory, searchPattern));
 
-        public static string FindFileNamePlain(IEnumerable<string> rootDirectory, string searchPattern)
-        {
-            return FindFileName(GetFileNamesPlain(rootDirectory, searchPattern));
-        }
+        public static string FindFileNamePlain(IEnumerable<string> rootDirectory, string searchPattern) => FindFileName(GetFileNamesPlain(rootDirectory, searchPattern));
 
         public static FileInfo FindFilePlain(string rootDirectory, string searchPattern,
-                                             Func<FileInfo, bool> predicate = null)
-        {
-            return FindFile(GetFilesPlain(rootDirectory, searchPattern), predicate);
-        }
+                                 Func<FileInfo, bool> predicate = null) => FindFile(GetFilesPlain(rootDirectory, searchPattern), predicate);
 
         public static FileInfo FindFilePlain(IEnumerable<string> rootDirectories, string searchPattern,
-                                             Func<FileInfo, bool> predicate = null)
-        {
-            return FindFile(GetFilesPlain(rootDirectories, searchPattern), predicate);
-        }
+                                 Func<FileInfo, bool> predicate = null) => FindFile(GetFilesPlain(rootDirectories, searchPattern), predicate);
 
-        public static string FindFileNameEnumerator(string rootDirectory, string searchPattern)
-        {
-            return FindFileName(GetFileNamesEnumerator(rootDirectory, searchPattern));
-        }
+        public static string FindFileNameEnumerator(string rootDirectory, string searchPattern) => FindFileName(GetFileNamesEnumerator(rootDirectory, searchPattern));
 
-        public static string FindFileNameEnumerator(IEnumerable<string> rootDirectories, string searchPattern)
-        {
-            return FindFileName(GetFileNamesEnumerator(rootDirectories, searchPattern));
-        }
+        public static string FindFileNameEnumerator(IEnumerable<string> rootDirectories, string searchPattern) => FindFileName(GetFileNamesEnumerator(rootDirectories, searchPattern));
 
         public static FileInfo FindFileEnumerator(string rootDirectory, string searchPattern,
-                                                  Func<FileInfo, bool> predicate = null)
-        {
-            return FindFile(GetFilesEnumerator(rootDirectory, searchPattern), predicate);
-        }
+                                      Func<FileInfo, bool> predicate = null) => FindFile(GetFilesEnumerator(rootDirectory, searchPattern), predicate);
 
         public static FileInfo FindFileEnumerator(IEnumerable<string> rootDirectories, string searchPattern,
-                                                  Func<FileInfo, bool> predicate = null)
-        {
-            return FindFile(GetFilesEnumerator(rootDirectories, searchPattern), predicate);
-        }
+                                      Func<FileInfo, bool> predicate = null) => FindFile(GetFilesEnumerator(rootDirectories, searchPattern), predicate);
 
-        public static string FindFileNameEnumeratorLinq(string rootDirectory, string searchPattern)
-        {
-            return FindFileName(GetFileNamesEnumeratorLinq(rootDirectory, searchPattern));
-        }
+        public static string FindFileNameEnumeratorLinq(string rootDirectory, string searchPattern) => FindFileName(GetFileNamesEnumeratorLinq(rootDirectory, searchPattern));
 
-        public static string FindFileNameEnumeratorLinq(IEnumerable<string> rootDirectories, string searchPattern)
-        {
-            return FindFileName(GetFileNamesEnumeratorLinq(rootDirectories, searchPattern));
-        }
+        public static string FindFileNameEnumeratorLinq(IEnumerable<string> rootDirectories, string searchPattern) => FindFileName(GetFileNamesEnumeratorLinq(rootDirectories, searchPattern));
 
         public static FileInfo FindFileEnumeratorLinq(string rootDirectory, string searchPattern,
-                                                      Func<FileInfo, bool> predicate = null)
-        {
-            return FindFile(GetFilesEnumeratorLinq(rootDirectory, searchPattern), predicate);
-        }
+                                          Func<FileInfo, bool> predicate = null) => FindFile(GetFilesEnumeratorLinq(rootDirectory, searchPattern), predicate);
 
         public static FileInfo FindFileEnumeratorLinq(IEnumerable<string> rootDirectories, string searchPattern,
-                                                      Func<FileInfo, bool> predicate = null)
-        {
-            return FindFile(GetFilesEnumeratorLinq(rootDirectories, searchPattern), predicate);
-        }
+                                          Func<FileInfo, bool> predicate = null) => FindFile(GetFilesEnumeratorLinq(rootDirectories, searchPattern), predicate);
 
         #endregion
 

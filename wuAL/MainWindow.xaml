@@ -25,7 +25,7 @@
         Initialized="Window_Initialized"
         appSettings:WindowSettings.Save="True"
         d:DesignHeight="1000"
-        d:DesignWidth="1000"
+        d:DesignWidth="1500"
         mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
@@ -936,38 +936,55 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="200" />
-                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition MinWidth="200" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition MinWidth="200" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <telerik:Label Content="Connection" Style="{StaticResource SettingsGridHeadingLabel}" />
-                        <telerik:Label Grid.Row="1" Content="User Name" />
+                        <telerik:Label Grid.ColumnSpan="8"
+                                       Content="Connection"
+                                       Style="{StaticResource SettingsGridHeadingLabel}" />
+                        <telerik:Label Grid.Row="1"
+                                       Content="User Name:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
                         <telerik:RadWatermarkTextBox Grid.Row="1"
                                                      Grid.Column="1"
                                                      Text="{bind:Lib Path=Connection.UserName}"
                                                      WatermarkContent="Use `admin`" />
-                        <telerik:Label Grid.Row="2" Content="Password" />
-                        <PasswordBox Grid.Row="2"
-                                     Grid.Column="1"
+                        <telerik:Label Grid.Row="1"
+                                       Grid.Column="3"
+                                       Content="Password:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <PasswordBox Grid.Row="1"
+                                     Grid.Column="4"
                                      HorizontalAlignment="Stretch"
                                      HorizontalContentAlignment="Stretch"
                                      helpers:PasswordHelper.Attach="True"
                                      helpers:PasswordHelper.Password="{bind:Lib Path=Connection.Password}" />
-                        <telerik:Label Grid.Row="3" Content="Host" />
-                        <telerik:RadWatermarkTextBox Grid.Row="3"
+                        <telerik:Label Grid.Row="2"
+                                       Content="Host:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <telerik:RadWatermarkTextBox Grid.Row="2"
                                                      Grid.Column="1"
                                                      Text="{bind:Lib Path=Connection.Host}"
                                                      WatermarkContent="Use Local Host" />
-                        <telerik:Label Grid.Row="4" Content="Port" />
-                        <telerik:RadWatermarkTextBox Grid.Row="4"
-                                                     Grid.Column="1"
+                        <telerik:Label Grid.Row="2"
+                                       Grid.Column="3"
+                                       Content="Port:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <telerik:RadWatermarkTextBox Grid.Row="2"
+                                                     Grid.Column="4"
                                                      HorizontalAlignment="Stretch"
                                                      HorizontalContentAlignment="Left"
                                                      Text="{bind:Lib Path=Connection.Port}" />
@@ -982,11 +999,14 @@
                             AutoFillNumberGroupSeparators="False"
                             HorizontalContentAlignment="Left"
                             TextMode="PlainText" />-->
-                        <telerik:Label Grid.Row="5"
+                        <telerik:Label Grid.Row="3"
+                                       Grid.ColumnSpan="8"
                                        Content="Directories"
                                        Style="{StaticResource SettingsGridHeadingLabel}" />
-                        <telerik:Label Grid.Row="6" Content="Import" />
-                        <telerik:RadWatermarkTextBox Grid.Row="6"
+                        <telerik:Label Grid.Row="4"
+                                       Content="Import:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <telerik:RadWatermarkTextBox Grid.Row="4"
                                                      Grid.Column="1"
                                                      Text="{bind:Lib Path=Directories.Import}">
                             <telerik:RadWatermarkTextBox.ToolTip>
@@ -1002,9 +1022,12 @@
                                 </StackPanel>
                             </telerik:RadWatermarkTextBox.WatermarkContent>
                         </telerik:RadWatermarkTextBox>
-                        <telerik:Label Grid.Row="7" Content="Added Files" />
-                        <telerik:RadWatermarkTextBox Grid.Row="7"
-                                                     Grid.Column="1"
+                        <telerik:Label Grid.Row="4"
+                                       Grid.Column="3"
+                                       Content="Added Files:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <telerik:RadWatermarkTextBox Grid.Row="4"
+                                                     Grid.Column="4"
                                                      Text="{bind:Lib Path=Directories.Added}">
                             <telerik:RadWatermarkTextBox.ToolTip>
                                 <StackPanel Orientation="Horizontal">
@@ -1019,9 +1042,12 @@
                                 </StackPanel>
                             </telerik:RadWatermarkTextBox.WatermarkContent>
                         </telerik:RadWatermarkTextBox>
-                        <telerik:Label Grid.Row="8" Content="Downloads" />
-                        <telerik:RadWatermarkTextBox Grid.Row="8"
-                                                     Grid.Column="1"
+                        <telerik:Label Grid.Row="4"
+                                       Grid.Column="6"
+                                       Content="Downloads:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <telerik:RadWatermarkTextBox Grid.Row="4"
+                                                     Grid.Column="7"
                                                      Text="{bind:Lib Path=Directories.Download}">
                             <telerik:RadWatermarkTextBox.ToolTip>
                                 <StackPanel Orientation="Horizontal">
@@ -1036,22 +1062,23 @@
                                 </StackPanel>
                             </telerik:RadWatermarkTextBox.WatermarkContent>
                         </telerik:RadWatermarkTextBox>
-                        <telerik:Label Grid.Row="9"
+                        <telerik:Label Grid.Row="5"
+                                       Grid.ColumnSpan="8"
                                        Content="Custom Settings"
                                        Style="{StaticResource SettingsGridHeadingLabel}" />
-                        <telerik:Label Grid.Row="10"
+                        <telerik:Label Grid.Row="6"
+                                       Grid.ColumnSpan="8"
                                        Content="Methods"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="11"
+                        <telerik:Label Grid.Row="7"
                                        VerticalAlignment="Top"
                                        VerticalContentAlignment="Top"
-                                       Content="Get Files" />
+                                       Content="Get Files:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
 
-                        <myControl:MyEnumEditor x:Name="MyEnumEditorGetFiles"
-                                                Grid.Row="11"
+                        <myControl:MyEnumEditor Grid.Row="7"
                                                 Grid.Column="1"
-                                                Width="200"
-                                                HorizontalAlignment="Left"
+                                                HorizontalAlignment="Stretch"
                                                 Enum="{bind:My Path=METHODS.GET_FILES,
                                                                Mode=TwoWay}" />
                         <!--<telerik:RadComboBox Grid.Row="11"
@@ -1061,152 +1088,132 @@
                                              DisplayMemberPath=""
                                              ItemsSource="{bind:EnumSource EnumType=Torrent.Enums.GetFileMethod}"
                                              SelectedItem="{bind:My Path=METHODS.GET_FILES}" />-->
-                        <telerik:Label Grid.Row="12"
+                        <telerik:Label Grid.Row="7"
+                                       Grid.Column="3"
                                        VerticalAlignment="Top"
                                        VerticalContentAlignment="Top"
-                                       Content="Process Queue" />
-                        <myControl:MyFlagEnumEditor x:Name="MyFlagEnumEditorProcessQueue"
-                                                    Grid.Row="12"
-                                                    Grid.Column="1"
-                                                    Width="200"
-                                                    HorizontalAlignment="Left"
-                                                    Enum="{bind:Toggle Path=Processing.PreProcess,
-                                                                       Mode=TwoWay}" />
-                        <myControl:QueueToggleSettingControl x:Name="MyFlagEnumEditorProcessQueue2"
-                                                             Grid.Row="12"
-                                                             Grid.Column="1"
-                                                             HorizontalAlignment="Center"
-                                                             Enum="{bind:Toggle Path=Processing.PreProcess,
-                                                                                Mode=TwoWay}" />
-                        <!--<telerik:RadComboBox Grid.Row="12"
-                                             Grid.Column="1"
-                                             Width="150"
-                                             HorizontalAlignment="Left"
-                                             DisplayMemberPath=""
-                                             ItemsSource="{bind:EnumSoure EnumType=Torrent.Enums.ProcessQueueMethod}"
-                                             SelectedItem="{bind:My Path=METHODS.PROCESS_QUEUE}" />-->
-                        <telerik:Label Grid.Row="13"
+                                       Content="Process Queue:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+
+                        <myControl:MyEnumEditor Grid.Row="7"
+                                                Grid.Column="4"
+                                                HorizontalAlignment="Stretch"
+                                                Enum="{bind:My Path=METHODS.PROCESS_QUEUE,
+                                                               Mode=TwoWay}" />
+
+                        <telerik:Label Grid.Row="8"
+                                       Grid.ColumnSpan="8"
                                        Content="Labels"
                                        Style="{StaticResource SettingsGridHeadingLabel}" />
-                        <Grid Grid.Row="14" Grid.ColumnSpan="2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <telerik:Label Grid.ColumnSpan="1"
-                                           Content="Root Labels"
-                                           Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                            <telerik:Label Grid.Column="2"
-                                           Grid.ColumnSpan="1"
-                                           Content="Words To Strip"
-                                           Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                            <telerik:Label Grid.Column="4"
-                                           Grid.ColumnSpan="1"
-                                           Style="{StaticResource SettingsGridSubHeadingLabel}">
-                                <DockPanel>
-                                    <telerik:Label Content="Words to Strip (Extended)" />
-                                    <CheckBox HorizontalAlignment="Right"
-                                              Content="Extend Labels By Default"
-                                              IsChecked="{bind:Lib Path=Labels.ExtendByDefault}" />
-                                </DockPanel>
-                            </telerik:Label>
-                            <telerik:RadWatermarkTextBox Grid.Row="1"
-                                                         VerticalContentAlignment="Top"
-                                                         AcceptsReturn="True"
-                                                         Text="{bind:Lib Path=Labels.RootLabels,
-                                                                         Converter={my:DelimitedStringConverter}}">
-                                <telerik:RadWatermarkTextBox.ToolTip>
-                                    <StackPanel Orientation="Horizontal">
-                                        <telerik:Label Content="Current Labels:  &#10; &#10;" />
-                                        <telerik:Label Content="{bind:Lib Path=Labels.RootLabels, Mode=OneWay, Converter={my:DelimitedStringConverter}}" />
-                                    </StackPanel>
-                                </telerik:RadWatermarkTextBox.ToolTip>
-                                <telerik:RadWatermarkTextBox.WatermarkContent>
-                                    <StackPanel Orientation="Horizontal">
-                                        <telerik:Label Width="300" Content="Labels Roots To Dupe Check. &#10; &#10;Default Labels: &#10; &#10;" />
-                                        <telerik:Label Content="{bind:Lib Path=Labels.RootLabels, Mode=OneWay, Converter={my:DelimitedStringConverter}}" />
-                                    </StackPanel>
-                                </telerik:RadWatermarkTextBox.WatermarkContent>
-                            </telerik:RadWatermarkTextBox>
-                            <telerik:RadWatermarkTextBox Grid.Row="1"
-                                                         Grid.Column="2"
-                                                         VerticalContentAlignment="Top"
-                                                         AcceptsReturn="True"
-                                                         Text="{bind:Lib Path=Labels.WordsToStrip,
-                                                                         Converter={my:DelimitedStringConverter}}"
-                                                         WatermarkContent="Words To Strip From Labels" />
-                            <telerik:RadWatermarkTextBox Grid.Row="1"
-                                                         Grid.Column="4"
-                                                         VerticalContentAlignment="Top"
-                                                         AcceptsReturn="True"
-                                                         Text="{bind:Lib Path=Labels.WordsToStripExtended,
-                                                                         Converter={my:DelimitedStringConverter}}"
-                                                         WatermarkContent="Words to Ignore When Determining If Label Needs to Be Extended" />
-                            <telerik:Label Grid.Row="2"
-                                           Grid.ColumnSpan="1"
-                                           Style="{StaticResource SettingsGridSubHeadingLabel}">
-                                <DockPanel>
-                                    <telerik:Label Content="Label Filtering" />
-                                    <myControl:QueueToggleSettingControl HorizontalAlignment="Right" DataContext="{bind:Toggle Path=Filters.Global}" />
-                                </DockPanel>
-                            </telerik:Label>
-                            <telerik:Label Grid.Row="2"
-                                           Grid.Column="2"
-                                           Grid.ColumnSpan="1"
-                                           Style="{StaticResource SettingsGridSubHeadingLabel}">
-                                <DockPanel>
-                                    <telerik:Label Content="Labels to Include" />
-                                    <myControl:QueueToggleSettingControl HorizontalAlignment="Right" DataContext="{bind:Toggle Path=Filters.Include}" />
-                                </DockPanel>
-                            </telerik:Label>
-                            <telerik:Label Grid.Row="2"
-                                           Grid.Column="4"
-                                           Grid.ColumnSpan="1"
-                                           Style="{StaticResource SettingsGridSubHeadingLabel}">
-                                <DockPanel>
-                                    <telerik:Label Content="Labels to Exclude" />
-                                    <myControl:QueueToggleSettingControl HorizontalAlignment="Right"
-                                                                         DataContext="{bind:Toggle Path=Filters.Exclude}"
-                                                                         DockPanel.Dock="Right" />
-                                </DockPanel>
-                            </telerik:Label>
+                        <telerik:Label Grid.Row="9"
+                                       Content="Root Labels"
+                                       Style="{StaticResource SettingsGridSubHeadingLabel}" />
 
-                            <telerik:RadListBox Grid.Row="3"
-                                                Grid.ColumnSpan="1"
-                                                VerticalContentAlignment="Top"
-                                                Background="{StaticResource wUAL_ContentBackgroundDark}"
-                                                CanAutocompleteSelectPartialMatches="False"
-                                                Focusable="False"
-                                                IsTextSearchEnabled="False"
-                                                ItemsSource="{bind:Lib Path=Labels.Collection,
-                                                                       Mode=OneWay}"
-                                                ScrollViewer.CanContentScroll="False" />
+                        <telerik:Label Grid.Row="9"
+                                       Grid.Column="3"
+                                       Content="Words To Strip"
+                                       Style="{StaticResource SettingsGridSubHeadingLabel}" />
 
-                            <telerik:RadWatermarkTextBox Grid.Row="3"
-                                                         Grid.Column="2"
-                                                         VerticalContentAlignment="Top"
-                                                         AcceptsReturn="True"
-                                                         Text="{bind:Lib Path=Labels.Include,
-                                                                         Converter={my:DelimitedStringConverter}}"
-                                                         WatermarkContent="Include Only Files With These Labels" />
+                        <telerik:Label Grid.Row="9"
+                                       Grid.Column="6"
+                                       Style="{StaticResource SettingsGridSubHeadingLabel}">
+                            <DockPanel>
+                                <telerik:Label Content="Words to Strip (Extended)" />
+                                <CheckBox HorizontalAlignment="Right"
+                                          Content="Extend Labels By Default"
+                                          IsChecked="{bind:Lib Path=Labels.ExtendByDefault}" />
+                            </DockPanel>
+                        </telerik:Label>
 
-                            <telerik:RadWatermarkTextBox Grid.Row="3"
-                                                         Grid.Column="4"
-                                                         VerticalContentAlignment="Top"
-                                                         AcceptsReturn="True"
-                                                         Text="{bind:Lib Path=Labels.Exclude,
-                                                                         Converter={my:DelimitedStringConverter}}"
-                                                         WatermarkContent="Exclude Any Files With These Labels" />
-                        </Grid>
+                        <telerik:RadWatermarkTextBox Grid.Row="10"
+                                                     Grid.ColumnSpan="2"
+                                                     VerticalContentAlignment="Top"
+                                                     AcceptsReturn="True"
+                                                     Text="{bind:Lib Path=Labels.RootLabels,
+                                                                     Converter={my:DelimitedStringConverter}}">
+                            <telerik:RadWatermarkTextBox.ToolTip>
+                                <StackPanel Orientation="Horizontal">
+                                    <telerik:Label Content="Current Labels:  &#10; &#10;" />
+                                    <telerik:Label Content="{bind:Lib Path=Labels.RootLabels, Mode=OneWay, Converter={my:DelimitedStringConverter}}" />
+                                </StackPanel>
+                            </telerik:RadWatermarkTextBox.ToolTip>
+                            <telerik:RadWatermarkTextBox.WatermarkContent>
+                                <StackPanel Orientation="Horizontal">
+                                    <telerik:Label Width="300" Content="Labels Roots To Dupe Check. &#10; &#10;Default Labels: &#10; &#10;" />
+                                    <telerik:Label Content="{bind:Lib Path=Labels.RootLabels, Mode=OneWay, Converter={my:DelimitedStringConverter}}" />
+                                </StackPanel>
+                            </telerik:RadWatermarkTextBox.WatermarkContent>
+                        </telerik:RadWatermarkTextBox>
+                        <telerik:RadWatermarkTextBox Grid.Row="10"
+                                                     Grid.Column="3"
+                                                     Grid.ColumnSpan="2"
+                                                     VerticalContentAlignment="Top"
+                                                     AcceptsReturn="True"
+                                                     Text="{bind:Lib Path=Labels.WordsToStrip,
+                                                                     Converter={my:DelimitedStringConverter}}"
+                                                     WatermarkContent="Words To Strip From Labels" />
+                        <telerik:RadWatermarkTextBox Grid.Row="10"
+                                                     Grid.Column="6"
+                                                     Grid.ColumnSpan="2"
+                                                     VerticalContentAlignment="Top"
+                                                     AcceptsReturn="True"
+                                                     Text="{bind:Lib Path=Labels.WordsToStripExtended,
+                                                                     Converter={my:DelimitedStringConverter}}"
+                                                     WatermarkContent="Words to Ignore When Determining If Label Needs to Be Extended" />
+
+                        <telerik:Label Grid.Row="11" Style="{StaticResource SettingsGridSubHeadingLabel}">
+                            <DockPanel>
+                                <telerik:Label Content="Label Filtering" />
+                                <myControl:QueueToggleSettingControl HorizontalAlignment="Right" Enum="{bind:Toggle Path=Filters.Global}" />
+                            </DockPanel>
+                        </telerik:Label>
+                        <telerik:Label Grid.Row="11"
+                                       Grid.Column="3"
+                                       Style="{StaticResource SettingsGridSubHeadingLabel}">
+                            <DockPanel>
+                                <telerik:Label Content="Labels to Include" />
+                                <myControl:QueueToggleSettingControl HorizontalAlignment="Right" Enum="{bind:Toggle Path=Filters.Include}" />
+                            </DockPanel>
+                        </telerik:Label>
+                        <telerik:Label Grid.Row="11"
+                                       Grid.Column="6"
+                                       Style="{StaticResource SettingsGridSubHeadingLabel}">
+                            <DockPanel>
+                                <telerik:Label Content="Labels to Exclude" />
+                                <myControl:QueueToggleSettingControl HorizontalAlignment="Right"
+                                                                     DockPanel.Dock="Right"
+                                                                     Enum="{bind:Toggle Path=Filters.Exclude}" />
+                            </DockPanel>
+                        </telerik:Label>
+
+                        <telerik:RadListBox Grid.Row="12"
+                                            Grid.ColumnSpan="2"
+                                            VerticalContentAlignment="Top"
+                                            Background="{StaticResource wUAL_ContentBackgroundDark}"
+                                            CanAutocompleteSelectPartialMatches="False"
+                                            Focusable="False"
+                                            IsTextSearchEnabled="False"
+                                            ItemsSource="{bind:Lib Path=Labels.Collection,
+                                                                   Mode=OneWay}"
+                                            ScrollViewer.CanContentScroll="False" />
+
+                        <telerik:RadWatermarkTextBox Grid.Row="12"
+                                                     Grid.Column="3"
+                                                     Grid.ColumnSpan="2"
+                                                     VerticalContentAlignment="Top"
+                                                     AcceptsReturn="True"
+                                                     Text="{bind:Lib Path=Labels.Include,
+                                                                     Converter={my:DelimitedStringConverter}}"
+                                                     WatermarkContent="Include Only Files With These Labels" />
+
+                        <telerik:RadWatermarkTextBox Grid.Row="12"
+                                                     Grid.Column="6"
+                                                     Grid.ColumnSpan="2"
+                                                     VerticalContentAlignment="Top"
+                                                     AcceptsReturn="True"
+                                                     Text="{bind:Lib Path=Labels.Exclude,
+                                                                     Converter={my:DelimitedStringConverter}}"
+                                                     WatermarkContent="Exclude Any Files With These Labels" />
                     </Grid>
                 </Grid>
             </telerik:RadTabItem>
@@ -1253,170 +1260,210 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="200" />
-                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition MinWidth="200" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition MinWidth="200" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <telerik:Label Grid.Row="1"
+                                       Grid.ColumnSpan="7"
                                        Content="Start Up"
                                        Style="{StaticResource SettingsGridHeadingLabel}" />
                         <!--<telerik:Label Grid.Row="10"
                                        Content="Start Up"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />-->
-                        <telerik:Label Grid.Row="2" Content="Options:" />
-                        <UniformGrid Grid.Row="2"
-                                     Grid.Column="1"
-                                     Columns="4">
-                            <CheckBox Content="Auto Start" IsChecked="{bind:Lib Path=Queue.AutoStart}" />
-                            <CheckBox Content="Auto Connect" IsChecked="{bind:Lib Path=Connection.ConnectOnStartup}" />
-                            <CheckBox Content="Update Labels" IsChecked="{bind:Lib Path=Queue.UpdateLabelsOnStart}" />
-                            <CheckBox Content="Cache Downloaded Files" IsChecked="{bind:Lib Path=Queue.CacheDownloadedFilesOnStart}" />
-                        </UniformGrid>
+                        <telerik:Label Grid.Row="2"
+                                       Content="Options:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <CheckBox Grid.Row="2"
+                                  Grid.Column="1"
+                                  Content="Auto Start"
+                                  IsChecked="{bind:Lib Path=Queue.AutoStart}" />
+                        <CheckBox Grid.Row="2"
+                                  Grid.Column="2"
+                                  Content="Auto Connect"
+                                  IsChecked="{bind:Lib Path=Connection.ConnectOnStartup}" />
+                        <CheckBox Grid.Row="2"
+                                  Grid.Column="3"
+                                  Grid.ColumnSpan="2"
+                                  Content="Update Labels"
+                                  IsChecked="{bind:Lib Path=Queue.UpdateLabelsOnStart}" />
+                        <CheckBox Grid.Row="2"
+                                  Grid.Column="4"
+                                  Grid.ColumnSpan="2"
+                                  Content="Cache Downloaded Files"
+                                  IsChecked="{bind:Lib Path=Queue.CacheDownloadedFilesOnStart}" />
                         <telerik:Label Grid.Row="3"
+                                       Grid.ColumnSpan="7"
                                        Content="Queue Processing"
                                        Style="{StaticResource SettingsGridHeadingLabel}" />
                         <telerik:Label Grid.Row="4"
+                                       Grid.ColumnSpan="7"
                                        Content="Torrents"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="5" Content="Options:" />
-                        <UniformGrid Grid.Row="5"
-                                     Grid.Column="1"
-                                     Columns="4">
-                            <CheckBox Content="Check Queued In uTorrent" IsChecked="{bind:Lib Path=Torrents.CheckAlreadyQueuedInUTorrent}" />
-                        </UniformGrid>
+                        <telerik:Label Grid.Row="5"
+                                       Content="Options:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <CheckBox Grid.Row="5"
+                                  Grid.Column="1"
+                                  Content="Check Queued In uTorrent"
+                                  IsChecked="{bind:Lib Path=Torrents.CheckAlreadyQueuedInUTorrent}" />
                         <telerik:Label Grid.Row="6"
+                                       Grid.ColumnSpan="7"
                                        Content="UTorrent Jobs"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="7" Content="Options:" />
-                        <UniformGrid Grid.Row="7"
-                                     Grid.Column="1"
-                                     Columns="4">
-                            <CheckBox Content="Overwrite uTorrent `resume.dat` File" IsChecked="{bind:Lib Path=Jobs.OverwriteUTorrentResumeFile}" />
-                            <CheckBox Content="Move Downloaded Files" IsChecked="{bind:Lib Path=Jobs.MoveDownloadedFiles}" />
-                        </UniformGrid>
-                        <telerik:Label Grid.Row="8" Content="Labels:" />
-                        <UniformGrid Grid.Row="8"
-                                     Grid.Column="1"
-                                     Columns="4">
-                            <CheckBox Content="Fix Labels" IsChecked="{bind:Lib Path=Jobs.FixLabels}" />
-                            <CheckBox Content="Fix Original Label"
-                                      IsChecked="{bind:Lib Path=Jobs.FixOriginalLabel}"
-                                      IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
-                            <CheckBox Content="Fix Secondary Label"
-                                      IsChecked="{bind:Lib Path=Jobs.FixSecondaryLabel}"
-                                      IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
-                            <CheckBox Content="Remove Extra Primary Label"
-                                      IsChecked="{bind:Lib Path=Jobs.RemoveExtraPrimaryLabel}"
-                                      IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
-                        </UniformGrid>
+                        <telerik:Label Grid.Row="7"
+                                       Content="Options:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <CheckBox Grid.Row="7"
+                                  Grid.Column="1"
+                                  Content="Overwrite uTorrent `resume.dat`"
+                                  IsChecked="{bind:Lib Path=Jobs.OverwriteUTorrentResumeFile}" />
+                        <CheckBox Grid.Row="7"
+                                  Grid.Column="2"
+                                  Content="Move Downloaded Files"
+                                  IsChecked="{bind:Lib Path=Jobs.MoveDownloadedFiles}" />
+                        <telerik:Label Grid.Row="8"
+                                       Content="Labels:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <CheckBox Grid.Row="8"
+                                  Grid.Column="1"
+                                  Content="Fix Labels"
+                                  IsChecked="{bind:Lib Path=Jobs.FixLabels}" />
+                        <CheckBox Grid.Row="8"
+                                  Grid.Column="2"
+                                  Content="Fix Original Label"
+                                  IsChecked="{bind:Lib Path=Jobs.FixOriginalLabel}"
+                                  IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
+                        <CheckBox Grid.Row="8"
+                                  Grid.Column="3"
+                                  Grid.ColumnSpan="2"
+                                  Content="Fix Secondary Label"
+                                  IsChecked="{bind:Lib Path=Jobs.FixSecondaryLabel}"
+                                  IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
+                        <CheckBox Grid.Row="8"
+                                  Grid.Column="4"
+                                  Grid.ColumnSpan="2"
+                                  Content="Remove Extra Primary Label"
+                                  IsChecked="{bind:Lib Path=Jobs.RemoveExtraPrimaryLabel}"
+                                  IsEnabled="{bind:Lib Path=Jobs.FixLabels}" />
                         <telerik:Label Grid.Row="15"
+                                       Grid.ColumnSpan="7"
                                        Content="Queue Monitor Toggles"
                                        Style="{StaticResource SettingsGridHeadingLabel}" />
                         <telerik:Label Grid.Row="16"
                                        Content="Grid"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="17" Content="Auto Expand Groups" />
-                        <myControl:QueueToggleSettingControl Grid.Row="17" DataContext="{bind:Toggle Path=AutoExpandGroups}" />
-                        <telerik:Label Grid.Row="18"
+                        <telerik:Label Grid.Row="16"
+                                       Grid.Column="2"
+                                       Grid.ColumnSpan="4"
                                        Content="Monitors"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <myControl:QueueToggleSettingControl Grid.Row="18"
-                                                             Grid.Column="1"
-                                                             DataContext="{bind:Toggle Path=Monitor}" />
-                        <telerik:Label Grid.Row="19" Content="Initialize On Startup" />
-                        <myControl:QueueToggleSettingControl Grid.Row="19" DataContext="{bind:Toggle Path=InitializeMonitor}" />
-                        <telerik:Label Grid.Row="20"
+                        <telerik:Label Grid.Row="17"
+                                       Content="Auto Expand Groups:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="17" Enum="{bind:Toggle Path=AutoExpandGroups}" />
+                        <telerik:Label Grid.Row="17"
+                                       Grid.Column="2"
+                                       Content="Enable Monitors:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="17"
+                                                             Grid.Column="3"
+                                                             Enum="{bind:Toggle Path=Monitor}" />
+                        <telerik:Label Grid.Row="17"
+                                       Grid.Column="4"
+                                       Content="Initialize On Startup:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="17"
+                                                             Grid.Column="5"
+                                                             Enum="{bind:Toggle Path=InitializeMonitor}" />
+                        <telerik:Label Grid.Row="18"
+                                       Grid.ColumnSpan="6"
                                        Content="Adding"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="21" Content="File System Watchers" />
-                        <myControl:QueueToggleSettingControl Grid.Row="21" DataContext="{bind:Toggle Path=Watcher}" />
-                        <telerik:Label Grid.Row="22" Content="On Startup" />
-                        <myControl:QueueToggleSettingControl Grid.Row="22" DataContext="{bind:Toggle Path=QueueFilesOnStartup}" />
-                        <telerik:Label Grid.Row="23"
+
+                        <telerik:Label Grid.Row="19"
+                                       Content="File System Watchers:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="19" Enum="{bind:Toggle Path=Watcher}" />
+                        <telerik:Label Grid.Row="19"
+                                       Grid.Column="2"
+                                       Content="On Startup:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="19"
+                                                             Grid.Column="3"
+                                                             Enum="{bind:Toggle Path=QueueFilesOnStartup}" />
+
+                        <telerik:Label Grid.Row="20"
+                                       Grid.ColumnSpan="6"
                                        Content="Processing"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <myControl:QueueToggleSettingControl Grid.Row="23" DataContext="{bind:Toggle Path=Processing.Enabled}" />
-                        <telerik:Label Grid.Row="24" Content="Preview Mode:" />
-                        <myControl:QueueToggleSettingControl Grid.Row="24" DataContext="{bind:Toggle Path=Processing.PreviewMode}" />
-                        <telerik:Label Grid.Row="25" Content="Pre-Process:" />
-                        <myControl:QueueToggleSettingControl Grid.Row="25" DataContext="{bind:Toggle Path=Processing.PreProcess}" />
-                        <telerik:Label Grid.Row="26" Content="Check Dupes:" />
-                        <myControl:QueueToggleSettingControl Grid.Row="26" DataContext="{bind:Toggle Path=Processing.CheckDupes}" />
-                        <telerik:Label Grid.Row="27" Content="Move Processed Files" />
-                        <myControl:QueueToggleSettingControl Grid.Row="27"
-                                                             DataContext="{bind:Toggle Path=Processing.MoveProcessedFiles}"
-                                                             EnableMetalinks="False" />
-                        <telerik:Label Grid.Row="28"
+                        <telerik:Label Grid.Row="21"
+                                       Content="Enable Processing:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="21" Enum="{bind:Toggle Path=Processing.Enabled}" />
+                        <telerik:Label Grid.Row="21"
+                                       Grid.Column="2"
+                                       Content="Preview Mode:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+
+                        <myControl:QueueToggleSettingControl Grid.Row="21"
+                                                             Grid.Column="3"
+                                                             Enum="{bind:Toggle Path=Processing.PreviewMode}" />
+
+                        <telerik:Label Grid.Row="21"
+                                       Grid.Column="4"
+                                       Content="Pre-Process:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="21"
+                                                             Grid.Column="5"
+                                                             Enum="{bind:Toggle Path=Processing.PreProcess}" />
+
+                        <telerik:Label Grid.Row="22"
+                                       Content="Check Dupes:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="22" Enum="{bind:Toggle Path=Processing.CheckDupes}" />
+                        <telerik:Label Grid.Row="22"
+                                       Grid.Column="2"
+                                       Content="Move Processed Files:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="22"
+                                                             Grid.Column="3"
+                                                             EnableMetalinks="False"
+                                                             Enum="{bind:Toggle Path=Processing.MoveProcessedFiles}" />
+                        <telerik:Label Grid.Row="23"
+                                       Grid.ColumnSpan="6"
                                        Content="Automation"
                                        Style="{StaticResource SettingsGridSubHeadingLabel}" />
-                        <telerik:Label Grid.Row="29" Content="File System Watchers" />
-                        <myControl:QueueToggleSettingControl Grid.Row="29" DataContext="{bind:Toggle Path=Processing.Automated.OnWatcher}" />
-                        <telerik:Label Grid.Row="30" Content="On Startup" />
-                        <myControl:QueueToggleSettingControl Grid.Row="30" DataContext="{bind:Toggle Path=Processing.Automated.Startup}" />
-                        <telerik:Label Grid.Row="31" Content="On Manual Queueing" />
-                        <myControl:QueueToggleSettingControl Grid.Row="31" DataContext="{bind:Toggle Path=Processing.Automated.Manual}" />
-                    </Grid>
-                </Grid>
-            </telerik:RadTabItem>
-            <telerik:RadTabItem x:Name="radTabPropertyGrid" Header="SettingsGrid">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <telerik:Label Content="Grid" Style="{StaticResource TabHeaderLabelStyle}" />
-                    <telerik:FlagEnumEditor x:Name="RadFlagEnum"
-                                            HorizontalAlignment="Left"
-                                            EnumType="toggles:MonitorTypes"
-                                            Value="{bind:Toggle Path=Watcher}" />
-                    <telerik:FlagEnumEditor x:Name="RadFlagEnum2"
-                                            HorizontalAlignment="Right"
-                                            EnumType="toggles:MonitorTypes"
-                                            Value="{bind:Toggle Path=Watcher}" />
-
-
-                    <telerik:RadPropertyGrid x:Name="RadPropertyGridToggles1"
-                                             Grid.Row="1"
-                                             Height="60"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             AutoGeneratePropertyDefinitions="False"
-                                             Background="Red"
-                                             EditMode="Single"
-                                             Item="{bind:All Path=Toggle}"
-                                             NestedPropertiesVisibility="Visible"
-                                             RenderMode="Flat">
-                        <telerik:RadPropertyGrid.PropertyDefinitions>
-                            <telerik:PropertyDefinition Binding="{Binding WatcherQT}">
-                                <telerik:PropertyDefinition.EditorTemplate>
-                                    <DataTemplate>
-                                        <telerik:FlagEnumEditor EnumType="toggles:MonitorTypes" Value="{Binding WatcherQT}" />
-                                    </DataTemplate>
-                                </telerik:PropertyDefinition.EditorTemplate>
-                            </telerik:PropertyDefinition>
-                        </telerik:RadPropertyGrid.PropertyDefinitions>
-                    </telerik:RadPropertyGrid>
-                    <telerik:Label Grid.Row="2" Content="Test" />
-                    <telerik:RadPropertyGrid x:Name="RadPropertyGridToggles"
-                                             Grid.Row="2"
-                                             Height="500"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             AutoGeneratePropertyDefinitions="True"
-                                             AutoGeneratingPropertyDefinition="PropertyGrid1_AutoGeneratingPropertyDefinition"
-                                             Background="{StaticResource TabControl_ContentBackground}"
-                                             Item="{bind:All Path=Toggle}"
-                                             NestedPropertiesVisibility="Visible"
-                                             RenderMode="Flat" />
-                    <Grid x:Name="LayoutRoot"
-                          Grid.Row="3"
-                          Height="500"
-                          Background="{StaticResource TabControl_ContentBackground}">
-                        <telerik:RadPropertyGrid x:Name="PropertyGrid1" AutoGeneratePropertyDefinitions="True" />
+                        <telerik:Label Grid.Row="24"
+                                       Content="File System Watchers:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="24" Enum="{bind:Toggle Path=Processing.Automated.OnWatcher}" />
+                        <telerik:Label Grid.Row="24"
+                                       Grid.Column="2"
+                                       Content="On Startup:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="24"
+                                                             Grid.Column="3"
+                                                             Enum="{bind:Toggle Path=Processing.Automated.Startup}" />
+                        <telerik:Label Grid.Row="24"
+                                       Grid.Column="4"
+                                       Content="On Manual Queueing:"
+                                       Style="{StaticResource SettingsGridSettingLabel}" />
+                        <myControl:QueueToggleSettingControl Grid.Row="24"
+                                                             Grid.Column="5"
+                                                             Enum="{bind:Toggle Path=Processing.Automated.Manual}" />
                     </Grid>
                 </Grid>
             </telerik:RadTabItem>

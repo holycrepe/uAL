@@ -79,7 +79,7 @@ namespace uAL.Properties.Settings.LibSettings
             [Pure]
             static string[] GetList(string file)
             {
-                var fileName = MainApp.MakeRelativePath(file + ".txt");
+                var fileName = MainApp.MakeRelativePath($"Settings.{file}.txt");
                 if (File.Exists(fileName))
                 {
                     return File.ReadAllLines(fileName);

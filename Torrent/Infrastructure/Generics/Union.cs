@@ -39,7 +39,7 @@ namespace Torrent.Infrastructure.Generics
         public Union(A a) : base(a) { }
         public Union(B b) : base(b) { }
         protected Union(object x) : base(x) { }
-        public T Match<T>(Func<A, T> fa, Func<B, T> fb) { return InternalMatch<T>(fa, fb); }
+        public T Match<T>(Func<A, T> fa, Func<B, T> fb) => InternalMatch<T>(fa, fb);
     }
 
     public class Union<A, B, C> : UnionBase
@@ -48,6 +48,6 @@ namespace Torrent.Infrastructure.Generics
         public Union(B b) : base(b) { }
         public Union(C c) : base(c) { }
         protected Union(object x) : base(x) { }
-        public T Match<T>(Func<A, T> fa, Func<B, T> fb, Func<C, T> fc) { return InternalMatch<T>(fa, fb, fc); }
+        public T Match<T>(Func<A, T> fa, Func<B, T> fb, Func<C, T> fc) => InternalMatch<T>(fa, fb, fc);
     }
 }

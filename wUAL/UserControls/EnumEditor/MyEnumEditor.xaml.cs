@@ -25,13 +25,14 @@ namespace wUAL.UserControls
     [NotifyPropertyChanged]
     public partial class MyEnumEditor : UserControl, INotifyPropertyChanged
     {
-        EnumMemberDisplayFormat _displayFormat = EnumMemberDisplayFormat.Combined;
+        EnumMemberDisplayFormat _displayFormat = EnumMemberDisplayFormat.Description;
 
         public MyEnumEditor() : base()
         {
             this.PropertyChanged += MyFlagEnumEditor_PropertyChanged;
             InitializeComponent();
             ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
+            ViewModel.DisplayFormat = DisplayFormat;
             //this.DataContext = ViewModel;
             //(this.Content as FrameworkElement).DataContext = this.ViewModel;
         }
@@ -48,7 +49,6 @@ namespace wUAL.UserControls
         #region Public Properties: Accessors
         public EnumMemberViewModel ViewModel { get; set; }
             = new EnumMemberViewModel();
-        public object Test { get; set; }
         public EnumMemberDisplayFormat DisplayFormat {
             get { return this._displayFormat; }
             set { this.ViewModel.DisplayFormat = this._displayFormat = value; }
@@ -102,10 +102,7 @@ namespace wUAL.UserControls
 
             control.ViewModel.SetEnum(value);
         }
-        protected static object OnEnumCoerced(DependencyObject d, object baseValue)
-        {
-            return baseValue;
-        }
+        protected static object OnEnumCoerced(DependencyObject d, object baseValue) => baseValue;
         #endregion
         #endregion
         #endregion

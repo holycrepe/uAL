@@ -22,13 +22,13 @@ namespace wUAL.Helpers
 
         public static void SetAttach(DependencyObject dp, bool value) { dp.SetValue(AttachProperty, value); }
 
-        public static bool GetAttach(DependencyObject dp) { return (bool) dp.GetValue(AttachProperty); }
+        public static bool GetAttach(DependencyObject dp) => (bool)dp.GetValue(AttachProperty);
 
-        public static string GetPassword(DependencyObject dp) { return (string) dp.GetValue(PasswordProperty); }
+        public static string GetPassword(DependencyObject dp) => (string)dp.GetValue(PasswordProperty);
 
         public static void SetPassword(DependencyObject dp, string value) { dp.SetValue(PasswordProperty, value); }
 
-        private static bool GetIsUpdating(DependencyObject dp) { return (bool) dp.GetValue(IsUpdatingProperty); }
+        private static bool GetIsUpdating(DependencyObject dp) => (bool)dp.GetValue(IsUpdatingProperty);
 
         private static void SetIsUpdating(DependencyObject dp, bool value) { dp.SetValue(IsUpdatingProperty, value); }
 

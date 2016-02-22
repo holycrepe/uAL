@@ -39,8 +39,8 @@ namespace Torrent
         readonly string[] FileNames;
         public TorrentFileInfo Largest { get; }
         public bool HasFileList { get; }
-        protected long PieceLength { get; private set; }
-        protected string[] PieceHashes { get; private set; }
+        protected long PieceLength { get; }
+        protected string[] PieceHashes { get; }
         #endregion
         #region Properties: Status
         public bool success { get; } = false;
@@ -51,7 +51,7 @@ namespace Torrent
         public string Comment { get; }
         readonly Uri commentLink;
         public Uri CommentLink => this.commentLink;
-        public bool HasCommentLink { get; private set; }
+        public bool HasCommentLink { get; }
         #endregion
         #region Properties: Progress
         public double PercentComplete { get; set; } = -1;

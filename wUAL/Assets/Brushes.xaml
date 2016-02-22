@@ -9,9 +9,14 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
     <SolidColorBrush x:Key="wUAL_LabelHeaderForeground" Color="#FF82B8EE" />
+    <SolidColorBrush x:Key="wUAL_LabelHeadingBackground" Color="#FF0060BF" />
+    <SolidColorBrush x:Key="wUAL_LabelSubHeadingBackground" Color="#FF062544" />
+    <SolidColorBrush x:Key="wUAL_LabelSettingForeground" Color="#FF7EB7E4" />
+    <SolidColorBrush x:Key="wUAL_LabelSettingBackground" Color="#FF2B2323" />
     <SolidColorBrush x:Key="wUAL_ProgressLabelTitle" Color="#FF004080" />
     <SolidColorBrush x:Key="wUAL_ProgressLabelCounts" Color="#FF004080" />
     <SolidColorBrush x:Key="wUAL_ProgressLabelText" Color="#FF0060BF" />
-    <SolidColorBrush x:Key="wUAL_ContentDarkBackground" Color="#FF2C2828" />
     <SolidColorBrush x:Key="wUAL_ContentBackgroundDark" Color="#FF2C2828" />
+    <!--  TabControl_ContentBackground  -->
+    <SolidColorBrush x:Key="wUAL_ContentBackground" Color="#FF3D3D3D" />
 </ResourceDictionary>

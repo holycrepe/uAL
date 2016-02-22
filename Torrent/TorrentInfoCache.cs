@@ -11,7 +11,7 @@ namespace Torrent
     {
         static readonly ConcurrentDictionary<string, TorrentInfo> cache = new ConcurrentDictionary<string, TorrentInfo>();
 
-        public static TorrentInfo GetTorrentInfo(FileInfo fi) { return GetTorrentInfo(fi.FullName); }
+        public static TorrentInfo GetTorrentInfo(FileInfo fi) => GetTorrentInfo(fi.FullName);
 
         public static TorrentInfo GetTorrentInfo(string filename)
         {

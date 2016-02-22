@@ -5,17 +5,11 @@ namespace Torrent.Converters
 {
     public class TypeTypeConverter : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType.IsAssignableFrom(typeof (string));
-        }
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => sourceType.IsAssignableFrom(typeof(string));
 
+        // Try to load the type from the current assembly (wUAL.exe), Torrent.dll, or uAL.dll
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture,
-                                           object value)
-        {
-            // Try to load the type from the current assembly (wUAL.exe), Torrent.dll, or uAL.dll
-            return ConvertFromName(value?.ToString());
-        }
+                                       object value) => ConvertFromName(value?.ToString());
 
         public static Type ConvertFromName(string typeName)
         {

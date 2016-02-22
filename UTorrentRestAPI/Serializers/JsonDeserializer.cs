@@ -63,10 +63,7 @@ namespace UTorrentRestAPI.Serializers
         /// </summary>
         /// <param name="obj">Object to serialize</param>
         /// <returns>JSON as String</returns>
-        public T Deserialize<T>(IRestResponse response)
-        {
-            return JsonConvert.DeserializeObject<T>(response.Content);
-        }
+        public T Deserialize<T>(IRestResponse response) => JsonConvert.DeserializeObject<T>(response.Content);
 
         /// <summary>
         /// Unused for JSON Serialization

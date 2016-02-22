@@ -39,16 +39,10 @@ namespace Torrent.Extensions
             return new RegexStripper(filename, extended).Final;
         }
 
-        public static string TrimPath(this string fileName) { return fileName.TrimEnd(new char[] {'\\', '/'}); }
+        public static string TrimPath(this string fileName) => fileName.TrimEnd(new char[] { '\\', '/' });
 
-        public static bool PathEquals(this string fileName, string otherFileName)
-        {
-            return fileName.TrimPath() == otherFileName.TrimPath();
-        }
+        public static bool PathEquals(this string fileName, string otherFileName) => fileName.TrimPath() == otherFileName.TrimPath();
 
-        public static bool PathEquals(this FileSystemInfo fileInfo, string otherFileName)
-        {
-            return fileInfo.FullName.TrimPath() == otherFileName.TrimPath();
-        }
+        public static bool PathEquals(this FileSystemInfo fileInfo, string otherFileName) => fileInfo.FullName.TrimPath() == otherFileName.TrimPath();
     }
 }

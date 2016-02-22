@@ -80,10 +80,7 @@ namespace Puchalapalli.Dynamic
         /// <param name="value">The value to set.</param>
         /// <returns>true if the operation is complete, false if the call site should determine behavior.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual bool TrySetMember(SetMemberBinder binder, object value)
-        {
-            return false;
-        }
+        public virtual bool TrySetMember(SetMemberBinder binder, object value) => false;
 
         /// <summary>
         /// Provides the implementation of deleting a member.  Derived classes can override
@@ -93,10 +90,7 @@ namespace Puchalapalli.Dynamic
         /// <param name="binder">The binder provided by the call site.</param>
         /// <returns>true if the operation is complete, false if the call site should determine behavior.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual bool TryDeleteMember(DeleteMemberBinder binder)
-        {
-            return false;
-        }
+        public virtual bool TryDeleteMember(DeleteMemberBinder binder) => false;
 
         /// <summary>
         /// Provides the implementation of calling a member.  Derived classes can override
@@ -226,10 +220,7 @@ namespace Puchalapalli.Dynamic
         /// <returns>true if the operation is complete, false if the call site should determine behavior.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
-        {
-            return false;
-        }
+        public virtual bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value) => false;
 
         /// <summary>
         /// Provides the implementation of performing a delete index operation.  Derived classes
@@ -240,10 +231,7 @@ namespace Puchalapalli.Dynamic
         /// <param name="indexes">The indexes to be deleted.</param>
         /// <returns>true if the operation is complete, false if the call site should determine behavior.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual bool TryDeleteIndex(DeleteIndexBinder binder, object[] indexes)
-        {
-            return false;
-        }
+        public virtual bool TryDeleteIndex(DeleteIndexBinder binder, object[] indexes) => false;
 
         /// <summary>
         /// Returns the enumeration of all dynamic member names.
@@ -251,10 +239,7 @@ namespace Puchalapalli.Dynamic
         /// <returns>The list of dynamic member names.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual System.Collections.Generic.IEnumerable<string> GetDynamicMemberNames()
-        {
-            return new string[0];
-        }
+        public virtual System.Collections.Generic.IEnumerable<string> GetDynamicMemberNames() => new string[0];
         #endregion
 
         #region MetaDynamic
@@ -267,10 +252,7 @@ namespace Puchalapalli.Dynamic
             {
             }
 
-            public override System.Collections.Generic.IEnumerable<string> GetDynamicMemberNames()
-            {
-                return Value.GetDynamicMemberNames();
-            }
+            public override System.Collections.Generic.IEnumerable<string> GetDynamicMemberNames() => Value.GetDynamicMemberNames();
 
             public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
             {
@@ -491,10 +473,7 @@ namespace Puchalapalli.Dynamic
             /// Helper method for generating a MetaObject which calls a
             /// specific method on Dynamic that returns a result
             /// </summary>
-            private DynamicMetaObject CallMethodWithResult(string methodName, DynamicMetaObjectBinder binder, Expression[] args, Fallback fallback)
-            {
-                return CallMethodWithResult(methodName, binder, args, fallback, null);
-            }
+            private DynamicMetaObject CallMethodWithResult(string methodName, DynamicMetaObjectBinder binder, Expression[] args, Fallback fallback) => CallMethodWithResult(methodName, binder, args, fallback, null);
 
             /// <summary>
             /// Helper method for generating a MetaObject which calls a
@@ -817,13 +796,7 @@ namespace Puchalapalli.Dynamic
                 return Expression.Convert(Expression, typeof(SimpleDynamicObject));
             }
 
-            private new SimpleDynamicObject Value
-            {
-                get
-                {
-                    return (SimpleDynamicObject)base.Value;
-                }
-            }
+            private new SimpleDynamicObject Value => (SimpleDynamicObject)base.Value;
 
             // It is okay to throw NotSupported from this binder. This object
             // is only used by DynamicObject.GetMember--it is not expected to
@@ -853,10 +826,7 @@ namespace Puchalapalli.Dynamic
         /// provide custom behavior for individual actions.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual DynamicMetaObject GetMetaObject(Expression parameter)
-        {
-            return new MetaDynamic(parameter, this);
-        }
+        public virtual DynamicMetaObject GetMetaObject(Expression parameter) => new MetaDynamic(parameter, this);
 
         #endregion
     }

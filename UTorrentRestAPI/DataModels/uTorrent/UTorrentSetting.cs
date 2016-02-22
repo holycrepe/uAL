@@ -46,7 +46,7 @@ namespace UTorrentRestAPI
         public RestType Type { get; private set; }
         public RestStruct Value { get; private set; }
         public Dictionary<string, RestStruct> Extra { get; private set; }
-        public RestDict ExtraRD { get; private set; }
+        public RestDict ExtraRD { get; }
 
         public string QualifiedName
             => $"{nameof(UTorrentSetting)}.{Name}";

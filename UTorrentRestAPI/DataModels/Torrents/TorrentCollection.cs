@@ -482,30 +482,21 @@ namespace UTorrentRestAPI
         /// </summary>
         /// <param name="hash">The infohash of a torrent</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> ContainsAuto(string hash)
-        {
-            return await Contains(hash, ShouldUpdate);
-        }
+        public async Task<bool> ContainsAuto(string hash) => await Contains(hash, ShouldUpdate);
 
         /// <summary>
         /// Determines whether the collection contains a given torrent, only updating the collection before checking if needed
         /// </summary>
         /// <param name="item">A torrent object</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> ContainsAuto(Torrent item)
-        {
-            return await Contains(item, ShouldUpdate);
-        }
+        public async Task<bool> ContainsAuto(Torrent item) => await Contains(item, ShouldUpdate);
 
         /// <summary>
         /// Determines whether the collection contains a given torrent, only updating the collection before checking if needed
         /// </summary>
         /// <param name="item">A torrent item object</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> ContainsAuto(TorrentItem item)
-        {
-            return await Contains(item.Info, ShouldUpdate);
-        }
+        public async Task<bool> ContainsAuto(TorrentItem item) => await Contains(item.Info, ShouldUpdate);
 
         #endregion
 
@@ -516,30 +507,21 @@ namespace UTorrentRestAPI
         /// </summary>
         /// <param name="hash">The infohash of a torrent</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> ContainsNew(string hash)
-        {
-            return await Contains(hash, true);
-        }
+        public async Task<bool> ContainsNew(string hash) => await Contains(hash, true);
 
         /// <summary>
         /// Determines whether the collection contains a given torrent, automatically updating the collection before checking
         /// </summary>
         /// <param name="item">A torrent object</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> ContainsNew(Torrent item)
-        {
-            return await Contains(item, true);
-        }
+        public async Task<bool> ContainsNew(Torrent item) => await Contains(item, true);
 
         /// <summary>
         /// Determines whether the collection contains a given torrent, automatically updating the collection before checking
         /// </summary>
         /// <param name="item">A torrent item object</param>
         /// <returns>True if the torrent is loaded in uTorrent</returns>
-        public async Task<bool> ContainsNew(TorrentItem item)
-        {
-            return await Contains(item.Info, true);
-        }
+        public async Task<bool> ContainsNew(TorrentItem item) => await Contains(item.Info, true);
 
         #endregion
 

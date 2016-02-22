@@ -61,26 +61,17 @@ namespace wUAL.Properties.Settings.AppSettings
             return base.Equals(obj);
         }
 
-        public override int GetHashCode()
-        {
-            return Bottom.GetHashCode() ^
-                   Left.GetHashCode() ^
-                   Right.GetHashCode() ^
-                   Top.GetHashCode();
-        }
+        public override int GetHashCode() => Bottom.GetHashCode() ^
+       Left.GetHashCode() ^
+       Right.GetHashCode() ^
+       Top.GetHashCode();
 
-        public static bool operator ==(RECT a, RECT b)
-        {
-            return a.Bottom == b.Bottom &&
-                   a.Left == b.Left &&
-                   a.Right == b.Right &&
-                   a.Top == b.Top;
-        }
+        public static bool operator ==(RECT a, RECT b) => a.Bottom == b.Bottom &&
+       a.Left == b.Left &&
+       a.Right == b.Right &&
+       a.Top == b.Top;
 
-        public static bool operator !=(RECT a, RECT b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(RECT a, RECT b) => !(a == b);
 
         #region Interfaces
         #region Interfaces: IDebuggerDisplay

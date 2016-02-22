@@ -6,8 +6,8 @@ namespace Torrent.Extensions
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public static partial class Extensions
     {
-        public static bool IsForced(this Flag value) { return value == Flag.ForceOn || value == Flag.ForceOff; }
-        public static bool Value(this Flag value) { return value == Flag.ForceOn || value == Flag.On; }
+        public static bool IsForced(this Flag value) => value == Flag.ForceOn || value == Flag.ForceOff;
+        public static bool Value(this Flag value) => value == Flag.ForceOn || value == Flag.On;
 
         public static bool Value(this Flag value, params Flag[] flags)
         {
