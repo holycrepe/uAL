@@ -39,7 +39,11 @@ namespace uAL.Properties.Settings.LibSettings
             [XmlIgnore]
             internal LibLabelDefaultSettings Defaults
             {
-                get { return this._defaults ?? (this._defaults = new LibLabelDefaultSettings()); }
+                get {
+                    return this._defaults ?? 
+                        (this._defaults = LoadDataContract<LibLabelDefaultSettings>() 
+                        ?? new LibLabelDefaultSettings());
+                }
                 set { this._defaults = value; }
             }
 

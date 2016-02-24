@@ -19,6 +19,7 @@ using System.Linq;
 using Torrent.Helpers.Utils;
 using Torrent.Infrastructure;
 using System.Diagnostics;
+using Torrent.Helpers.Utils.IO;
 
 namespace uAL.Metalinks
 {

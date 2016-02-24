@@ -9,6 +9,7 @@ using NLog;
 using Torrent;
 using Torrent.Extensions;
 using Torrent.Helpers.Utils;
+using Torrent.Helpers.Utils.IO;
 using Torrent.Infrastructure;
 using UTorrentRestAPI;
 using uAL.Infrastructure;

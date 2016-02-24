@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <LinearGradientBrush x:Key="wUAL_ProgressBar_Foreground" StartPoint="0,0.5" EndPoint="1,0.5">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFF06414" />
+            <GradientStop Offset="1" Color="#FF789FC3" />
+            <GradientStop Offset="0.8" Color="#FFEAA61E" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="wUAL_ProgressBar_Foreground_Active" StartPoint="0,0.5" EndPoint="1,0.5">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFF06414" />
+            <GradientStop Offset="1" Color="#FF789FC3" />
+            <GradientStop Offset="0.8" Color="#FFEAA61E" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="wUAL_ProgressBar_Foreground_Pending" StartPoint="0,0.5" EndPoint="1,0.5">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF68574D" />
+            <GradientStop Offset="1" Color="#FFBCC378" />
+            <GradientStop Offset="0.8" Color="#FFAA9F88" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="wUAL_ProgressBar_Foreground_Resuming" StartPoint="0,0.5" EndPoint="1,0.5">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF68574D" />
+            <GradientStop Offset="1" Color="#FFBCC378" />
+            <GradientStop Offset="0.8" Color="#FFAA9F88" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="wUAL_ProgressBar_Foreground_Partial" StartPoint="0,0.5" EndPoint="1,0.5">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF14F050" />
+            <GradientStop Offset="1" Color="#FF09461A" />
+            <GradientStop Offset="0.8" Color="#FF188F23" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <Color x:Key="wUAL_ProgressBar_Label_Foreground_Color">#FFDDDDDD</Color>
+    <Color x:Key="wUAL_ProgressBar_Label_Foreground_Color_Active">#FFDDDDDD</Color>
+    <Color x:Key="wUAL_ProgressBar_Label_Foreground_Color_Partial">#FFDDDDDD</Color>
+    <Color x:Key="wUAL_ProgressBar_Label_Foreground_Color_Resuming">#FFDDDDDD</Color>
+    <Color x:Key="wUAL_ProgressBar_Label_Foreground_Color_Pending">#FFDDDDDD</Color>
+    <SolidColorBrush x:Key="wUAL_ProgressBar_Label_Foreground" Color="#FFDDDDDD" />
+    <SolidColorBrush x:Key="wUAL_ProgressBar_Label_Foreground_Active" Color="#FFEF9A3F" />
+    <SolidColorBrush x:Key="wUAL_ProgressBar_Label_Foreground_Partial" Color="#FFB88662" />
+    <SolidColorBrush x:Key="wUAL_ProgressBar_Label_Foreground_Resuming" Color="#FF68574D" />
+    <SolidColorBrush x:Key="wUAL_ProgressBar_Label_Foreground_Pending" Color="#FFA59E99" />
+
+</ResourceDictionary>

@@ -72,22 +72,6 @@ namespace Puchalapalli.Dynamic
         public override bool TryInvokeMember<TResult>(InvokeMemberBinder binder, object[] args, out TResult result)
             => base.TryInvokeMember(binder, args, out result);
 
-
-        /// <summary>
-        /// Property setter implementation tries to retrieve value from instance 
-        /// first then into this object
-        /// </summary>
-        /// <param name="binder"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override bool TrySetMember(SetMemberBinder binder, object value)
-            => base.TrySetMember(binder, value);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override bool TryGetMember<TResult>(GetMemberBinder binder, out TResult result)
-            => base.TryGetMember(binder, out result);
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected override void Initialize(object instance)
             => base.Initialize(instance);

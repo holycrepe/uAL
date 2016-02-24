@@ -1,5 +1,7 @@
 ﻿#define LOG_QUEUE_ITEM_CHANGED
 
+using System.Runtime.CompilerServices;
+
 namespace Torrent
 {
     using Enums;
@@ -7,18 +9,22 @@ namespace Torrent
     using Queue;
     using Extensions;
     using Extensions.BEncode;
-    using BencodeNET.Objects;    
+    using BencodeNET.Objects;
     using PostSharp.Patterns.Model;
     using System.Linq;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using IO = System.IO;    
+    using IO = System.IO;
     using System.Diagnostics;
     using System.Collections.ObjectModel;
+    using Infrastructure;
     [NotifyPropertyChanged]
-    public class UTorrentJob : QueueItemBase
+    [DebuggerDisplay("{DebuggerDisplay(1)}")]
+    public class UTorrentJob : QueueItemBase, IDebuggerDisplay
     {
+        private static int _counter = 0;
+        private ObservableCollection<string> _labels = null;
         long _completedOn = 0;
         string _originalPath;
         string[] _ignoredAutoChangeNotificationProperties = new string[] {
@@ -38,7 +44,15 @@ namespace Torrent
         public bool Initialized{ get; set; } = false;
         public string Name { get; set; }
         public int Number { get; set; }
-        public QueueStatusMember Status { get; set; }
+        public QueueStatusMember Status {
+            get { return this.Torrent?.Status; }
+            set
+            {
+                if (this.Torrent == null)
+                    throw new InvalidOperationException($"Attempted to set {nameof(UTorrentJob)}.{nameof(Label)} when {nameof(Torrent)} is null");
+                this.Torrent.Status = value;
+            }
+        }
         public List<string> Trackers { get; set; }
         public UTorrentJobTarget[] Targets { get; set; } = new UTorrentJobTarget[0];
         public string Caption { get; set; }
@@ -119,7 +133,12 @@ namespace Torrent
                 this.Labels.Insert(0, value);
             }
         }
-        public ObservableCollection<string> Labels { get; set; }
+
+        public ObservableCollection<string> Labels
+        {
+            get { return this._labels ?? (this._labels = new ObservableCollection<string>()); }
+            set { this._labels = value; }
+        }
         #endregion
         #region Public Fields: Path
         public string Path { get; set; }
@@ -139,7 +158,7 @@ namespace Torrent
         {
             get
             {
-                return this.Path
+                return string.IsNullOrEmpty(this.Path) ? this.Path : this.Path
                     .TrimStart(this.RootDirectory)
                     .TrimStart(new char[] { IO.Path.DirectorySeparatorChar })
                     .TrimStart(this.Label)
@@ -200,6 +219,29 @@ namespace Torrent
             Number = number;
             Torrent = torrentInfo;
             this.LoadFromBDictionary(name, info);
+        }
+        /// <summary>
+        /// Automatically creates UTorrent Job from Torrent filename. Intended to be used for testing/design only
+        /// </summary>
+        /// <param name="path"></param>
+        public UTorrentJob(params string[] path) : this(new TorrentInfo(PathUtils.Combine(path))) { }
+        /// <summary>
+        /// Automatically creates UTorrent Job from TorrentInfo instance. Intended to be used for testing/design only
+        /// </summary>
+        /// <param name="torrentInfo"></param>
+        public UTorrentJob(TorrentInfo torrentInfo)
+        {
+            this.Torrent = torrentInfo;
+            this.Number = _counter++;
+            this.Name = this.Torrent.Info.GetNameWithoutExtension();
+            this.Caption = this.Torrent.Name;
+            this.RootDirectory = torrentInfo.RootDirectory;
+            var label = this.Torrent.Info.DirectoryName;
+            label = (string.IsNullOrEmpty(RootDirectory)
+                ? label?.SubstringAfter(@"\$\", true)
+                : label.TrimStart(RootDirectory)).TrimStart("\\");
+            this.Label = label;
+            this.Path = PathUtils.Combine(IO.Path.GetPathRoot(RootDirectory), this.Label, this.Torrent.Name);
         }
         public UTorrentJob()
         {
@@ -478,13 +520,24 @@ namespace Torrent
             return info;
         }
         #endregion
+        #region Interfaces
+        #region Interfaces: IDebuggerDisplay
+        [DebuggerNonUserCode]
+        public override string ToString()
+            => DebuggerDisplaySimple();
+        public string DebuggerDisplay(int level = 1)
+            => $"<{nameof(UTorrentJob)}> {this.DebuggerDisplaySimple(level)}";
+        public string DebuggerDisplaySimple(int level = 1)
+            => $"{this.Label}: {this.Caption}";
+        #endregion
+        #endregion
         #region Operators
         public static implicit operator TorrentInfo(UTorrentJob value)
             => value.Torrent;
         #endregion
         #region Logging
         [System.Diagnostics.Conditional("LOG_QUEUE_ITEM_CHANGED"), System.Diagnostics.Conditional("LOG_ALL")]
-        public void LogQueueItemChanged(string propertyName)
+        public void LogQueueItemChanged([CallerMemberName] string propertyName = null)
             => Log("Δ ", propertyName);
         [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE_EXT")]
         public void Log(string prefix = "+", string text = null, PadDirection textPadDirection = PadDirection.Default,

@@ -81,7 +81,7 @@ namespace wUAL.Properties.Settings.AllSettings
             BaseSettings.CONSTRUCTOR_ACTION = BaseSettingsConstructor.None;
             AppSettings.AppSetting = settings?.App ?? AppSettingsBase.Load();
             LibSettings.LibSetting = settings?.Lib ?? LibSettings.BindInstance();
-            Toggles = settings?.Toggle ?? MonitorTogglesBase.Load<MonitorTogglesBase>();
+            Toggles = settings?.Toggle ?? ToggleSettingsBase.Load();
             MySettings.MySetting = settings?.My ?? MySettingsBase.Load();
         }
 

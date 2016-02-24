@@ -22,6 +22,9 @@ namespace uAL.Properties.Settings.LibSettings
     public sealed partial class LibSettings : BaseSettings
     {
         #region Implementation
+
+        private LibUTorrentJobSettings _jobs = null;
+        private LibTorrentSettings _torrents = null;
         [DataMember]
         public LibDirectorySettings Directories { get; set; }
         [DataMember]
@@ -30,10 +33,20 @@ namespace uAL.Properties.Settings.LibSettings
         public LibConnectionSettings Connection { get; set; }
         [DataMember]
         public LibQueueSettings Queue { get; set; }
+
         [DataMember]
-        public LibTorrentSettings Torrents { get; set; }
+        public LibTorrentSettings Torrents
+        {
+            get { return this._torrents ?? (this._torrents = new LibTorrentSettings()); }
+            set { this._torrents = value; }
+        }
+
         [DataMember]
-        public LibUTorrentJobSettings Jobs { get; set; }
+        public LibUTorrentJobSettings Jobs
+        {
+            get { return this._jobs ?? (this._jobs = new LibUTorrentJobSettings()); }
+            set { this._jobs = value; }
+        }
 
         protected override object[] DebuggerDisplayProperties
             =>

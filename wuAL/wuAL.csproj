@@ -194,6 +194,9 @@
       <HintPath>..\packages\PostSharp.Patterns.Model.4.2.20\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PostSharp.Public">
+      <HintPath>..\lib\PostSharp\PostSharp.Public.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -339,11 +342,14 @@
       <DependentUpon>MyFlagEnumEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MarkupExtensions.cs" />
-    <Compile Include="UserControls\ViewModel\ViewModel.cs" />
     <Compile Include="UserControls\EnumEditor\FlagEnumMemberViewModel.cs" />
+    <Compile Include="UserControls\Test.xaml.cs">
+      <DependentUpon>Test.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\MyPrompt.xaml.cs">
       <DependentUpon>MyPrompt.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\OutlinedTextBlock.cs" />
     <Compile Include="UserControls\QueueGridHeaderControl.xaml.cs">
       <DependentUpon>QueueGridHeaderControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -352,9 +358,30 @@
       <DependentUpon>QueueToggleSettingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings\Binding\EnumBindingExtension.cs" />
+    <Compile Include="WPF\Base\BaseCombinedConverter.cs" />
+    <Compile Include="WPF\Base\BaseMarkupExtension.cs" />
+    <Compile Include="WPF\Base\BaseMarkupExtensionConverter.cs" />
+    <Compile Include="WPF\Base\BaseMultiConverter.cs" />
     <Compile Include="WPF\Behaviors\GridMultiEditBehaviour.cs" />
     <Compile Include="WPF\Behaviors\GridMultiSelectBehaviorFlagEnumMember.cs" />
     <Compile Include="WPF\Behaviors\GridMultiSelectBehavior.cs" />
+    <Compile Include="WPF\Selectors\Models\Base\ISelectorModel.cs" />
+    <Compile Include="WPF\Selectors\Models\Base\SelectorCollection.cs" />
+    <Compile Include="WPF\Selectors\Models\Base\SelectorModelsBase.cs" />
+    <Compile Include="WPF\Selectors\Models\Base\SelectorCollections.cs" />
+    <Compile Include="WPF\Selectors\Models\Base\SelectorTemplate.cs" />
+    <Compile Include="WPF\Selectors\Models\ProgressBar\ProgressBarModel.cs" />
+    <Compile Include="WPF\Selectors\Models\ProgressBar\ProgressBarStates.cs" />
+    <Compile Include="WPF\Selectors\Models\ProgressBar\ProgressBarModels.cs" />
+    <Compile Include="WPF\Selectors\Progress.cs" />
+    <Compile Include="WPF\Selectors\Styles\Progress.cs" />
+    <Compile Include="WPF\Selectors\QueueStatus.cs" />
+    <Compile Include="WPF\Selectors\SelectorBase.cs" />
+    <Compile Include="WPF\Selectors\Styles\StyleSelectorBase.cs" />
+    <Compile Include="WPF\Selectors\Styles\QueueStatus.cs" />
+    <Compile Include="WPF\Selectors\Templates\Progress.cs" />
+    <Compile Include="WPF\Selectors\Templates\TemplateSelectorBase.cs" />
+    <Compile Include="WPF\ValueConverters\BooleanXConverter.cs" />
     <Compile Include="WPF\ValueConverters\EnumDescription.cs" />
     <Compile Include="WPF\ValueConverters\EnumCombined.cs" />
     <Compile Include="WPF\ValueConverters\Count.cs" />
@@ -364,6 +391,8 @@
     <Compile Include="WPF\ValueConverters\DelimitedString.cs" />
     <Compile Include="WPF\ValueConverters\DateTime.cs" />
     <Compile Include="WPF\ValueConverters\MinusOne.cs" />
+    <Compile Include="WPF\ValueConverters\Models\ProgressStyleConverter.cs" />
+    <Compile Include="WPF\ValueConverters\Percent.cs" />
     <Compile Include="WPF\ValueConverters\StringCollection.cs" />
     <Compile Include="WPF\ValueConverters\Boolean.cs" />
     <Compile Include="WPF\ValueConverters\Visibility.cs" />
@@ -372,13 +401,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WPF\QueueStyleSelector.cs" />
+    <Compile Include="WPF\Selectors\Styles\QueueStatusBase.cs" />
     <None Include="WPF\AttachedProperties.cs" />
-    <Compile Include="WPF\BaseConverter.cs" />
+    <Compile Include="WPF\Base\BaseConverter.cs" />
     <Compile Include="WPF\ValueConverters\FilenameToDirectory.cs" />
     <Compile Include="WPF\ValueConverters\GridLength.cs" />
     <Compile Include="WPF\ValueConverters\Inverse.cs" />
-    <Compile Include="WPF\ValueConverters\Percent.cs" />
+    <Compile Include="WPF\ValueConverters\PercentConverterDp.cs" />
     <None Include="wUAL-key.snk" />
     <None Include="wUAL.pfx" />
   </ItemGroup>
@@ -495,6 +524,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\ProgressBar\Merged.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\Design.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\ProgressBar\Brushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\ProgressBar\Models.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Assets\Styles\Default.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -512,6 +557,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Assets\Styles\Grid\Settings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\ProgressBar\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Assets\Styles\TabHeader.xaml">
@@ -532,6 +581,10 @@
     <Page Include="Assets\Templates\RadComboBoxGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Assets\ProgressBar\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Assets\Themes\Current\System.Windows.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -605,6 +658,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\EnumEditor\MyFlagEnumEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Test.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -5,7 +5,10 @@ using System.Dynamic;
 using System.Reflection;
 using Torrent.Exceptions;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
+using JetBrains.Annotations;
 
 namespace Puchalapalli.Dynamic
 {
@@ -27,12 +30,19 @@ namespace Puchalapalli.Dynamic
     /// Dictionary: Any of the extended properties are accessible via IDictionary interface
     /// </summary>
     [DataContract]
-    public class Expando : SimpleDynamicObject, IDynamicMetaObjectProvider, IExpando
+    public class Expando : SimpleDynamicObject, IExpando, INotifyPropertyChanged
     {
         /// <summary>
         /// Instance of object passed in
         /// </summary>
         private object _instance;
+
+        /// <summary>
+        /// String Dictionary that contains the extra dynamic values
+        /// stored on this object/instance
+        /// </summary>        
+        /// <remarks>Using PropertyBag to support XML Serialization of the dictionary</remarks>
+        [XmlIgnore] private PropertyBag _properties = null;
 
         /// <summary>
         /// Instance of object passed in
@@ -67,8 +77,8 @@ namespace Puchalapalli.Dynamic
         /// </summary>        
         /// <remarks>Using PropertyBag to support XML Serialization of the dictionary</remarks>
         [XmlIgnore]
-        public virtual PropertyBag Properties { get; }
-            = new PropertyBag();
+        public virtual PropertyBag Properties
+            => this._properties ?? (this._properties = new PropertyBag());
 
         //public Dictionary<string,object> Properties = new Dictionary<string, object>();
 
@@ -87,6 +97,7 @@ namespace Puchalapalli.Dynamic
             Initialize(instance);
         }
 
+        [DebuggerNonUserCode]
         protected virtual void Initialize(object instance)
         {
             _instance = instance;
@@ -95,18 +106,47 @@ namespace Puchalapalli.Dynamic
                 InstanceType = instance.GetType();
             }
         }
+
+        [DebuggerNonUserCode]
+        public T Get<T>([CallerMemberName] string propertyName = null)
+            => (T) GetMember(propertyName);
+        public virtual object GetMember([CallerMemberName] string propertyName=null)
+        {
+            object result;
+            return TryGetMember(propertyName, out result) 
+                ? result 
+                : null;
+        }
+
+        public T Set<T>(T value, [CallerMemberName] string propertyName = null)
+        {
+            var success = TrySetMember(propertyName, value, true);
+            if (success)
+                OnPropertyChanged(propertyName);
+            return value;
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [DebuggerNonUserCode]
         public override bool TryGetMember(GetMemberBinder binder, out object result)
             => TryGetMember<object>(binder, out result);
-
-        public virtual bool TryGetMember<TResult>(GetMemberBinder binder, out TResult result)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DebuggerNonUserCode]
+        public bool TryGetMember<TResult>(GetMemberBinder binder, out TResult result)
+            => TryGetMember(binder.Name, out result);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DebuggerNonUserCode]
+        public bool TryGetMember(string propertyName, out object result)
+            => TryGetMember<object>(propertyName, out result);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual bool TryGetMember<TResult>(string propertyName, out TResult result)
         { 
             result = default(TResult);
 
             // first check the Properties collection for member
-            if (Properties.Keys.Contains(binder.Name))
+            if (Properties.Keys.Contains(propertyName))
             {
-                result = (TResult) Properties[binder.Name];
+                result = (TResult) Properties[propertyName];
                 return true;
             }
 
@@ -116,7 +156,7 @@ namespace Puchalapalli.Dynamic
             {
                 try
                 {
-                    return GetProperty(_instance, binder.Name, out result);
+                    return GetProperty(_instance, propertyName, out result);
                 }
                 catch { }
             }
@@ -126,17 +166,6 @@ namespace Puchalapalli.Dynamic
             return false;
         }
 
-
-        ///// <summary>
-        ///// Property setter implementation tries to retrieve value from instance 
-        ///// first then into this object
-        ///// </summary>
-        ///// <param name="binder"></param>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public override bool TrySetMember(SetMemberBinder binder, object value)
-        //    => TrySetMember(binder, (T)value);
-
         /// <summary>
         /// Property setter implementation tries to retrieve value from instance 
         /// first then into this object
@@ -144,18 +173,32 @@ namespace Puchalapalli.Dynamic
         /// <param name="binder"></param>
         /// <param name="value"></param>
         /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DebuggerNonUserCode]
         public override bool TrySetMember(SetMemberBinder binder, object value)
+            => TrySetMember(binder.Name, value);
+
+        /// <summary>
+        /// Property setter implementation tries to retrieve value from instance 
+        /// first then into this object
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="forceAllow"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual bool TrySetMember(string propertyName, object value, bool forceAllow=false)
         {
-            if (!SetterEnabled)
+            if (!SetterEnabled && !forceAllow)
             {
-                throw new DynamicReadOnlyException($"{nameof(Expando)}: Attempted to set member `{binder.Name}` with all setters disabled");
+                throw new DynamicReadOnlyException($"{nameof(Expando)}: Attempted to set member `{propertyName}` with all setters disabled");
             }
             // first check to see if there's a native property to set
             if (_instance != null)
             {
                 try
                 {
-                    if (SetProperty(_instance, binder.Name, value))
+                    if (SetProperty(_instance, propertyName, value))
                     {
                         return true;
                     }
@@ -164,7 +207,7 @@ namespace Puchalapalli.Dynamic
             }
 
             // no match - set or add to dictionary
-            Properties[binder.Name] = value;
+            Properties[propertyName] = value;
             return true;
         }
 
@@ -177,6 +220,7 @@ namespace Puchalapalli.Dynamic
         /// <param name="result"></param>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [DebuggerNonUserCode]
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
             => TryInvokeMember<object>(binder, args, out result);
 
@@ -188,6 +232,8 @@ namespace Puchalapalli.Dynamic
         /// <param name="args"></param>
         /// <param name="result"></param>
         /// <returns></returns>
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual bool TryInvokeMember<TResult>(InvokeMemberBinder binder, object[] args, out TResult result)
         {
             if (_instance != null)
@@ -378,6 +424,8 @@ namespace Puchalapalli.Dynamic
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
+
+        [DebuggerNonUserCode]
         public virtual bool Contains<TValue>(KeyValuePair<string, TValue> item, bool includeInstanceProperties = false)
             => Contains(item.Key, includeInstanceProperties);
 
@@ -389,20 +437,27 @@ namespace Puchalapalli.Dynamic
         /// <returns></returns>
         public virtual bool Contains(string key, bool includeInstanceProperties = false)
         {
-            bool res = Properties.ContainsKey(key);
+            var res = Properties.ContainsKey(key);
             if (res)
                 return true;
 
             if (includeInstanceProperties && _instance != null)
             {
-                foreach (var prop in this.InstancePropertyInfo)
-                {
-                    if (prop.Name == key)
-                        return true;
-                }
+                return this.InstancePropertyInfo.Any(prop => prop.Name == key);
             }
             return false;
         }
 
+        #region Interfaces
+        #region Interfaces: INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        [DebuggerNonUserCode]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)        
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        
+        #endregion
+        #endregion
     }
 }

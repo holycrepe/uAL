@@ -27,20 +27,7 @@ namespace uAL.UTorrentJobs
     using static Torrent.Helpers.Utils.DebugUtils;
     using System.Collections.Concurrent;
     using Torrent.Helpers.Utils;
-    public enum ProcessQueueStatus
-    {
-        DidNotStart,
-        Error,
-        PreProcessed,
-        Success
-    }
 
-    public struct ProcessQueueResult
-    {
-        public ProcessQueueStatus Status { get; }
-        public ProcessQueueResult(ProcessQueueStatus status) { Status = status; }
-    }
-    
     public class UTorrentJobQueueMonitor : QueueMonitor<UTorrentJob>
     {
         const int MAX_RETRIES_LOCK = 60;

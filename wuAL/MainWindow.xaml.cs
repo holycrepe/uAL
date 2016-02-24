@@ -17,11 +17,14 @@ using System.IO;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 using UTorrentRestAPI;
 using Torrent.Helpers.Utils;
 using Torrent.Extensions;
 using wUAL.Infrastructure;
 using wUAL.Queue;
+using wUAL.WPF.Selectors.Models.ProgressBar;
+using Timer = System.Windows.Forms.Timer;
 
 namespace wUAL
 {
@@ -42,7 +45,6 @@ namespace wUAL
     using Torrent.Queue;
     using System.Windows.Controls;
     using System.Windows.Documents;
-    using uAL.Helpers.Utils;
     using uAL.UTorrentJobs;
     using uAL.Services;
     using Extensions;
@@ -77,9 +79,16 @@ namespace wUAL
         #region Fields
         #region Private Fields
         Action<string> log = (s) => Log(s);
+
         int defaultTab
-            => Toggles.Monitor.IncludesTorrent() ? 1
-            : Toggles.Monitor.IncludesMetalink() ? 2 : 3;
+        {
+            get
+            {
+                var monitor = (MonitorTypes)Toggles.Monitor;
+                return monitor.IncludesTorrent() ? 1
+                    : monitor.IncludesMetalink() ? 2 : 3;
+            }
+        }
         #endregion
 
         #region Public Fields
@@ -204,6 +213,8 @@ namespace wUAL
                 Start();
 #pragma warning restore CS4014 
             }
+            if (IsInitialized)
+                return;
             if (e.RemovedItems.Contains(radTabSettings) || e.RemovedItems.Contains(radTabToggles))
             {
                 SaveSettings();
@@ -216,6 +227,7 @@ namespace wUAL
         #region Initialization: Constructor
         public MainWindow()
         {
+            UI.Window = this;
             LoadAllSettings();
             Log("Init Component");
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -235,16 +247,23 @@ namespace wUAL
             InitializeGridViewDescriptors();
             InfoReporter.ReportTiming($"Loaded UI in {stopwatch.Elapsed.FormatFriendly()}.");
             UI.TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            UI.SyncContext = SynchronizationContext.Current;
             Stopwatch.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Stopwatch));
             Log("Init Component Done");
             SetDefaultTab(true);
-            var timer = new Timer();
-            timer.Interval = 10000;
+            WindowSettings.Instances.FirstOrDefault()?.LoadWindowState();
+            var timer = new Timer
+            {
+                Interval = 10000
+            };
             timer.Tick += (s, e) =>
             {
                 WindowSettings.Instances.FirstOrDefault()?.LoadWindowState();
                 timer.Stop(); timer = null;
             };
+            var x = new UTorrentJobViewModel();
+            var progressModel = ResourceUtils.Get<ProgressBarModels>();
+            Debugger.Break();
         }
 
         #endregion
@@ -614,12 +633,15 @@ namespace wUAL
         //			}
         //		}
 
-        async Task<QueueMonitorBase> InitializeMonitor(MonitorTypes fileType) => await Task.Run(() =>
-                                                                                                                 fileType.IsTorrent()
-                                                                                                                 ? uTorrentClient?.IsConnected ?? false ? (QueueMonitorBase)(TorrentMonitor = new TorrentQueueMonitor(uTorrentClient, InfoReporter)) : null
-                                                                                                                 : fileType.IsMetalink()
-                                                                                                                 ? (QueueMonitorBase)(MetalinkMonitor = new MetalinkQueueMonitor(InfoReporter))
-                                                                                                                 : (QueueMonitorBase)(UTorrentJobMonitor = new UTorrentJobQueueMonitor(InfoReporter))
+        async Task<QueueMonitorBase> InitializeMonitor(MonitorTypes fileType) 
+            => await Task.Run(() =>
+            fileType.IsTorrent()
+            ? uTorrentClient?.IsConnected 
+            ?? false ? (QueueMonitorBase)(TorrentMonitor = new TorrentQueueMonitor(uTorrentClient, InfoReporter)) 
+            : null
+            : fileType.IsMetalink()
+            ? (QueueMonitorBase)(MetalinkMonitor = new MetalinkQueueMonitor(InfoReporter))
+            : (QueueMonitorBase)(UTorrentJobMonitor = new UTorrentJobQueueMonitor(InfoReporter))
                      );
         #endregion        
         #region File System: Monitors: Get Monitor
@@ -639,17 +661,12 @@ namespace wUAL
         #region File System: Monitors: Start Monitor
         async Task StartMonitor(MonitorTypes fileType)
         {
-            var TOGGLES = Toggles.GetActiveToggles(fileType);
-            var debug = fileType.IsTorrent();
-            DispatcherOperation dispatcherOperation = null;
-            if (TOGGLES.Monitor && (IsFileSystemInitialized || TOGGLES.InitializeMonitor))
+            var toggles = Toggles.GetActiveToggles(fileType);
+            if (toggles.Monitor && (IsFileSystemInitialized || toggles.InitializeMonitor))
             {
                 Log(fileType + " Monitor", "Starting");
                 var monitor = GetMonitor(fileType);
-                if (monitor != null)
-                {
-                    monitor.Dispose();
-                }
+                monitor?.Dispose();
                 UnbindGridView(fileType);
                 monitor = await InitializeMonitor(fileType);
                 if (monitor == null)
@@ -657,34 +674,14 @@ namespace wUAL
                     Log(fileType + " Monitor", "*UNABLE TO START*");
                     return;
                 }
-                if (debug)
+                await monitor.Start();
+                InitializeGridView(fileType);
+                if (toggles.QueueFilesOnStartup)
                 {
-                    //Debugger.Break();
+                    QueueAllFiles(fileType);
                 }
-                Action<Toggle> OnStartComplete = (Toggle TOGGLE) =>
-                {
-                    if (debug)
-                    {
-                        // Debugger.Break();
-                    }
-                    InitializeGridView(fileType);
-                    if (TOGGLE.QueueFilesOnStartup)
-                    {
-                        QueueAllFiles(fileType);
-                    }
-                    LibSetting.Queue.SetHasQueuedAllFiles(fileType, TOGGLE.QueueFilesOnStartup);
-                    Log(fileType + " Monitor", "Started");
-                };
-                if (USE_DISPATCHER_FOR_ASYNC)
-                {
-                    Delegate del = new Action(() => monitor.Start());
-                    dispatcherOperation = Dispatcher.CurrentDispatcher.BeginInvoke(del);
-                    dispatcherOperation.Completed += (object sender, EventArgs e) => OnStartComplete(TOGGLES);
-                }
-                else {
-                    await monitor.Start();
-                    OnStartComplete(TOGGLES);
-                }
+                LibSetting.Queue.SetHasQueuedAllFiles(fileType, toggles.QueueFilesOnStartup);
+                Log(fileType + " Monitor", "Started");
             }
             else {
                 Log(fileType + " Monitor", "*NOT* Starting");

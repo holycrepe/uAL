@@ -13,6 +13,7 @@ using Torrent.Infrastructure;
 using Torrent.Infrastructure.Enums;
 using Torrent.Infrastructure.Reflection;
 using Torrent.Properties.Settings;
+using uAL.Infrastructure.UI;
 
 namespace wUAL.UserControls
 {
@@ -128,7 +129,7 @@ namespace wUAL.UserControls
             }
         }
         #region Logging
-        [DebuggerNonUserCode]
+        [DebuggerNonUserCode]        
         public override void Log(string prefix = "+", object status = null, object title = null, object text = null, object info = null, PadDirection textPadDirection = PadDirection.Default,
                        string textSuffix = null, PadDirection titlePadDirection = PadDirection.Default,
                        string titleSuffix = null, int random = 0)

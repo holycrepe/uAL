@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using NLog;
+using Torrent.Helpers.Utils;
 
 namespace wUAL.Infrastructure
 {
@@ -11,7 +12,6 @@ namespace wUAL.Infrastructure
     using System.Windows;
     using Torrent.Extensions;
     using Torrent.Infrastructure.InfoReporters;
-    using uAL.Helpers.Utils;
     using uAL.Infrastructure;
 
     public class ListBoxInfoReporter : InfoReporter

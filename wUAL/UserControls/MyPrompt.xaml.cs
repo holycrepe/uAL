@@ -31,7 +31,7 @@ namespace wUAL.UserControls
         {
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(PromptDialog_Loaded);
-            txtQuestion.Text = question;
+            txtQuestion.Content = question;
             Title = title;
             txtResponse.Text = defaultValue;
             _inputType = inputType;

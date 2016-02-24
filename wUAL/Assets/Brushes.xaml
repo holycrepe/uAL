@@ -1,13 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Properties="clr-namespace:wUAL.Properties;assembly=wUAL">
-    <LinearGradientBrush x:Key="wUAL_ProgressBarForeground" StartPoint="0,0.5" EndPoint="1,0.5">
-        <LinearGradientBrush.GradientStops>
-            <GradientStop Offset="0" Color="#FFF06414" />
-            <GradientStop Offset="1" Color="#FF789FC3" />
-            <GradientStop Offset="0.8" Color="#FFEAA61E" />
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="wUAL_LabelHeaderForeground" Color="#FF82B8EE" />
     <SolidColorBrush x:Key="wUAL_LabelHeadingBackground" Color="#FF0060BF" />
     <SolidColorBrush x:Key="wUAL_LabelSubHeadingBackground" Color="#FF062544" />

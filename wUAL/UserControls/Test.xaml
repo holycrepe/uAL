@@ -1,0 +1,98 @@
+﻿<Window x:Class="wUAL.UserControls.Test"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:wUAL.WPF.ValueConverters"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:userControls="clr-namespace:wUAL.UserControls"
+        MinWidth="400"
+        MinHeight="100"
+        Background="{StaticResource wUAL_ContentBackground}"
+        ResizeMode="CanMinimize"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow">
+    <Window.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assets/Telerik.xaml" />
+                <ResourceDictionary Source="/Assets/ProgressBar/Merged.xaml" />
+                <ResourceDictionary Source="/Assets/Styles/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DropShadowEffect x:Key="glowEffect"
+                              BlurRadius="1"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="Red" />
+            <Style x:Key="TestBorderStyle" TargetType="Border">
+                <Setter Property="BorderThickness" Value="5" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="Margin" Value="0,10,0,10" />
+            </Style>
+        </ResourceDictionary>
+
+    </Window.Resources>
+    <UniformGrid Columns="2">
+        <Border Style="{StaticResource TestBorderStyle}">
+            <telerik:Label Content="Test" />
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <TextBlock Text="Test" />
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <telerik:Label HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Content="Outer glow effect demo"
+                           Effect="{StaticResource glowEffect}"
+                           FontWeight="Bold" />
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <Grid Effect="{StaticResource glowEffect}">
+                <Grid Effect="{StaticResource glowEffect}">
+                    <telerik:Label HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Content="Outer glow effect demo"
+                                   Effect="{StaticResource glowEffect}"
+                                   FontWeight="Bold" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Effect="{StaticResource glowEffect}"
+                       FontWeight="Bold"
+                       Text="Outer glow effect demo" />
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <Grid Effect="{StaticResource glowEffect}">
+                <Grid Effect="{StaticResource glowEffect}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Effect="{StaticResource glowEffect}"
+                               FontWeight="Bold"
+                               Text="Outer glow effect demo" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <userControls:OutlinedTextBlock Style="{StaticResource wUAL_ProgressBar_Label}" Text="58%">
+                <userControls:OutlinedTextBlock.Fill>
+                    <RadialGradientBrush RadiusX="0.9" RadiusY="0.9">
+                        <RadialGradientBrush.GradientStops>
+                            <GradientStop Color="White" />
+                            <GradientStop Offset="0.999" Color="Black" />
+                        </RadialGradientBrush.GradientStops>
+                    </RadialGradientBrush>
+                </userControls:OutlinedTextBlock.Fill>
+            </userControls:OutlinedTextBlock>
+        </Border>
+
+    </UniformGrid>
+</Window>

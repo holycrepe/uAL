@@ -23,8 +23,12 @@ namespace Torrent.Infrastructure.Exceptions
         string SeparatorLine { get; }
         string PaddingLine { get; }
 
-        public ExceptionSummary(Exception ex, string prefix = "# ", char sep = '-', int padding = 11, int headingPadding = 15)
+        public ExceptionSummary(Exception ex, string prefix = "# ", char sep = '-', int padding = -1, int headingPadding = -1)
         {
+            if (padding == -1)
+                padding = 11;
+            if (headingPadding == -1)
+                headingPadding = 15;
             HeadingPadding = headingPadding;
             Separator = sep;
             Error = ex;
@@ -35,7 +39,9 @@ namespace Torrent.Infrastructure.Exceptions
             SeparatorLine = prefix[0] + new string(sep, padding - 1);
             var exceptionStrings = ex.ToString().Replace("\r\n", "\n").Replace("\r", "").Split(new char[] { '\n' }, 2, StringSplitOptions.RemoveEmptyEntries);
             Title = exceptionStrings[0];
-            Details = exceptionStrings[1].Split('\n');
+            Details = exceptionStrings.Length > 1 
+                ? exceptionStrings[1].Split('\n') 
+                : new string[] {};
         }
         public IEnumerable<string> GetSummary()
         {

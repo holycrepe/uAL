@@ -14,15 +14,16 @@ namespace uAL.UTorrentJobs
     [NotifyPropertyChanged]
     public class UTorrentJobQueueItem : QueueItemBase
     {
-        protected override Dictionary<string, string[]> DerivedProperties { get; } = new Dictionary<string, string[]>
-        {
-            [nameof(CategoryNumber)] =
-                                                                                             new[]
-                                                                                             {
-                                                                                                 nameof(Category),
-                                                                                                 nameof(UTorrentJobName)
-                                                                                             }
-        };
+        protected override Dictionary<string, string[]> DerivedProperties { get; }
+            = new Dictionary<string, string[]>
+            {
+                [nameof(CategoryNumber)] =
+                    new[]
+                    {
+                        nameof(Category),
+                        nameof(UTorrentJobName)
+                    }
+            };
         public UTorrentJob Job { get; set; }
         public string Category
         {
@@ -85,7 +86,8 @@ namespace uAL.UTorrentJobs
 
         #region Constructor
         public UTorrentJobQueueItem() { }
-        public UTorrentJobQueueItem(UTorrentJob job) {
+        public UTorrentJobQueueItem(UTorrentJob job)
+        {
             this.Job = job;
         }
 

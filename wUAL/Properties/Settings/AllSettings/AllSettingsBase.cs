@@ -23,7 +23,7 @@ namespace wUAL.Properties.Settings.AllSettings
     [XmlSerializerAssembly("wUAL.Serializers")]
     [XmlInclude(typeof(AppSettingsBase)),
         XmlInclude(typeof(LibSettings)),
-        XmlInclude(typeof(MonitorTogglesBase)),
+        XmlInclude(typeof(ToggleSettingsBase)),
         XmlInclude(typeof(MySettingsBase))]
     [XmlRoot(nameof(AllSettings))]
     [DataContract(Name = nameof(AllSettings), Namespace = Namespaces.Default)]
@@ -32,7 +32,7 @@ namespace wUAL.Properties.Settings.AllSettings
     [Namespace(Prefix = "Torrent", Uri = NamespaceAttribute.Default)]
     [KnownType(typeof(AppSettingsBase)),
         KnownType(typeof(LibSettings)),
-        KnownType(typeof(MonitorTogglesBase)),
+        KnownType(typeof(ToggleSettingsBase)),
         KnownType(typeof(MySettingsBase)),
         //KnownType(typeof(LibSettings.LibDirectorySettings)),
         //KnownType(typeof(LibSettings.LibLabelSettings)),
@@ -71,7 +71,7 @@ namespace wUAL.Properties.Settings.AllSettings
         //[XmlElement(Order=2)]
         [XmlIgnore]
         [SafeForDependencyAnalysis]
-        public MonitorTogglesBase Toggle
+        public ToggleSettingsBase Toggle
         {
             get { return ToggleSettings.Toggles; }
             set { ToggleSettings.Toggles = value; }
@@ -120,7 +120,7 @@ namespace wUAL.Properties.Settings.AllSettings
             => new AllSettingsBase(AppSettings.AppSetting, LibSettings.LibSetting, ToggleSettings.Toggles, MySettings.MySetting);
         public static void SaveAllSettings()
             => New().Save();
-        public AllSettingsBase(AppSettingsBase app, LibSettings lib, MonitorTogglesBase toggle, MySettingsBase my)
+        public AllSettingsBase(AppSettingsBase app, LibSettings lib, ToggleSettingsBase toggle, MySettingsBase my)
         {
             App = app;
             Lib = lib;

@@ -24,12 +24,25 @@ namespace Torrent.Extensions
                 .Replace("&rsquo;", "'")
                 .Replace("&amp;", "&")
                 .Replace("&ndash;", "-");
+
         [Pure]
-        public static string Prefix(this string subject, string prefix, string suffix="")
-            => string.IsNullOrEmpty(subject) ? string.Empty : prefix + subject + suffix;
+        public static string Ignore(this string subject, params string[] ignoredStrings) 
+            => ignoredStrings.Any(ignore => subject == ignore) ? string.Empty : subject;
+
         [Pure]
-        public static string Suffix(this string subject, string suffix, string prefix="")
-            => string.IsNullOrEmpty(subject) ? string.Empty : prefix + subject + suffix;
+        public static string Prefix(this string subject, string prefix, string ignore = "", string suffix="")
+            => string.IsNullOrEmpty(subject) || subject == ignore ? string.Empty : prefix + subject + suffix;
+        [Pure]
+        public static string Suffix(this string subject, string suffix, string ignore = "", string prefix="")
+            => string.IsNullOrEmpty(subject) || subject == ignore ? string.Empty : prefix + subject + suffix;
+
+        [Pure]
+        public static string SubstringAfter(this string subject, string searchString, bool includeSearchString=false, StringComparison comparisonType = StringComparison.InvariantCulture)
+        {
+            var i = subject.IndexOf(searchString, comparisonType);
+            return i == -1 ? subject 
+                : subject.Substring(i + (includeSearchString ? 0 : searchString.Length));
+        }
         [Pure]
         public static string Capitalize(this string subject)
             => subject.Substring(0, 1).ToUpper() + subject.Substring(1);
@@ -102,13 +115,24 @@ namespace Torrent.Extensions
             => subject.Trim(trimChars);
         [Pure]
         [DebuggerNonUserCode]
-        public static string TrimStart(this string subject, string find)
-            => subject.StartsWith(find) ? subject.Substring(find.Length) : subject;
+        public static string TrimStart(this string subject, params string[] strings) 
+            => string.IsNullOrEmpty(subject) ? subject : 
+            strings.Where(find => !string.IsNullOrEmpty(find))
+            .Aggregate(subject, (current, find) 
+                => current.StartsWith(find) 
+            ? current.Substring(find.Length) 
+            : current);
 
         [Pure]
         [DebuggerNonUserCode]
-        public static string TrimEnd(this string subject, string find)
-            => subject.EndsWith(find) ? subject.Substring(0, subject.Length - find.Length) : subject;
+        public static string TrimEnd(this string subject, params string[] strings)
+            => string.IsNullOrEmpty(subject) ? subject :
+            strings.Where(find => !string.IsNullOrEmpty(find))
+            .Aggregate(subject, (current, find)
+                => current.EndsWith(find)
+            ? current.Substring(0, current.Length - find.Length)
+            : current);
+        
         public static string Format(this string template, Dictionary<string, string> formats)
         {
             var values = new List<string>();

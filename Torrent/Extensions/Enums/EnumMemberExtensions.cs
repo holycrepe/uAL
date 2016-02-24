@@ -1,16 +1,17 @@
 ﻿using Torrent.Helpers.Utils;
+using Torrent.Helpers.Utils.IO;
 
 namespace Torrent.Extensions
 {
     public static partial class EnumExtensions
     {
-        public static bool IsDupe(this FileSystemUtils.MoveFileResultStatus enumMember)
-            => (enumMember == FileSystemUtils.MoveFileResultStatus.Dupe
-                    || enumMember == FileSystemUtils.MoveFileResultStatus.DupeError);
+        public static bool IsDupe(this MoveFileResultStatus enumMember)
+            => (enumMember == MoveFileResultStatus.Dupe
+                    || enumMember == MoveFileResultStatus.DupeError);
 
-        public static bool IsError(this FileSystemUtils.MoveFileResultStatus enumMember)
-            => (enumMember == FileSystemUtils.MoveFileResultStatus.Error
-                    || enumMember == FileSystemUtils.MoveFileResultStatus.DupeError);
+        public static bool IsError(this MoveFileResultStatus enumMember)
+            => (enumMember == MoveFileResultStatus.Error
+                    || enumMember == MoveFileResultStatus.DupeError);
         public static bool IsError(this UTorrentJobMoveStatus enumMember)
             => enumMember.ToString().Contains("Error");
         public static bool IsUnneeded(this UTorrentJobMoveStatus enumMember)

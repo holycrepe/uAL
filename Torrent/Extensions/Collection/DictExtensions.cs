@@ -18,6 +18,25 @@ namespace Torrent.Extensions
             }
             original.Concat(newDict, overwrite);
         }
+        public static TValue GetSelection<TKey, TValue>(this IDictionary<TKey, TValue> selections, TKey key, bool flag = true)
+        {
+            TValue value;
+            selections.TryGetSelection(key, out value, flag);
+            return value;
+        }
+
+        public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
+            => dict.ContainsKey(key) ? dict[key] : default(TValue);
+        public static bool TryGetSelection<TKey, TValue>(this IDictionary<TKey, TValue> selections, TKey key, out TValue value, bool flag=true)
+        {
+            if (flag && selections.ContainsKey(key))
+            {
+                value= selections[key];
+                return true;
+            }
+            value = default(TValue);
+            return false;
+        }
 
         public static void Concat<TKey, TValue, TEnumerable>(this IDictionary<TKey, TValue> original,
                                                              IEnumerable<TEnumerable> newList,

@@ -1,4 +1,4 @@
-﻿#define LOG_PROPERTY_CHANGED
+﻿#define LOG_PROPERTY_CHANGED_OFF
 
 using System;
 using System.Diagnostics;

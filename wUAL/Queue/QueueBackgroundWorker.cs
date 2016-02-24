@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using DoWorkEventHandler = uAL.Queue.DoWorkEventHandler;
 
 
-namespace uAL.Queue
+namespace wUAL.Queue
 {
-    using System.ComponentModel;
-    using System.ComponentModel.Design.Serialization;
-    using System.Diagnostics;
-    using System.Security.Permissions;
-    using System.Threading;
-
-    public delegate Task DoWorkEventHandler(object sender, DoWorkEventArgs e);
-
     [
         DefaultEvent("DoWork"),
         HostProtection(SharedState = true)
@@ -40,30 +37,30 @@ namespace uAL.Queue
 
         public QueueBackgroundWorker()
         {
-            threadStart = new WorkerThreadStartDelegate(WorkerThreadStart);
-            operationCompleted = new SendOrPostCallback(AsyncOperationCompleted);
-            progressReporter = new SendOrPostCallback(ProgressReporter);
+            this.threadStart = new WorkerThreadStartDelegate(WorkerThreadStart);
+            this.operationCompleted = new SendOrPostCallback(AsyncOperationCompleted);
+            this.progressReporter = new SendOrPostCallback(ProgressReporter);
         }
 
         private void AsyncOperationCompleted(object arg)
         {
-            isRunning = false;
-            cancellationPending = false;
+            this.isRunning = false;
+            this.cancellationPending = false;
             OnRunWorkerCompleted((RunWorkerCompletedEventArgs) arg);
         }
 
         [
             Browsable(false),
         ]
-        public bool CancellationPending => cancellationPending;
+        public bool CancellationPending => this.cancellationPending;
 
         public void CancelAsync()
         {
-            if (!WorkerSupportsCancellation) {
+            if (!this.WorkerSupportsCancellation) {
                 throw new InvalidOperationException("Worker doesn't support cancellation");
             }
 
-            cancellationPending = true;
+            this.cancellationPending = true;
         }
 
         public event DoWorkEventHandler DoWork
@@ -75,11 +72,11 @@ namespace uAL.Queue
         [
             Browsable(false),
         ]
-        public bool IsBusy => isRunning;
+        public bool IsBusy => this.isRunning;
 
         protected async virtual Task OnDoWork(DoWorkEventArgs e)
         {
-            DoWorkEventHandler handler = (DoWorkEventHandler) (Events[doWorkKey]);
+            DoWorkEventHandler handler = (DoWorkEventHandler) (this.Events[doWorkKey]);
             if (handler != null) {
                 await handler(this, e);
             }
@@ -87,7 +84,7 @@ namespace uAL.Queue
 
         protected virtual void OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
         {
-            RunWorkerCompletedEventHandler handler = (RunWorkerCompletedEventHandler) (Events[runWorkerCompletedKey]);
+            RunWorkerCompletedEventHandler handler = (RunWorkerCompletedEventHandler) (this.Events[runWorkerCompletedKey]);
             if (handler != null) {
                 handler(this, e);
             }
@@ -95,7 +92,7 @@ namespace uAL.Queue
 
         protected virtual void OnProgressChanged(ProgressChangedEventArgs e)
         {
-            ProgressChangedEventHandler handler = (ProgressChangedEventHandler) (Events[progressChangedKey]);
+            ProgressChangedEventHandler handler = (ProgressChangedEventHandler) (this.Events[progressChangedKey]);
             if (handler != null) {
                 if (e?.UserState == null) {
                     Debugger.Break();
@@ -119,16 +116,16 @@ namespace uAL.Queue
         // Cause progress update to be posted through current AsyncOperation.
         public void ReportProgress(int percentProgress, object userState)
         {
-            if (!WorkerReportsProgress) {
+            if (!this.WorkerReportsProgress) {
                 throw new InvalidOperationException("Worker doesn't report progress");
             }
 
             ProgressChangedEventArgs args = new ProgressChangedEventArgs(percentProgress, userState);
 
-            if (asyncOperation != null) {
-                asyncOperation.Post(progressReporter, args);
+            if (this.asyncOperation != null) {
+                this.asyncOperation.Post(this.progressReporter, args);
             } else {
-                progressReporter(args);
+                this.progressReporter(args);
             }
         }
 
@@ -137,15 +134,15 @@ namespace uAL.Queue
 
         public void RunWorkerAsync(object argument)
         {
-            if (isRunning) {
+            if (this.isRunning) {
                 throw new InvalidOperationException("Worker already running");
             }
 
-            isRunning = true;
-            cancellationPending = false;
+            this.isRunning = true;
+            this.cancellationPending = false;
 
-            asyncOperation = AsyncOperationManager.CreateOperation(null);
-            threadStart.BeginInvoke(argument,
+            this.asyncOperation = AsyncOperationManager.CreateOperation(null);
+            this.threadStart.BeginInvoke(argument,
                                     null,
                                     null);
         }
@@ -161,8 +158,8 @@ namespace uAL.Queue
         ]
         public bool WorkerReportsProgress
         {
-            get { return workerReportsProgress; }
-            set { workerReportsProgress = value; }
+            get { return this.workerReportsProgress; }
+            set { this.workerReportsProgress = value; }
         }
 
         [
@@ -170,8 +167,8 @@ namespace uAL.Queue
         ]
         public bool WorkerSupportsCancellation
         {
-            get { return canCancelWorker; }
-            set { canCancelWorker = value; }
+            get { return this.canCancelWorker; }
+            set { this.canCancelWorker = value; }
         }
 
         private delegate Task WorkerThreadStartDelegate(object argument);
@@ -204,11 +201,19 @@ namespace uAL.Queue
 
         public void ReportComplete()
         {
-            if (RunWorkerCompletedEventArgs != null)
+            if (this.RunWorkerCompletedEventArgs != null)
             {
-                asyncOperation.PostOperationCompleted(operationCompleted, RunWorkerCompletedEventArgs);
-                RunWorkerCompletedEventArgs = null;
+                this.asyncOperation.PostOperationCompleted(this.operationCompleted, this.RunWorkerCompletedEventArgs);
+                this.RunWorkerCompletedEventArgs = null;
             }
         }
     }
+}
+
+namespace uAL.Queue
+{
+    using System.ComponentModel;
+    using System.ComponentModel.Design.Serialization;
+
+    public delegate Task DoWorkEventHandler(object sender, DoWorkEventArgs e);
 }

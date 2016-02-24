@@ -4,6 +4,7 @@
 using System;
 using BencodeNET;
 using System.Collections.Generic;
+using System.ComponentModel;
 using BencodeNET.Objects;
 using System.IO;
 using System.Diagnostics;
@@ -11,6 +12,7 @@ using Torrent.Enums;
 using Torrent.Helpers.Utils;
 using Torrent.Extensions;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Torrent
 {
@@ -30,6 +32,7 @@ namespace Torrent
             nameof(Progress), nameof(RootDirectory)
         };
         #region Properties
+        public FileInfo Info { get; }
         public TorrentFile Torrent { get; }
         protected static DownloadedFileChecker DownloadedFileChecker 
             = new DownloadedFileChecker();
@@ -59,10 +62,6 @@ namespace Torrent
         public QueueStatusMember Status { get; set; } = QueueStatus.Uninitialized;
         public bool IsRunning => this.Status.IsRunning;
         public bool IsActive => this.Status.IsActive;
-        public string IsInProgressText
-            => this.IsActive ? "In Progress"
-            : this.IsRunning ? "Queued"
-            : "Idle";
         #endregion
         #endregion
         public void SetRootDirectory(string value)
@@ -279,7 +278,8 @@ namespace Torrent
         #endregion
         public TorrentInfo(string filename)
         {
-            FileName = filename;
+            Info = new FileInfo(filename);
+            FileName = this.Info.FullName;
             Torrent = null;
 
             try {
@@ -366,8 +366,8 @@ namespace Torrent
         }
         #region Log
         [System.Diagnostics.Conditional("LOG_QUEUE_ITEM_CHANGED"), System.Diagnostics.Conditional("LOG_ALL")]
-        public void LogQueueItemChanged(string propertyName)
-            => Log("Δ ", propertyName);
+        public void LogQueueItemChanged([CallerMemberName] string propertyName=null)
+            => Log("Δ " + propertyName);
         [System.Diagnostics.Conditional("DEBUG"), System.Diagnostics.Conditional("TRACE_EXT")]
         static void Log(string title, string text = null, string item = null, PadDirection textPadDirection = PadDirection.Default, string textSuffix = null, PadDirection titlePadDirection = PadDirection.Default, string titleSuffix = null, int random = 0)
             => LogUtils.Log(nameof(TorrentInfo), title, text, item, textPadDirection, textSuffix, titlePadDirection, titleSuffix, random);

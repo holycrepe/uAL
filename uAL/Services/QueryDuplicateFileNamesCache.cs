@@ -12,6 +12,7 @@ using Torrent.Enums;
 using System.Threading;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Torrent.Helpers.Utils.IO;
 
 namespace uAL.Services
 {

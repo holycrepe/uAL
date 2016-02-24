@@ -27,27 +27,29 @@ namespace Torrent.Infrastructure.Enums.Toggles
         where TResult : struct
         //where TSettings : IEnumTogglesContainer<TEnum, TEnum>, new()
     {
-        Type _genericType, _toggleType = null;
+        Type _genericType, _type, _toggleType, _enumType, _resultType = null;
         [PostSharp.Patterns.Model.IgnoreAutoChangeNotification]
         protected virtual object[] DebuggerDisplayProperties 
             => new object[] { };
         #region Types
+
         [Browsable(false)]
-        protected Type Type { get; }
+        protected Type Type
+            => this._type ?? (this._type = this.GetType());
         [Browsable(false)]
         Type GenericType
             => this._genericType ?? (this._genericType 
             = this.Type?.GetBaseGenericTypeDefinition());
         [Browsable(false)]
-        Type EnumType { get; }
-            = typeof(TEnum);
+        Type EnumType
+            => this._enumType ?? (this._enumType = typeof(TEnum));
         [Browsable(false)]
-        Type ResultType { get; }
-            = typeof(TResult);
+        Type ResultType
+            => this._resultType ?? (this._resultType = typeof(TResult));
         [SafeForDependencyAnalysis]
         [Browsable(false)]
         public Type ToggleType
-            => this._toggleType ?? this.MakeToggleType(this.GenericType);
+            => this._toggleType ?? (this._toggleType = this.MakeToggleType(this.GenericType));
         [Browsable(false)]
         bool IsToggleType
             => ResultType == typeof(bool);
@@ -59,13 +61,13 @@ namespace Torrent.Infrastructure.Enums.Toggles
             => (baseType?.MakeGenericTypeFromBase(this.EnumType, typeof(bool)));
         #endregion
         [Browsable(false)]
-        private TEnum Flag { get; set; }
+        protected TEnum Flag { get; set; }
         [Browsable(false)]
+        [DebuggerNonUserCode]
         private bool HasFlag { get; set; } = false;
-        public EnumToggles() { Type = this.GetType(); }
+        public EnumToggles() { }
         public EnumToggles(IEnumToggles<TEnum, TEnum> toggles, TEnum flag) : base(toggles)
-        {
-            Type = this.GetType();
+        {            
             SetFlag(flag);
         }
         [Browsable(false)]
@@ -89,32 +91,33 @@ namespace Torrent.Infrastructure.Enums.Toggles
             HasFlag = true;
             SetterEnabled = false;
         }
+        [DebuggerNonUserCode]
+        public TResult Get([CallerMemberName] string propertyName = null)
+            => Get<TResult>(propertyName);
+
         /// <summary>
-        /// Try to retrieve a member by name first from instance properties
+        /// Retrieve a member by name first from instance properties
         /// followed by the collection entries.
         /// </summary>
-        /// <param name="binder"></param>
-        /// <param name="objResult"></param>
+        /// <param name="propertyName"></param>
         /// <returns></returns>
-        [Browsable(false)]
-        public override bool TryGetMember(GetMemberBinder binder, out object objResult)
+        public override object GetMember([CallerMemberName] string propertyName = null)
         {
-            var success = base.TryGetMember(binder, out objResult);
+            object objResult;
+            var success = base.TryGetMember(propertyName, out objResult);
             if (!HasFlag || !success)
             {
-                return success;
+                return objResult;
             }
 
             var nested = objResult as IEnumToggles<TEnum>;
             if (nested != null)
             {
-                objResult = nested.GetActiveToggles(Flag);
-                return true;
+                return nested.GetActiveToggles(Flag);
             }
             var value = (TEnum)objResult;
-            var result = value.Has(Flag);
-            objResult = result;
-            return true;
+            var finalResult = value.Has(Flag);
+            return finalResult;
         }
         //public TSettings CreateToggle<TSettings>(TEnum flag)
         //    where TSettings : IEnumToggles<TEnum, bool>, new()
@@ -128,12 +131,7 @@ namespace Torrent.Infrastructure.Enums.Toggles
         //    (toggles as IEnumToggles<TEnum, bool>).SetToggles(this, flag);// new object[] { this, flag });
         //    return (TSettings) toggles;
         //}
-        #region Interfaces
-        #region Interfaces: INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => NotifyPropertyChangedBase.DoOnPropertyChanged(this, PropertyChanged, propertyName.Split(';'));
-        #endregion
+        #region Interfaces        
         #region Interfaces: IDebuggerDisplay
         public virtual string DebuggerDisplay(int level = 1)
             => this.DebuggerDisplaySimple(level);

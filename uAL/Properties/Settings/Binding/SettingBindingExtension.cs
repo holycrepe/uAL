@@ -23,11 +23,11 @@
 
     #region Toggles
 
-    public class ToggleExtension : SettingBindingExtensionBase<MonitorTogglesBase>
+    public class ToggleExtension : SettingBindingExtensionBase<ToggleSettingsBase>
     {
         public ToggleExtension() : base() { }
         public ToggleExtension(string path) : base(path) { }
-        protected override MonitorTogglesBase Value 
+        protected override ToggleSettingsBase Value 
             => Toggles;
     }
 

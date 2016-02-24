@@ -69,10 +69,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Puchalapalli.Dynamic">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Puchalapalli\Puchalapalli.Dynamic.dll</HintPath>
-    </Reference>
     <Reference Include="AddGenericConstraint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\PostSharp\AddGenericConstraint\AddGenericConstraint.dll</HintPath>
@@ -178,24 +174,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\Utils\ColorHelpers.cs" />
+    <Compile Include="Extensions\WPF\SetterBaseCollection.cs" />
     <Compile Include="Infrastructure\InfoReporters\ConsoleInfoReporter.cs" />
     <Compile Include="Infrastructure\Layout Renderers\LoggerName.cs" />
     <Compile Include="Infrastructure\Layout Renderers\PaddedMessage.cs" />
     <Compile Include="Infrastructure\Logging\ColoredConsole.cs" />
+    <Compile Include="Infrastructure\UI\ViewModel.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\MonitorTypes.cs" />
     <Compile Include="Properties\Settings\LibSettings\LibLabelDefaultSettings.cs" />
     <Compile Include="Properties\Settings\LibSettings\LibQueueSettings.cs" />
     <Compile Include="Properties\Settings\LibSettings\LibTorrentSettings.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\Base.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\Processing.Automated.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\Processing.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\Filters.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\Main.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\MonitorToggles.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\MonitorTypes.cs" />
-    <Compile Include="Properties\Settings\ToggleSettings\Settings.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Base.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Constructor.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Filters.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Processing.Automated.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Processing.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Settings.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\ToggleSettings\Subclass.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\Toggle\Base.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\Toggle\Constructor.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\Toggle\Filters.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\Toggle\Processing.Automated.cs" />
+    <Compile Include="Properties\Settings\ToggleSettings\Toggle\Processing.cs" />
     <Compile Include="Serialization\Namespaces.cs" />
-    <Compile Include="UTorrentJobs\UTorrentJobQueueItem.cs" />
+    <Compile Include="UTorrentJobs\UTorrentJobViewModel.cs" />
+    <Compile Include="UTorrentJobs\ProcessQueueResult.cs" />
+    <Compile Include="UTorrentJobs\ProcessQueueStatus.cs" />
     <Compile Include="UTorrentJobs\UTorrentJobQueueMonitor.cs" />
     <Compile Include="Metalinks\MetalinkQueueCounts.cs" />
     <Compile Include="Metalinks\MetalinkQueueStatus.cs" />
@@ -246,6 +250,10 @@
     <None Include="Resources\uTorrent.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Puchalapalli.Dynamic\Puchalapalli.Dynamic.csproj">
+      <Project>{71c16faf-5894-4482-8800-7f33d0d723b5}</Project>
+      <Name>Puchalapalli.Dynamic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Torrent\Torrent.csproj">
       <Project>{2917E84C-B8B0-4308-BCDA-DFDE860A274D}</Project>
       <Name>Torrent</Name>

@@ -12,29 +12,13 @@ namespace Torrent.Extensions
     using Infrastructure;
     using System.Collections;
     using System.Collections.ObjectModel;
-    public static class EnumeratorExtensions
-    {
-        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator<T> enumerator, int start=0, int end=-1)
-        {
-            var i = 0;
-            while (enumerator.MoveNext())
-            {
-                if (i >= start)
-                {
-                    yield return enumerator.Current;
-                }
-                if (i >= end)
-                {
-                    break;
-                }
-                i++;
-            }
-        }
-        public static T[] ToArray<T>(this IEnumerator<T> enumerator, int start = 0, int end = -1)
-            => enumerator.ToEnumerable(start, end).ToArray();
-    }    
+
     public static class ListExtensions
-    {
+    {        
+        public static string Join<T>(this IEnumerable<T> list, int padding)
+            => list.Join("\n", padding);
+        public static string Join<T>(this IEnumerable<T> list, string delim="\n", int padding=0)
+            => string.Join(delim + (padding > 0 ? new string(' ', padding) : ""), list);
         public static long GetPositiveBitwiseOr(this IEnumerable<object> values)
             => values.GetBitwiseOr(true);
         public static long GetBitwiseOr(this IEnumerable<object> values, bool excludeNegativeValues=false)

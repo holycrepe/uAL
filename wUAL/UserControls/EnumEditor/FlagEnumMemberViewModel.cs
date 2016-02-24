@@ -87,7 +87,7 @@ namespace wUAL.UserControls
         {
             if (MainApp.DesignMode)
             {
-                DEBUG.Break();
+                // DEBUG.Break();
                 this.SetEnum(MonitorTypes.Main);
             }
             else

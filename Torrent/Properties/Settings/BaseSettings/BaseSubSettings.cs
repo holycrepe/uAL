@@ -37,6 +37,6 @@ namespace Torrent.Properties.Settings
             => DebuggerDisplaySimple(level);
 
         public virtual string DebuggerDisplaySimple(int level = 1)
-            => $"[{Name}{(DebuggerDisplayProperties.Length == 0 ? "" : " ")}{DebuggerDisplayProperties.ToStringKeyValue()}]";
+            => $"[{DebuggerDisplayProperties.ToStringKeyValue()}]";
     }
 }

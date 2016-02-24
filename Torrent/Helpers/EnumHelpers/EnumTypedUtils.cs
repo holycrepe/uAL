@@ -1,6 +1,9 @@
 ﻿using AddGenericConstraint;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Input;
 
 namespace Torrent.Helpers.Utils
 {
@@ -25,6 +28,24 @@ namespace Torrent.Helpers.Utils
         /// <typeparam name="T">Enum type</typeparam>
         public static IList<T> GetValues<[AddGenericConstraint(typeof(Enum))] T>() where T : struct
             => EnumInternals<T>.Values;
+
+        /// <summary>
+        /// Returns the values for the given enum as an immutable list.
+        /// </summary>
+        /// <typeparam name="T">Enum type</typeparam>
+        public static T GetDefault<[AddGenericConstraint(typeof(Enum))] T>() where T : struct            
+        {
+            var first = GetValues<T>().FirstOrDefault();
+            long val = -1;
+            try
+            {
+                val = Convert.ToInt64(first);
+            }
+            catch (Exception) {}
+            if (val != 0)
+                Debugger.Break();
+            return first;
+        }
 
         /// <summary>
         /// Returns an array of names in the enum.

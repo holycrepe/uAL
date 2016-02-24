@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Torrent.Extensions;
 using Torrent.Helpers.Utils;
+using Torrent.Helpers.Utils.IO;
 using Torrent.Queue;
 using Torrent.Infrastructure;
 
@@ -177,7 +178,7 @@ namespace Torrent
                     // File is an exact dupe and has been deleted
                     Log("UpdatePath: Dupe", this.Base, TorrentName);
                     Valid = false;
-                } else if (result.Status == FileSystemUtils.MoveFileResultStatus.Success) {
+                } else if (result.Status == MoveFileResultStatus.Success) {
                     Log("UpdatePath: Moved", this.Base, TorrentName);
                     FileName = result.NewFileName;
                     Log("", "→", TorrentName, PadDirection.Alternate, " ");

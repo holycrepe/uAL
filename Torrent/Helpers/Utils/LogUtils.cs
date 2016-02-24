@@ -3,6 +3,8 @@
 using System;
 using System.Linq;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.CompilerServices;
 using Torrent.Extensions;
 
 namespace Torrent.Helpers.Utils
@@ -36,6 +38,18 @@ namespace Torrent.Helpers.Utils
             return _rnd.Next(random) + 1 == random;
         }
 
+        public static class Writers
+        {
+            public static void Design(string title, string text = null)
+                => WriteToFile(nameof(Design), title, text);
+            public static void Types(string title, string text = null, [CallerMemberName] string source=null)
+                => WriteToFile(nameof(Types), source.PadTitle(title), text);
+        }
+
+        public static void Write(string title, string text = null)
+        => WriteToFile("default", title, text);
+        static void WriteToFile(string file, string title, string text=null)
+            => File.AppendAllText(Path.Combine(@"D:\Git\uAL\wUAL\bin\Debug\logs", file + ".log"), $"[{DateUtils.Timestamp}] {title.PadTitle(text)}\n");
         [Conditional("DEBUG"), Conditional("TRACE_EXT")]
         public static void Log(string className, string title, string text = null, string item = null,
                                PadDirection textPadDirection = PadDirection.Default, string textSuffix = null,

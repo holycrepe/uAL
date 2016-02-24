@@ -53,14 +53,14 @@ D:\Git\uAL\uAL\bin\Debug\Telerik.Windows.Controls.dll
 D:\Git\uAL\uAL\bin\Debug\Telerik.Windows.Data.dll
 D:\Git\uAL\uAL\bin\Debug\Torrent.dll
 D:\Git\uAL\uAL\bin\Debug\UTorrentRestAPI.dll
+D:\Git\uAL\uAL\bin\Debug\Westwind.Utilities.dll
 D:\Git\uAL\uAL\bin\Debug\BencodeNET.dll
 D:\Git\uAL\uAL\bin\Debug\nunit.framework.dll
 D:\Git\uAL\uAL\bin\Debug\Newtonsoft.Json.dll
 D:\Git\uAL\uAL\bin\Debug\RestSharp.dll
-D:\Git\uAL\uAL\bin\Debug\Westwind.Utilities.dll
+D:\Git\uAL\uAL\bin\Debug\Puchalapalli.Dynamic.pdb
 D:\Git\uAL\uAL\bin\Debug\Torrent.pdb
 D:\Git\uAL\uAL\bin\Debug\UTorrentRestAPI.pdb
-D:\Git\uAL\uAL\bin\Debug\Puchalapalli.Dynamic.pdb
 D:\Git\uAL\uAL\bin\Debug\JetBrains.Annotations.xml
 D:\Git\uAL\uAL\bin\Debug\NLog.xml
 D:\Git\uAL\uAL\bin\Debug\PostSharp.xml
@@ -69,6 +69,7 @@ D:\Git\uAL\uAL\bin\Debug\PostSharp.Patterns.Model.xml
 D:\Git\uAL\uAL\bin\Debug\RunProcessAsTask.pdb
 D:\Git\uAL\uAL\bin\Debug\Telerik.Windows.Controls.xml
 D:\Git\uAL\uAL\bin\Debug\Telerik.Windows.Data.xml
+D:\Git\uAL\uAL\bin\Debug\Westwind.Utilities.xml
 D:\Git\uAL\uAL\bin\Debug\BencodeNET.xml
 D:\Git\uAL\uAL\bin\Debug\nunit.framework.xml
 D:\Git\uAL\uAL\bin\Debug\Newtonsoft.Json.xml

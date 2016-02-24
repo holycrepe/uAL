@@ -35,7 +35,7 @@
         {
             if (MainApp.DesignMode)
             {                
-                DEBUG.Break();
+                //DEBUG.Break();
                 return;
             }
             if (_settings != null)
@@ -67,7 +67,7 @@
         {
             RegexUtils.GetLabelsWordsToStrip = libSetting.Labels.GetLabelsWordsToStrip;
             TorrentItem.getWordsToStrip = e => libSetting.Labels.TORRENT_NAME_WORDS_TO_STRIP;
-            Toggles.Filters.PropertyChanged +=
+            (Toggles.Filters as INotifyPropertyChanged).PropertyChanged +=
                 (s, e) => libSetting.Labels.FilterResults?.Clear();
             return libSetting;
         }
