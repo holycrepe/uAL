@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/ProgressBar/Brushes.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/ProgressBar/Styles.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/ProgressBar/Templates.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/ProgressBar/Models.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-</ResourceDictionary>

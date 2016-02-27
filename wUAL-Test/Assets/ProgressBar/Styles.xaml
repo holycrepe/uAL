@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:wUAL.UserControls"
+                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation">
+    <Style x:Key="wUAL_ProgressBar"
+           BasedOn="{StaticResource RadProgressBarStyle}"
+           TargetType="telerik:RadProgressBar">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Foreground" Value="{StaticResource wUAL_ProgressBar_Foreground}" />
+        <Setter Property="Background" Value="{StaticResource wUAL_ContentBackgroundDark}" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="Maximum" Value="100" />
+    </Style>
+
+    <Style x:Key="wUAL_ProgressBar_Label" TargetType="controls:OutlinedTextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+        <Setter Property="StrokeThickness" Value="1.5" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+    </Style>
+    <!--<styles:ProgressStyleSelector x:Key="ProgressStyleSelector" />-->
+</ResourceDictionary>

@@ -1,0 +1,235 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:my="clr-namespace:wUAL"
+                    xmlns:myControl="clr-namespace:wUAL.UserControls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                    xmlns:telerikChromes="clr-namespace:Telerik.Windows.Controls.Chromes;assembly=Telerik.Windows.Controls"
+                    xmlns:wpf="clr-namespace:wUAL.WPF"
+                    mc:Ignorable="d">
+    <!--<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/System.Windows.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.Input.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.Navigation.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.Docking.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.GridView.xaml" />
+    </ResourceDictionary.MergedDictionaries>-->
+    <myControl:EnumMemberViewModel x:Key="EnumMemberViewModel" />
+    <myControl:FlagEnumMemberViewModel x:Key="FlagEnumMemberViewModel" />
+
+    <ControlTemplate x:Key="EnumMemberComboBoxGridNonEditableTemplate" TargetType="telerik:RadComboBox">
+        <Grid x:Name="VisualRoot">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Disabled" />
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="MouseOver" />
+                    <VisualState x:Name="DropDownOpen">
+                        <Storyboard>
+                            <DoubleAnimation Duration="0"
+                                             Storyboard.TargetName="Focus"
+                                             Storyboard.TargetProperty="(UIElement.Opacity)"
+                                             To="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="FocusStates">
+                    <VisualState x:Name="Focused">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Focus" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unfocused" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="Background"
+                    Background="{StaticResource ButtonBackground_Normal}"
+                    CornerRadius="3"
+                    IsHitTestVisible="False" />
+            <telerik:RadToggleButton x:Name="PART_DropDownButton"
+                                     Background="{TemplateBinding Background}"
+                                     BorderBrush="{TemplateBinding BorderBrush}"
+                                     BorderThickness="{TemplateBinding BorderThickness}"
+                                     ClickMode="Press"
+                                     Content="{TemplateBinding SelectionBoxItem}"
+                                     ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     IsTabStop="False"
+                                     Padding="{TemplateBinding Padding}"
+                                     Style="{StaticResource NonEditableComboToggleButtonStyle}" />
+            <Border x:Name="Focus"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="{StaticResource ButtonBorder_Focus}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="3"
+                    IsHitTestVisible="False"
+                    Visibility="Collapsed" />
+            <Popup x:Name="PART_Popup">
+                <Border x:Name="PART_ResizeBorder"
+                        MinWidth="{TemplateBinding MinDropDownWidth}"
+                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                        Background="{StaticResource PopupBackground}"
+                        BorderBrush="{StaticResource PopupBorder}"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <telerik:RadButton x:Name="PART_ClearButton"
+                                           Grid.Row="0"
+                                           Content="{TemplateBinding ClearSelectionButtonContent}"
+                                           Visibility="{TemplateBinding ClearSelectionButtonVisibility}" />
+                        <ScrollViewer x:Name="PART_ScrollViewer"
+                                      Grid.Row="1"
+                                      BorderThickness="0"
+                                      CanContentScroll="True"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      Padding="1"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <!--<ItemsPresenter/>-->
+                            <telerik:RadGridView AutoGenerateColumns="False"
+                                                 EnableLostFocusSelectedState="False"
+                                                 IsFilteringAllowed="False"
+                                                 IsReadOnly="True"
+                                                 ItemsSource="{Binding Items}"
+                                                 RowIndicatorVisibility="Collapsed"
+                                                 SelectedItem="{Binding SelectedItem,
+                                                                        Mode=TwoWay}"
+                                                 SelectionUnit="FullRow"
+                                                 ShowColumnHeaders="False"
+                                                 ShowGroupPanel="False"
+                                                 d:DataContext="{StaticResource EnumMemberViewModel}">
+                                <i:Interaction.Behaviors>
+                                    <wpf:GridMultiSelectBehaviorEnumMember />
+                                </i:Interaction.Behaviors>
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Value}" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Description}" />
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Popup>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="FlagEnumMemberComboBoxGridNonEditableTemplate" TargetType="telerik:RadComboBox">
+        <Grid x:Name="VisualRoot">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Disabled" />
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="MouseOver" />
+                    <VisualState x:Name="DropDownOpen">
+                        <Storyboard>
+                            <DoubleAnimation Duration="0"
+                                             Storyboard.TargetName="Focus"
+                                             Storyboard.TargetProperty="(UIElement.Opacity)"
+                                             To="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="FocusStates">
+                    <VisualState x:Name="Focused">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Focus" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Visible</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unfocused" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="Background"
+                    Background="{StaticResource ButtonBackground_Normal}"
+                    CornerRadius="3"
+                    IsHitTestVisible="False" />
+            <telerik:RadToggleButton x:Name="PART_DropDownButton"
+                                     Background="{TemplateBinding Background}"
+                                     BorderBrush="{TemplateBinding BorderBrush}"
+                                     BorderThickness="{TemplateBinding BorderThickness}"
+                                     ClickMode="Press"
+                                     Content="{TemplateBinding SelectionBoxItem}"
+                                     ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     IsTabStop="False"
+                                     Padding="{TemplateBinding Padding}"
+                                     Style="{StaticResource NonEditableComboToggleButtonStyle}" />
+            <Border x:Name="Focus"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="{StaticResource ButtonBorder_Focus}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="3"
+                    IsHitTestVisible="False"
+                    Visibility="Collapsed" />
+            <Popup x:Name="PART_Popup">
+                <Border x:Name="PART_ResizeBorder"
+                        MinWidth="{TemplateBinding MinDropDownWidth}"
+                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                        Background="{StaticResource PopupBackground}"
+                        BorderBrush="{StaticResource PopupBorder}"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <telerik:RadButton x:Name="PART_ClearButton"
+                                           Grid.Row="0"
+                                           Content="{TemplateBinding ClearSelectionButtonContent}"
+                                           Visibility="{TemplateBinding ClearSelectionButtonVisibility}" />
+                        <ScrollViewer x:Name="PART_ScrollViewer"
+                                      Grid.Row="1"
+                                      BorderThickness="0"
+                                      CanContentScroll="True"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      Padding="1"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <!--<ItemsPresenter/>-->
+                            <telerik:RadGridView AutoGenerateColumns="False"
+                                                 EnableLostFocusSelectedState="False"
+                                                 IsFilteringAllowed="False"
+                                                 IsReadOnly="True"
+                                                 ItemsSource="{Binding Items}"
+                                                 RowIndicatorVisibility="Collapsed"
+                                                 SelectedItem="{Binding SelectedItem,
+                                                                        Mode=TwoWay}"
+                                                 SelectionMode="Extended"
+                                                 SelectionUnit="FullRow"
+                                                 ShowColumnHeaders="False"
+                                                 ShowGroupPanel="False"
+                                                 d:DataContext="{StaticResource FlagEnumMemberViewModel}">
+                                <i:Interaction.Behaviors>
+                                    <wpf:GridMultiSelectBehaviorFlagEnumMember />
+                                </i:Interaction.Behaviors>
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewSelectColumn />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Value}" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Description}" />
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Popup>
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

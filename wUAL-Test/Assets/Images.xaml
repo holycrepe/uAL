@@ -1,0 +1,168 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Properties="clr-namespace:wUAL.Properties;assembly=wUAL">
+  <BitmapImage x:Key="DefaultIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/wUAL.ico" />
+  <BitmapImage x:Key="StatusIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Information.ico" />
+  <BitmapImage x:Key="DupeIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Dupe-File.ico" />
+  <BitmapImage x:Key="LabelIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Category.ico" />
+  <BitmapImage x:Key="TorrentFileIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/File.ico" />
+  <BitmapImage x:Key="URLIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/URL.ico" />
+  <BitmapImage x:Key="LinkIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/URL-Link.ico" />
+  <BitmapImage x:Key="CategoryIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Label.ico" />
+  <BitmapImage x:Key="MetalinkIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/jDL.ico" />
+  <BitmapImage x:Key="NumberIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Number.ico" />
+  <BitmapImage x:Key="PlusIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Plus-3D.png" />
+  <BitmapImage x:Key="PathIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Folder-Downloads.ico" />
+  <BitmapImage x:Key="RootIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Folder-Downloads-Metro.ico" />
+  <BitmapImage x:Key="DownloadSizeIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Download-Metro.ico" />
+  <BitmapImage x:Key="DownloadSpeedIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Download-Globe.ico" />
+  <BitmapImage x:Key="UploadSizeIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Upload-Metro.ico" />
+  <BitmapImage x:Key="UploadSpeedIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Upload-Globe.ico" />
+  <BitmapImage x:Key="TargetsIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Icons/Dupe-File.ico" />
+  <BitmapImage x:Key="CaptionIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Caption.png" />
+  <BitmapImage x:Key="NameIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Caption-Pencil.png" />
+  <BitmapImage x:Key="HashIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Hash.png" />
+  <BitmapImage x:Key="AddedOnIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Plus-File.png" />
+  <BitmapImage x:Key="CompletedOnIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Completed-Clock.png" />
+  <BitmapImage x:Key="TimeIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Clock.png" />
+  <BitmapImage x:Key="RunTimeIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Clock-Blue.png" />
+  <BitmapImage x:Key="IsVisibleIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Eyes-Fat.png" />
+  <BitmapImage x:Key="IsValidIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Thumbs-Up.png" />
+  <BitmapImage x:Key="PriorityIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Priority.png" />
+  <BitmapImage x:Key="Priority2Icon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Priority-Alt.png" />
+  <BitmapImage x:Key="WasForceStartedIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Start-Triangle.png" />
+  <BitmapImage x:Key="IsRelativePathIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Folder-Open-File.png" />
+  <BitmapImage x:Key="LastActiveIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Active-Sync.png" />
+  <BitmapImage x:Key="HasBeenMovedIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Moving-Truck.png" />
+  <BitmapImage x:Key="IsChangedIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Change-Delta-Pink.png" />
+  <BitmapImage x:Key="ProgressIcon"
+               CacheOption="OnLoad"
+               CreateOptions="IgnoreImageCache"
+               UriSource="pack://application:,,,/Assets/Images/Progress-Chart.png" />
+  <StackPanel x:Key="StatusImage">
+    <Image Width="24" Source="{DynamicResource StatusIcon}" />
+  </StackPanel>
+  <StackPanel x:Key="LabelImage">
+    <Image Width="24" Source="{DynamicResource LabelIcon}" />
+  </StackPanel>
+  <StackPanel x:Key="CategoryImage">
+    <Image Width="24" Source="{DynamicResource CategoryIcon}" />
+  </StackPanel>
+  <StackPanel x:Key="MetalinkImage">
+    <Image Width="24" Source="{DynamicResource MetalinkIcon}" />
+  </StackPanel>
+  <StackPanel x:Key="NumberImage">
+    <Image Width="24" Source="{DynamicResource NumberIcon}" />
+  </StackPanel>
+  <StackPanel x:Key="IsChangedImage">
+    <Image Width="24" Source="{DynamicResource IsChangedIcon}" />
+  </StackPanel>
+  <StackPanel x:Key="ProgressImage">
+    <Image Width="24" Source="{DynamicResource ProgressIcon}" />
+  </StackPanel>
+  <ImageBrush x:Key="SplitterBackground" ImageSource="pack://application:,,,/Assets/Images/Splitter.jpg" />
+  <ImageBrush x:Key="MetalinkBackground" ImageSource="{DynamicResource MetalinkIcon}" />
+  <ImageBrush x:Key="DupeBackground" ImageSource="{DynamicResource DupeIcon}" />
+</ResourceDictionary>

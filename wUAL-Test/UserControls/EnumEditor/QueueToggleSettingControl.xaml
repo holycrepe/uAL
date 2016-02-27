@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="wUAL.UserControls.QueueToggleSettingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:bind="clr-namespace:wUAL.Properties.Settings.Binding"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:my="clr-namespace:wUAL"
+             xmlns:myControl="clr-namespace:wUAL.UserControls"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:toggles="clr-namespace:uAL.Properties.Settings.ToggleSettings;assembly=uAL"
+             x:Name="ControlRoot"
+             Grid.Column="1"
+             d:DataContext="{bind:Toggle Path=Monitors}"
+             d:DesignWidth="200"
+             mc:Ignorable="d">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding DataContext, ElementName=ControlRoot}">
+        <myControl:MyFlagEnumEditor x:Name="MyFlagEnumEditor"
+                                    Width="170"
+                                    HorizontalAlignment="Left"
+                                    DisplayFormat="Description"
+                                    Enum="{Binding Enum,
+                                                   ElementName=ControlRoot}" />
+        <!--<telerik:FlagEnumEditor
+                x:Name="RadFlagEnumEditor"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                EnumType="toggles:MonitorTypes"
+                Value="{Binding}" />-->
+    </Grid>
+</UserControl>
