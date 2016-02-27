@@ -13,7 +13,9 @@ namespace Torrent.Helpers.Utils
     {
         private const int MAX_PATH_LENGTH = 260;
         public static string GetFinalPath(string path)
-            => NativeMethods.GetFinalPathName(path).TrimStart(@"\\?\");
+            => new ReparsePoint(path).Normalized;
+        //public static string GetFinalPath(string path)
+        //    => NativeMethods.GetFinalPathName(path).TrimStart(@"\\?\");
         [System.Diagnostics.Contracts.Pure]
         public static string Shorten(params string[] fileNames)
         {            

@@ -3,12 +3,12 @@ using AddGenericConstraint;
 
 namespace Torrent.Infrastructure.Enums
 {
-    public interface IEnumKey<[AddGenericConstraint(typeof(Enum))] TKey>
+    public interface IEnumKey<[AddGenericConstraint(typeof(Enum))] TKey> : IDebuggerDisplay
     where TKey : struct
     {
         TKey Key { get; set; }
     }
-    public interface IEnumValue<TValue>
+    public interface IEnumValue<TValue> : IDebuggerDisplay
     {
         TValue Value { get; set; }
     }

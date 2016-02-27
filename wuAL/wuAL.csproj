@@ -291,12 +291,19 @@
     <Reference Include="PresentationFramework">
       <Private>False</Private>
     </Reference>
+    <Reference Include="XamlSpy, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc9b0c37bf06c6a9, processorArchitecture=MSIL">
+      <HintPath>..\packages\XamlSpyLibs.3.0.3\lib\net4\XamlSpy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Blank.xaml.cs">
+      <DependentUpon>Blank.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\RadGridViewExtensions.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Infrastructure\WorkerStopwatch.cs" />
@@ -341,16 +348,24 @@
     <Compile Include="UserControls\EnumEditor\MyFlagEnumEditor.xaml.cs">
       <DependentUpon>MyFlagEnumEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MarkupExtensions.cs" />
+    <Compile Include="UserControls\TextEffects\GlowingTextBlock.xaml.cs">
+      <DependentUpon>GlowingTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TextEffects\MyProgressBar.xaml.cs">
+      <DependentUpon>MyProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TextEffects\TextBlockOuterEffectDepth.cs" />
+    <Compile Include="UserControls\UserControlExtensionBase.cs" />
     <Compile Include="UserControls\EnumEditor\FlagEnumMemberViewModel.cs" />
-    <Compile Include="UserControls\Test.xaml.cs">
+    <Compile Include="UserControls\QueueGrid\QueueGridHeaderExtension.cs" />
+    <Compile Include="Test.xaml.cs">
       <DependentUpon>Test.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MyPrompt.xaml.cs">
       <DependentUpon>MyPrompt.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\OutlinedTextBlock.cs" />
-    <Compile Include="UserControls\QueueGridHeaderControl.xaml.cs">
+    <Compile Include="UserControls\TextEffects\OutlinedTextBlock.cs" />
+    <Compile Include="UserControls\QueueGrid\QueueGridHeaderControl.xaml.cs">
       <DependentUpon>QueueGridHeaderControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -358,29 +373,31 @@
       <DependentUpon>QueueToggleSettingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings\Binding\EnumBindingExtension.cs" />
-    <Compile Include="WPF\Base\BaseCombinedConverter.cs" />
-    <Compile Include="WPF\Base\BaseMarkupExtension.cs" />
-    <Compile Include="WPF\Base\BaseMarkupExtensionConverter.cs" />
-    <Compile Include="WPF\Base\BaseMultiConverter.cs" />
+    <Compile Include="WPF\MarkupExtensions\BaseCombinedConverter.cs" />
+    <Compile Include="WPF\MarkupExtensions\BaseMarkupExtension.cs" />
+    <Compile Include="WPF\MarkupExtensions\BaseMarkupExtensionConverter.cs" />
+    <Compile Include="WPF\MarkupExtensions\BaseMultiConverter.cs" />
     <Compile Include="WPF\Behaviors\GridMultiEditBehaviour.cs" />
     <Compile Include="WPF\Behaviors\GridMultiSelectBehaviorFlagEnumMember.cs" />
     <Compile Include="WPF\Behaviors\GridMultiSelectBehavior.cs" />
-    <Compile Include="WPF\Selectors\Models\Base\ISelectorModel.cs" />
-    <Compile Include="WPF\Selectors\Models\Base\SelectorCollection.cs" />
-    <Compile Include="WPF\Selectors\Models\Base\SelectorModelsBase.cs" />
-    <Compile Include="WPF\Selectors\Models\Base\SelectorCollections.cs" />
-    <Compile Include="WPF\Selectors\Models\Base\SelectorTemplate.cs" />
-    <Compile Include="WPF\Selectors\Models\ProgressBar\ProgressBarModel.cs" />
-    <Compile Include="WPF\Selectors\Models\ProgressBar\ProgressBarStates.cs" />
-    <Compile Include="WPF\Selectors\Models\ProgressBar\ProgressBarModels.cs" />
-    <Compile Include="WPF\Selectors\Progress.cs" />
-    <Compile Include="WPF\Selectors\Styles\Progress.cs" />
+    <Compile Include="WPF\Models\Base\DataTemplateSelector.cs" />
+    <Compile Include="WPF\Models\Base\ISelectorModel.cs" />
+    <Compile Include="WPF\Models\Base\ISelectorModels.cs" />
+    <Compile Include="WPF\Models\Base\SelectorCollection.cs" />
+    <Compile Include="WPF\Models\Base\SelectorModelsBase.cs" />
+    <Compile Include="WPF\Models\Base\SelectorCollections.cs" />
+    <Compile Include="WPF\Models\Base\SelectorTemplate.cs" />
+    <Compile Include="WPF\Models\ProgressBar\ProgressBarDataTemplateSelector.cs" />
+    <Compile Include="WPF\Models\ProgressBar\ProgressBarModel.cs" />
+    <Compile Include="WPF\Models\ProgressBar\ProgressBarStates.cs" />
+    <Compile Include="WPF\Models\ProgressBar\ProgressBarModels.cs" />
+    <Compile Include="WPF\Models\ProgressBar\ProgressBarValueConverter.cs" />
     <Compile Include="WPF\Selectors\QueueStatus.cs" />
     <Compile Include="WPF\Selectors\SelectorBase.cs" />
     <Compile Include="WPF\Selectors\Styles\StyleSelectorBase.cs" />
     <Compile Include="WPF\Selectors\Styles\QueueStatus.cs" />
-    <Compile Include="WPF\Selectors\Templates\Progress.cs" />
     <Compile Include="WPF\Selectors\Templates\TemplateSelectorBase.cs" />
+    <Compile Include="WPF\ValueConverters\Debug.cs" />
     <Compile Include="WPF\ValueConverters\BooleanXConverter.cs" />
     <Compile Include="WPF\ValueConverters\EnumDescription.cs" />
     <Compile Include="WPF\ValueConverters\EnumCombined.cs" />
@@ -391,7 +408,7 @@
     <Compile Include="WPF\ValueConverters\DelimitedString.cs" />
     <Compile Include="WPF\ValueConverters\DateTime.cs" />
     <Compile Include="WPF\ValueConverters\MinusOne.cs" />
-    <Compile Include="WPF\ValueConverters\Models\ProgressStyleConverter.cs" />
+    <Compile Include="WPF\Models\ProgressBar\ProgressBarValueConverters.cs" />
     <Compile Include="WPF\ValueConverters\Percent.cs" />
     <Compile Include="WPF\ValueConverters\StringCollection.cs" />
     <Compile Include="WPF\ValueConverters\Boolean.cs" />
@@ -403,7 +420,7 @@
     </Compile>
     <Compile Include="WPF\Selectors\Styles\QueueStatusBase.cs" />
     <None Include="WPF\AttachedProperties.cs" />
-    <Compile Include="WPF\Base\BaseConverter.cs" />
+    <Compile Include="WPF\MarkupExtensions\BaseConverter.cs" />
     <Compile Include="WPF\ValueConverters\FilenameToDirectory.cs" />
     <Compile Include="WPF\ValueConverters\GridLength.cs" />
     <Compile Include="WPF\ValueConverters\Inverse.cs" />
@@ -506,10 +523,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Puchalapalli.Dynamic\Puchalapalli.Dynamic.csproj">
-      <Project>{71c16faf-5894-4482-8800-7f33d0d723b5}</Project>
-      <Name>Puchalapalli.Dynamic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Torrent\Torrent.csproj">
       <Project>{2917E84C-B8B0-4308-BCDA-DFDE860A274D}</Project>
       <Name>Torrent</Name>
@@ -524,19 +537,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Assets\ProgressBar\Merged.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Assets\Design.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Assets\ProgressBar\Brushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Assets\ProgressBar\Models.xaml">
+    <Page Include="Assets\Models\ProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -559,10 +564,6 @@
     <Page Include="Assets\Styles\Grid\Settings.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Assets\ProgressBar\Styles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Assets\Styles\TabHeader.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -581,10 +582,6 @@
     <Page Include="Assets\Templates\RadComboBoxGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Assets\ProgressBar\Templates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Assets\Themes\Current\System.Windows.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -649,10 +646,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Blank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <DesignData Include="SampleData\GlowingTextBlockSampleData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </DesignData>
     <Page Include="UserControls\EnumEditor\MyEnumEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -661,27 +666,40 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Test.xaml">
+    <Page Include="UserControls\TextEffects\GlowingTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TextEffects\MyProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Test.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\MyPrompt.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\QueueGridHeaderControl.xaml" />
+    <Page Include="UserControls\QueueGrid\QueueGridHeaderControl.xaml" />
     <Page Include="UserControls\EnumEditor\QueueToggleSettingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SampleData\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\PostSharp.4.2.20\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" />
   <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
     <Error Condition="!Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
     <Error Condition="Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
+  <Import Project="..\packages\XamlSpy.3.0.3\build\XamlSpy.targets" Condition="Exists('..\packages\XamlSpy.3.0.3\build\XamlSpy.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\XamlSpy.3.0.3\build\XamlSpy.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\XamlSpy.3.0.3\build\XamlSpy.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

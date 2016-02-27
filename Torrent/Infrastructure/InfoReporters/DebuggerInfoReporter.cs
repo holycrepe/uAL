@@ -32,8 +32,12 @@ namespace Torrent.Infrastructure.InfoReporters
 
         public override void WriteLine(string text = "", string suffix = "", string prefix = "")
             => doWriteLine(text, suffix, prefix);
-        [Conditional("DEBUG_NEVER_EXECUTE")]
-        public void Noop(params object[] args) { }
+        [Conditional("DEBUG")]
+        public void Noop() { }
+        public object Noop(params object[] args)
+            => null;
+        public T Noop<T>(params T[] args)
+            => default(T);
         #endregion
     }
 }

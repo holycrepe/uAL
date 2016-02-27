@@ -15,6 +15,7 @@ namespace Torrent.Helpers.Utils
 
     public static class LogUtils
     {
+        public const int DEFAULT_COLLECTION_INDENT = 4;
         private const int LOG_CLASS_NAME_LENGTH = 25;
         private const int LOG_PAD_CLASS_NAME_LENGTH = 20;
 #if LOG_INCLUDE_TIMESTAMP

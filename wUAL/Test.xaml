@@ -1,0 +1,735 @@
+﻿<Window x:Class="wUAL.UserControls.Test"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:wUAL.WPF.ValueConverters"
+        xmlns:progressBar="clr-namespace:wUAL.WPF.Models.ProgressBar"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:userControls="clr-namespace:wUAL.UserControls"
+        MinHeight="100"
+        Background="{StaticResource wUAL_ContentBackground}"
+        ResizeMode="CanResizeWithGrip"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow">
+    <Window.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assets/Telerik.xaml" />
+                <ResourceDictionary Source="/Assets/Models/ProgressBar.xaml" />
+                <ResourceDictionary Source="/Assets/Styles/Default.xaml" />
+                <ResourceDictionary Source="/Assets/Styles/Grid/Settings.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="TestStackPanelLeftStyle" TargetType="FrameworkElement">
+                <Setter Property="Margin" Value="0,0,25,0" />
+            </Style>
+            <Style x:Key="TestProgressBarStyle"
+                   BasedOn="{StaticResource RadProgressBarStyle}"
+                   TargetType="telerik:RadProgressBar">
+                <Setter Property="Height" Value="120" />
+                <Setter Property="Margin" Value="0,10,0,10" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="Value" Value="32" />
+                <Setter Property="Background" Value="{StaticResource wUAL_ContentBackgroundDark}" />
+                <Setter Property="Foreground" Value="{Binding Models[Default].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <DropShadowEffect x:Key="glowEffect"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Default].Colors[0],
+                                              Source={StaticResource ProgressBarModels}}" />
+            <DropShadowEffect x:Key="glowEffectOuter"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Default].Colors[0],
+                                              Source={StaticResource ProgressBarModels}}" />
+            <Style x:Key="TestLabelStyle"
+                   BasedOn="{StaticResource LabelStyle}"
+                   TargetType="telerik:Label">
+                <Setter Property="FontSize" Value="96" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontWeight" Value="ExtraBold" />
+                <Setter Property="Foreground" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Effect" Value="{StaticResource glowEffect}" />
+                <Setter Property="Content" Value="32%" />
+            </Style>
+            <Style x:Key="TestOutlinedTextBlockStyle" TargetType="userControls:OutlinedTextBlock">
+                <Setter Property="FontSize" Value="96" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontWeight" Value="ExtraBold" />
+                <Setter Property="Stroke" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="StrokeThickness" Value="1.5" />
+                <Setter Property="Text" Value="32%" />
+            </Style>
+            <Style x:Key="TestMyProgressBarStyle" TargetType="userControls:MyProgressBar">
+                <Setter Property="TextHeight" Value="120" />
+                <Setter Property="FontSize" Value="96" />
+                <Setter Property="Margin" Value="0,10,0,10" />
+                <Setter Property="Background" Value="{StaticResource wUAL_ContentBackgroundDark}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontWeight" Value="ExtraBold" />
+                <Setter Property="Foreground" Value="{Binding Models[Default].Foreground, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Stroke" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="StrokeThickness" Value="1.5" />
+                <Setter Property="Value" Value="100" />
+                <Setter Property="BlurRadius" Value="5" />
+                <Setter Property="EffectOpacity" Value="1.0" />
+                <Setter Property="ShadowDepth" Value="0" />
+                <Setter Property="OuterEffectOpacity" Value="0.4" />
+                <Setter Property="OuterShadowDepth" Value="2" />
+            </Style>
+            <Style x:Key="TestHeadingLabelStyle"
+                   BasedOn="{StaticResource SettingsGridHeadingLabel}"
+                   TargetType="telerik:Label">
+                <Setter Property="Height" Value="50" />
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="5" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="TestSubHeadingLabelStyle"
+                   BasedOn="{StaticResource SettingsGridSubHeadingLabel}"
+                   TargetType="telerik:Label">
+                <Setter Property="Height" Value="30" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+            </Style>
+
+
+
+
+
+
+            <!--  =======================  DEFAULT  ==========================  -->
+            <DropShadowEffect x:Key="glowEffect2"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Default].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <DropShadowEffect x:Key="glowEffectOuter2"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="2"
+                              Color="{Binding Models[Default].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <Style x:Key="TestLabelStyle2"
+                   BasedOn="{StaticResource TestLabelStyle}"
+                   TargetType="telerik:Label">
+                <Setter Property="Foreground" Value="{Binding Models[Default].Fill, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Effect" Value="{StaticResource glowEffect2}" />
+            </Style>
+            <Style x:Key="TestOutlinedTextBlockStyle2"
+                   BasedOn="{StaticResource TestOutlinedTextBlockStyle}"
+                   TargetType="userControls:OutlinedTextBlock">
+                <Setter Property="Stroke" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Default].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestMyProgressBarStyle2"
+                   BasedOn="{StaticResource TestMyProgressBarStyle}"
+                   TargetType="userControls:MyProgressBar">
+                <Setter Property="Stroke" Value="{Binding Models[Default].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Default].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+
+
+
+            <!--  =======================  Active  ==========================  -->
+            <DropShadowEffect x:Key="glowEffect3"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Active].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <DropShadowEffect x:Key="glowEffectOuter3"
+                              BlurRadius="5"
+                              Opacity="0.4"
+                              ShadowDepth="2"
+                              Color="{Binding Models[Active].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <Style x:Key="TestLabelStyle3"
+                   BasedOn="{StaticResource TestLabelStyle}"
+                   TargetType="telerik:Label">
+                <Setter Property="Foreground" Value="{Binding Models[Active].Fill, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Effect" Value="{StaticResource glowEffect3}" />
+            </Style>
+
+            <Style x:Key="TestOutlinedTextBlockStyle3"
+                   BasedOn="{StaticResource TestOutlinedTextBlockStyle}"
+                   TargetType="userControls:OutlinedTextBlock">
+                <Setter Property="StrokeThickness" Value="0.8" />
+                <Setter Property="Stroke" Value="{Binding Models[Active].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Active].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+
+            <Style x:Key="TestMyProgressBarStyle3"
+                   BasedOn="{StaticResource TestMyProgressBarStyle}"
+                   TargetType="userControls:MyProgressBar">
+                <Setter Property="StrokeThickness" Value="0.8" />
+                <Setter Property="Stroke" Value="{Binding Models[Active].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Active].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+
+
+
+
+            <!--  =======================  PENDING  ==========================  -->
+            <DropShadowEffect x:Key="glowEffect4"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Pending].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <DropShadowEffect x:Key="glowEffectOuter4"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="2"
+                              Color="{Binding Models[Pending].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <Style x:Key="TestLabelStyle4"
+                   BasedOn="{StaticResource TestLabelStyle}"
+                   TargetType="telerik:Label">
+                <Setter Property="Foreground" Value="{Binding Models[Pending].Fill, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Effect" Value="{StaticResource glowEffect4}" />
+            </Style>
+            <Style x:Key="TestOutlinedTextBlockStyle4"
+                   BasedOn="{StaticResource TestOutlinedTextBlockStyle}"
+                   TargetType="userControls:OutlinedTextBlock">
+                <Setter Property="Stroke" Value="{Binding Models[Pending].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Pending].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestMyProgressBarStyle4"
+                   BasedOn="{StaticResource TestMyProgressBarStyle}"
+                   TargetType="userControls:MyProgressBar">
+                <Setter Property="Stroke" Value="{Binding Models[Pending].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Pending].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+
+
+            <!--  =======================  RESUMING  ==========================  -->
+            <DropShadowEffect x:Key="glowEffect5"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Resuming].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <DropShadowEffect x:Key="glowEffectOuter5"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="2"
+                              Color="{Binding Models[Resuming].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <Style x:Key="TestLabelStyle5"
+                   BasedOn="{StaticResource TestLabelStyle}"
+                   TargetType="telerik:Label">
+                <Setter Property="Foreground" Value="{Binding Models[Resuming].Fill, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Effect" Value="{StaticResource glowEffect5}" />
+            </Style>
+            <Style x:Key="TestOutlinedTextBlockStyle5"
+                   BasedOn="{StaticResource TestOutlinedTextBlockStyle}"
+                   TargetType="userControls:OutlinedTextBlock">
+                <Setter Property="Stroke" Value="{Binding Models[Resuming].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Resuming].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestMyProgressBarStyle5"
+                   BasedOn="{StaticResource TestMyProgressBarStyle}"
+                   TargetType="userControls:MyProgressBar">
+                <Setter Property="Stroke" Value="{Binding Models[Resuming].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Resuming].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+
+
+            <!--  =======================  PARTIAL  ==========================  -->
+            <DropShadowEffect x:Key="glowEffect6"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Color="{Binding Models[Partial].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <DropShadowEffect x:Key="glowEffectOuter6"
+                              BlurRadius="5"
+                              Opacity="1"
+                              ShadowDepth="2"
+                              Color="{Binding Models[Partial].Stroke,
+                                              Source={StaticResource ProgressBarModels}}" />
+            <Style x:Key="TestLabelStyle6"
+                   BasedOn="{StaticResource TestLabelStyle}"
+                   TargetType="telerik:Label">
+                <Setter Property="Foreground" Value="{Binding Models[Partial].Fill, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Effect" Value="{StaticResource glowEffect6}" />
+            </Style>
+            <Style x:Key="TestOutlinedTextBlockStyle6"
+                   BasedOn="{StaticResource TestOutlinedTextBlockStyle}"
+                   TargetType="userControls:OutlinedTextBlock">
+                <Setter Property="Stroke" Value="{Binding Models[Partial].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Partial].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestMyProgressBarStyle6"
+                   BasedOn="{StaticResource TestMyProgressBarStyle}"
+                   TargetType="userControls:MyProgressBar">
+                <Setter Property="Stroke" Value="{Binding Models[Partial].StrokeGradient, Source={StaticResource ProgressBarModels}}" />
+                <Setter Property="Fill" Value="{Binding Models[Partial].Fill, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+
+
+
+
+            <!--  =======================  GRIDS  ==========================  -->
+
+            <Style x:Key="TestGridStyle" TargetType="Grid" />
+
+            <Style x:Key="TestProgressBarStyle2"
+                   BasedOn="{StaticResource TestProgressBarStyle}"
+                   TargetType="telerik:RadProgressBar">
+                <Setter Property="Foreground" Value="{Binding Models[Default].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestProgressBarStyle3"
+                   BasedOn="{StaticResource TestProgressBarStyle}"
+                   TargetType="telerik:RadProgressBar">
+                <Setter Property="Foreground" Value="{Binding Models[Active].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestProgressBarStyle4"
+                   BasedOn="{StaticResource TestProgressBarStyle}"
+                   TargetType="telerik:RadProgressBar">
+                <Setter Property="Foreground" Value="{Binding Models[Pending].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestProgressBarStyle5"
+                   BasedOn="{StaticResource TestProgressBarStyle}"
+                   TargetType="telerik:RadProgressBar">
+                <Setter Property="Foreground" Value="{Binding Models[Resuming].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestProgressBarStyle6"
+                   BasedOn="{StaticResource TestProgressBarStyle}"
+                   TargetType="telerik:RadProgressBar">
+                <Setter Property="Foreground" Value="{Binding Models[Partial].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <!--<Style x:Key="TestBorderStyle" TargetType="Border">
+                <Setter Property="BorderThickness" Value="5" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="Margin" Value="0,10,0,10" />
+                <Setter Property="Background" Value="{StaticResource wUAL_ContentBackgroundDark}" />
+            </Style>
+            <Style x:Key="TestBorderStyle2"
+                   BasedOn="{StaticResource TestBorderStyle}"
+                   TargetType="Border">
+                <Setter Property="Background" Value="{Binding Models[Default].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestBorderStyle3"
+                   BasedOn="{StaticResource TestBorderStyle}"
+                   TargetType="Border">
+                <Setter Property="Background" Value="{Binding Models[Active].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestBorderStyle4"
+                   BasedOn="{StaticResource TestBorderStyle}"
+                   TargetType="Border">
+                <Setter Property="Background" Value="{Binding Models[Pending].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestBorderStyle5"
+                   BasedOn="{StaticResource TestBorderStyle}"
+                   TargetType="Border">
+                <Setter Property="Background" Value="{Binding Models[Resuming].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>
+            <Style x:Key="TestBorderStyle6"
+                   BasedOn="{StaticResource TestBorderStyle}"
+                   TargetType="Border">
+                <Setter Property="Background" Value="{Binding Models[Partial].Foreground, Source={StaticResource ProgressBarModels}}" />
+            </Style>-->
+        </ResourceDictionary>
+
+    </Window.Resources>
+    <ScrollViewer>
+        <StackPanel>
+            <!--<Border Style="{StaticResource TestBorderStyle}">
+            <telerik:Label Content="Test" />
+        </Border>
+
+        <Border Style="{StaticResource TestBorderStyle}">
+            <TextBlock Text="Test" />
+        </Border>-->
+
+
+            <!--  =======================  Transparent  ==========================  -->
+
+            <!--<Grid Style="{StaticResource TestGridStyle}">
+            <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle}" />
+            <telerik:Label Style="{StaticResource TestLabelStyle}" />
+        </Grid>
+
+        <Grid Style="{StaticResource TestGridStyle}">
+            <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle}" />
+            <Grid Effect="{StaticResource glowEffect}">
+                <Grid Effect="{StaticResource glowEffect}">
+                    <telerik:Label Style="{StaticResource TestLabelStyle}" />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Style="{StaticResource TestGridStyle}">
+            <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle}" />
+            <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle}" />
+        </Grid>-->
+
+            <!--  =======================  Default  ==========================  -->
+
+            <Grid Style="{StaticResource TestGridStyle}">
+                <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle2}" />
+                <telerik:Label Style="{StaticResource TestLabelStyle2}" />
+            </Grid>
+
+            <Grid Style="{StaticResource TestGridStyle}">
+                <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle2}" />
+                <Grid Effect="{StaticResource glowEffect2}">
+                    <Grid Effect="{StaticResource glowEffect2}">
+                        <telerik:Label Style="{StaticResource TestLabelStyle2}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <Grid Style="{StaticResource TestGridStyle}">
+                <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle2}" />
+                <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle2}" />
+            </Grid>
+
+
+            <!--  =======================  Active  ==========================  -->
+
+            <telerik:Label Content="Active:" Style="{StaticResource TestHeadingLabelStyle}" />
+
+            <StackPanel>
+                <UniformGrid Columns="2">
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Label:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <telerik:Label Style="{StaticResource TestLabelStyle3}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <telerik:Label Effect="{StaticResource glowEffectOuter3}" Style="{StaticResource TestLabelStyle3}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Label With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <Grid Effect="{StaticResource glowEffectOuter3}">
+                            <Grid Effect="{StaticResource glowEffectOuter3}">
+                                <telerik:Label Style="{StaticResource TestLabelStyle3}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <Grid Effect="{StaticResource glowEffectOuter3}">
+                            <Grid Effect="{StaticResource glowEffectOuter3}">
+                                <telerik:Label Effect="{StaticResource glowEffectOuter3}" Style="{StaticResource TestLabelStyle3}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+                    <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Outlined Text Block:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle3}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter3}" Style="{StaticResource TestOutlinedTextBlockStyle3}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Outlined Text Block With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <Grid Effect="{StaticResource glowEffectOuter3}">
+                            <Grid Effect="{StaticResource glowEffectOuter3}">
+                                <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle3}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle3}" />
+                        <Grid Effect="{StaticResource glowEffectOuter3}">
+                            <Grid Effect="{StaticResource glowEffectOuter3}">
+                                <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter3}" Style="{StaticResource TestOutlinedTextBlockStyle3}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    </StackPanel>
+                </UniformGrid>
+                <UniformGrid Columns="2">
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Glowing Text Block:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <userControls:MyProgressBar EffectDepth="OuterBorder" Style="{StaticResource TestMyProgressBarStyle3}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <userControls:MyProgressBar EffectDepth="InnerBorder" Style="{StaticResource TestMyProgressBarStyle3}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Glowing Text Block With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <userControls:MyProgressBar EffectDepth="Element" Style="{StaticResource TestMyProgressBarStyle3}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <userControls:MyProgressBar EffectDepth="OuterBorder" Style="{StaticResource TestMyProgressBarStyle3}" />
+                    </Grid>
+                </StackPanel>
+                </UniformGrid>
+            </StackPanel>
+            <StackPanel />
+
+
+
+            <!--  =======================  Pending  ==========================  -->
+
+            <telerik:Label Content="Pending:" Style="{StaticResource TestHeadingLabelStyle}" />
+
+            <UniformGrid Columns="2">
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Label:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <telerik:Label Style="{StaticResource TestLabelStyle4}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <telerik:Label Effect="{StaticResource glowEffectOuter4}" Style="{StaticResource TestLabelStyle4}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Label With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <Grid Effect="{StaticResource glowEffectOuter4}">
+                            <Grid Effect="{StaticResource glowEffectOuter4}">
+                                <telerik:Label Style="{StaticResource TestLabelStyle4}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <Grid Effect="{StaticResource glowEffectOuter4}">
+                            <Grid Effect="{StaticResource glowEffectOuter4}">
+                                <telerik:Label Effect="{StaticResource glowEffectOuter4}" Style="{StaticResource TestLabelStyle4}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Outlined Text Block:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle4}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter4}" Style="{StaticResource TestOutlinedTextBlockStyle4}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Outlined Text Block With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <Grid Effect="{StaticResource glowEffectOuter4}">
+                            <Grid Effect="{StaticResource glowEffectOuter4}">
+                                <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle4}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle4}" />
+                        <Grid Effect="{StaticResource glowEffectOuter4}">
+                            <Grid Effect="{StaticResource glowEffectOuter4}">
+                                <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter4}" Style="{StaticResource TestOutlinedTextBlockStyle4}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </UniformGrid>
+            <StackPanel />
+
+
+            <!--  =======================  Resuming  ==========================  -->
+
+            <telerik:Label Content="Resuming:" Style="{StaticResource TestHeadingLabelStyle}" />
+
+            <UniformGrid Columns="2">
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Label:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <telerik:Label Style="{StaticResource TestLabelStyle5}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <telerik:Label Effect="{StaticResource glowEffectOuter5}" Style="{StaticResource TestLabelStyle5}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Label With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <Grid Effect="{StaticResource glowEffectOuter5}">
+                            <Grid Effect="{StaticResource glowEffectOuter5}">
+                                <telerik:Label Style="{StaticResource TestLabelStyle5}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <Grid Effect="{StaticResource glowEffectOuter5}">
+                            <Grid Effect="{StaticResource glowEffectOuter5}">
+                                <telerik:Label Effect="{StaticResource glowEffectOuter5}" Style="{StaticResource TestLabelStyle5}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Outlined Text Block:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle5}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter5}" Style="{StaticResource TestOutlinedTextBlockStyle5}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Outlined Text Block With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <Grid Effect="{StaticResource glowEffectOuter5}">
+                            <Grid Effect="{StaticResource glowEffectOuter5}">
+                                <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle5}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle5}" />
+                        <Grid Effect="{StaticResource glowEffectOuter5}">
+                            <Grid Effect="{StaticResource glowEffectOuter5}">
+                                <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter5}" Style="{StaticResource TestOutlinedTextBlockStyle5}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </UniformGrid>
+            <StackPanel />
+
+
+            <!--  =======================  Partial  ==========================  -->
+
+            <telerik:Label Content="Partial:" Style="{StaticResource TestHeadingLabelStyle}" />
+
+            <UniformGrid Columns="2">
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Label:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <telerik:Label Style="{StaticResource TestLabelStyle6}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <telerik:Label Effect="{StaticResource glowEffectOuter6}" Style="{StaticResource TestLabelStyle6}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Label With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <Grid Effect="{StaticResource glowEffectOuter6}">
+                            <Grid Effect="{StaticResource glowEffectOuter6}">
+                                <telerik:Label Style="{StaticResource TestLabelStyle6}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <Grid Effect="{StaticResource glowEffectOuter6}">
+                            <Grid Effect="{StaticResource glowEffectOuter6}">
+                                <telerik:Label Effect="{StaticResource glowEffectOuter6}" Style="{StaticResource TestLabelStyle6}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Style="{StaticResource TestStackPanelLeftStyle}">
+                    <telerik:Label Content="Outlined Text Block:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle6}" />
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter6}" Style="{StaticResource TestOutlinedTextBlockStyle6}" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel>
+                    <telerik:Label Content="Outlined Text Block With OuterGlow:" Style="{StaticResource TestSubHeadingLabelStyle}" />
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <Grid Effect="{StaticResource glowEffectOuter6}">
+                            <Grid Effect="{StaticResource glowEffectOuter6}">
+                                <userControls:OutlinedTextBlock Style="{StaticResource TestOutlinedTextBlockStyle6}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource TestGridStyle}">
+                        <telerik:RadProgressBar Style="{StaticResource TestProgressBarStyle6}" />
+                        <Grid Effect="{StaticResource glowEffectOuter6}">
+                            <Grid Effect="{StaticResource glowEffectOuter6}">
+                                <userControls:OutlinedTextBlock Effect="{StaticResource glowEffectOuter6}" Style="{StaticResource TestOutlinedTextBlockStyle6}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </UniformGrid>
+            <StackPanel />
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

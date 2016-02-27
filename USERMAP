@@ -1,0 +1,21 @@
+# The file provides mapping between Git users and known TFS user
+# unique names. The Git user has to be represented as it appears
+# in Git commits, including the user name and e-mail address.
+# The TFS user has to be represented either as DOMAIN\account
+# (for on-premises TFS) or as Windows Live ID (for hosted TFS).
+
+# The section contains mapping between Git users and TFS users.
+# Add new mappings to this section as needed. Only this section
+# is parsed when the file is used in a check-in command.
+
+[mapping]
+    Avinash Puchalapalli <git@puchalapalli.com> = microsoft@puchalapalli.com
+	Thor Jacobsen <freak.tm@gmail.com> = alternate@puchalapalli.com
+    x31forest <x31forest@gmail.com> = alternate@puchalapalli.com
+
+# The section contains Git user names found in commits that cannot
+# be mapped to TFS users automatically. You should provide mapping
+# for these names or remove the --keep-author option from the
+# check-in command. This section is not parsed when the file is
+# used in a check-in command, you have to move resolved mapping
+# to the [mapping] section

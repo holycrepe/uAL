@@ -250,10 +250,6 @@
     <None Include="Resources\uTorrent.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Puchalapalli.Dynamic\Puchalapalli.Dynamic.csproj">
-      <Project>{71c16faf-5894-4482-8800-7f33d0d723b5}</Project>
-      <Name>Puchalapalli.Dynamic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Torrent\Torrent.csproj">
       <Project>{2917E84C-B8B0-4308-BCDA-DFDE860A274D}</Project>
       <Name>Torrent</Name>

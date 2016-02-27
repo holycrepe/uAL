@@ -109,7 +109,7 @@ namespace Torrent.Infrastructure.Enums
             => string.Format(GetStringFormat(displayFormat), this.Value, this.Description);
         #endregion
         #region Interfaces
-
+        #region Interfaces: IEquatable
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -139,7 +139,8 @@ namespace Torrent.Infrastructure.Enums
         /// <param name="other">An object to compare with this object.</param>
         bool IEquatable<int>.Equals(int other)
             => (this.Long == other);
-
+        #endregion
+        #region Interfaces: IDebuggerDisplay
         [DebuggerNonUserCode]
         public override string ToString()
             => DebuggerDisplaySimple();
@@ -147,6 +148,7 @@ namespace Torrent.Infrastructure.Enums
             => $"<{nameof(EnumMember)}{this.Type?.Name?.Prefix(":")}> {this.GetDisplay()}";
         public string DebuggerDisplaySimple(int level = 1)
             => this.Value?.ToString();
+        #endregion
         #endregion
         #region Static Array Creators
         public static IEnumerable<EnumMember> GetBrowsableEnumMembers(Type enumType, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)

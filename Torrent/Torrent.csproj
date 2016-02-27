@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" />
   <PropertyGroup>
     <CscToolPath>$(MSBuildProgramFiles32)\MSBuild\14.0\Bin</CscToolPath>
     <DontImportPostSharp>True</DontImportPostSharp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{2917E84C-B8B0-4308-BCDA-DFDE860A274D}</ProjectGuid>
@@ -143,6 +146,22 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Async\CheckDownloadedFile.cs" />
@@ -154,7 +173,6 @@
     <Compile Include="Enums\OperationType.cs" />
     <Compile Include="Exceptions\ViewModelStateException.cs" />
     <Compile Include="Exceptions\EnumToggleStateException.cs" />
-    <Compile Include="Exceptions\DynamicReadOnlyException.cs" />
     <Compile Include="Extensions\Collection\ArrayExtensions.cs" />
     <Compile Include="Extensions\Collection\EnumeratorExtensions.cs" />
     <Compile Include="Extensions\Enums\EnumFlagExtensions.cs" />
@@ -172,8 +190,9 @@
     <Compile Include="Extensions\DateTime\DateExtensions.cs" />
     <Compile Include="Extensions\Framework\ResourceDictionaryExtensions.cs" />
     <Compile Include="Extensions\Framework\RegexExtensions.cs" />
-    <Compile Include="Extensions\UI\StyleExtensions.cs" />
-    <Compile Include="Extensions\UI\ColorExtensions.cs" />
+    <Compile Include="Extensions\Media\BrushExtensions.cs" />
+    <Compile Include="Extensions\WPF\StyleExtensions.cs" />
+    <Compile Include="Extensions\Media\ColorExtensions.cs" />
     <Compile Include="Extensions\Primitives\ByteExtensions.cs" />
     <Compile Include="Extensions\IO\FileSystemInfoExtensions.cs" />
     <Compile Include="Extensions\Reflection\AssemblyExtensions.cs" />
@@ -184,6 +203,7 @@
     <Compile Include="Extensions\Reflection\TypeExtensions.cs" />
     <Compile Include="Formatters\FileSizeFormatter.cs" />
     <None Include="Helpers\FileHelpers\JunctionPoint.cs" />
+    <Compile Include="Helpers\FileHelpers\ReparsePoint.cs" />
     <Compile Include="Helpers\Utils\ColorUtils.cs" />
     <Compile Include="Helpers\EnumHelpers\EnumFlags.cs" />
     <Compile Include="Helpers\EnumHelpers\EnumInternals.cs" />
@@ -191,10 +211,14 @@
     <Compile Include="Helpers\Utils\IO\FileSystemUtils.cs" />
     <Compile Include="Helpers\Utils\IO\MoveFileResult.cs" />
     <Compile Include="Helpers\Utils\IO\MoveFileResultStatus.cs" />
-    <Compile Include="Infrastructure\Enums\EnumConstraintAttribute.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\GetFileNamesEnumeratorLinqHelper.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\GetFilesEnumeratorLinqHelper.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\GetFilesEnumeratorHelper.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\GetFileNamesEnumeratorHelper.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\GetFilesHelper.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\GetFileNamesHelper.cs" />
     <Compile Include="Infrastructure\Enums\EnumKeyValuePair.cs" />
     <Compile Include="Infrastructure\Enums\EnumMember.cs" />
-    <Compile Include="Helpers\FileHelpers\NativeMethods.cs" />
     <None Include="Helpers\FileHelpers\SymbolicLink.cs" />
     <None Include="Helpers\FileHelpers\SymbolicLinkReparseData.cs" />
     <Compile Include="Helpers\Utils\DebugUtils.cs" />
@@ -203,17 +227,14 @@
     <Compile Include="Helpers\EnumHelpers\EnumUtils.cs" />
     <Compile Include="Helpers\Utils\IO\FileUtils.cs" />
     <Compile Include="Helpers\Utils\HashUtils.cs" />
-    <Compile Include="Helpers\Utils\IO\FileSystemSearchUtils.cs" />
+    <Compile Include="Helpers\Utils\IO\Search\FileSystemSearchUtils.cs" />
     <Compile Include="Helpers\Utils\ResourceUtils.cs" />
     <Compile Include="Exceptions\ArgumentTypeException.cs" />
     <Compile Include="Infrastructure\Enums\EnumMemberDisplayFormat.cs" />
     <Compile Include="Infrastructure\Enums\IEnumKeyValuePair.cs" />
-    <Compile Include="Infrastructure\Enums\Toggles\Extensions.cs" />
-    <Compile Include="Infrastructure\Enums\Toggles\EnumToggleSettings.cs" />
-    <Compile Include="Infrastructure\Enums\Toggles\EnumToggles.cs" />
-    <Compile Include="Infrastructure\Enums\Toggles\IEnumToggles.cs" />
     <Compile Include="Infrastructure\Exceptions\ExceptionSummary.cs" />
     <Compile Include="Infrastructure\Generics\Union.cs" />
+    <Compile Include="Infrastructure\Media\HSBColor.cs" />
     <Compile Include="Infrastructure\Reflection\Field.cs" />
     <Compile Include="Serialization\DataContractUtils.cs" />
     <Compile Include="Serialization\NamespaceAttribute.cs" />
@@ -316,16 +337,17 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Puchalapalli.Dynamic\Puchalapalli.Dynamic.csproj">
-      <Project>{71c16faf-5894-4482-8800-7f33d0d723b5}</Project>
-      <Name>Puchalapalli.Dynamic</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\Puchalapalli\Puchalapalli.Dynamic\Puchalapalli.Dynamic.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\PostSharp.4.2.20\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" />
   <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
     <Error Condition="!Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
     <Error Condition="Exists('..\packages\PostSharp.4.2.20\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props'))" />
   </Target>
 </Project>

@@ -224,7 +224,7 @@ namespace Torrent
         /// Automatically creates UTorrent Job from Torrent filename. Intended to be used for testing/design only
         /// </summary>
         /// <param name="path"></param>
-        public UTorrentJob(params string[] path) : this(new TorrentInfo(PathUtils.Combine(path))) { }
+        public UTorrentJob(string basePath, params string[] paths) : this(new TorrentInfo(PathUtils.CombineSafe(basePath, paths))) { }
         /// <summary>
         /// Automatically creates UTorrent Job from TorrentInfo instance. Intended to be used for testing/design only
         /// </summary>
@@ -241,7 +241,7 @@ namespace Torrent
                 ? label?.SubstringAfter(@"\$\", true)
                 : label.TrimStart(RootDirectory)).TrimStart("\\");
             this.Label = label;
-            this.Path = PathUtils.Combine(IO.Path.GetPathRoot(RootDirectory), this.Label, this.Torrent.Name);
+            this.Path = PathUtils.CombineSafe(IO.Path.GetPathRoot(RootDirectory), this.Label, this.Torrent.Name);
         }
         public UTorrentJob()
         {

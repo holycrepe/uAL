@@ -21,9 +21,9 @@ using System.Threading;
 using UTorrentRestAPI;
 using Torrent.Helpers.Utils;
 using Torrent.Extensions;
+using Torrent.Properties.Settings;
 using wUAL.Infrastructure;
 using wUAL.Queue;
-using wUAL.WPF.Selectors.Models.ProgressBar;
 using Timer = System.Windows.Forms.Timer;
 
 namespace wUAL
@@ -51,7 +51,10 @@ namespace wUAL
     using Properties.Settings.AppSettings;
     using static uAL.Properties.Settings.ToggleSettings.ToggleSettings;
     using Telerik.Windows.Controls.Data.PropertyGrid;
-    using System.Collections.ObjectModel;/// <summary>
+    using System.Collections.ObjectModel;
+    using WPF.Models.ProgressBar;
+
+    /// <summary>
                                          /// Interaction logic for MainWindow.xaml
                                          /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
@@ -84,6 +87,8 @@ namespace wUAL
         {
             get
             {
+                if (MainApp.DesignMode)
+                    return 3;
                 var monitor = (MonitorTypes)Toggles.Monitor;
                 return monitor.IncludesTorrent() ? 1
                     : monitor.IncludesMetalink() ? 2 : 3;
@@ -261,9 +266,8 @@ namespace wUAL
                 WindowSettings.Instances.FirstOrDefault()?.LoadWindowState();
                 timer.Stop(); timer = null;
             };
-            var x = new UTorrentJobViewModel();
-            var progressModel = ResourceUtils.Get<ProgressBarModels>();
-            Debugger.Break();
+            //var x = new UTorrentJobViewModel();
+            //var progressModel = ResourceUtils.Get<ProgressBarModels>();
         }
 
         #endregion
@@ -902,5 +906,13 @@ namespace wUAL
             => DoOnPropertyChanged(this, PropertyChanged, propertyNames);
         #endregion
 
+        private void Debug_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.MiddleButton != MouseButtonState.Released)
+                return;
+            var control = sender as FrameworkElement;
+            var content = sender as FrameworkContentElement;
+            return;
+        }
     }
 }

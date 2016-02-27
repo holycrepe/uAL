@@ -4,6 +4,6 @@
         <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.Input.xaml" />
         <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Themes/Current/Telerik.Windows.Controls.GridView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Brushes.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/ProgressBar/Merged.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/wUAL;component/Assets/Models/ProgressBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

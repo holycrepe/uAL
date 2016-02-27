@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="wUAL.UserControls.GlowingTextBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:myControls="clr-namespace:wUAL.UserControls"
+             x:Name="ControlRoot"
+             mc:Ignorable="d">
+    <UserControl.Resources />
+    <Grid x:Name="LayoutRoot"
+          DataContext="{Binding ElementName=ControlRoot}"
+          MouseUp="LayoutRoot_MouseUp">
+        <Grid x:Name="OuterBorder" Effect="{Binding OuterBorderEffect}">
+            <Grid x:Name="InnerBorder" Effect="{Binding InnerBorderEffect}">
+                <myControls:OutlinedTextBlock x:Name="OutlinedTextBlock"
+                                              Effect="{Binding ElementEffect}"
+                                              Fill="{Binding Fill}"
+                                              FontFamily="{Binding FontFamily}"
+                                              FontSize="{Binding FontSize}"
+                                              FontWeight="{Binding FontWeight}"
+                                              MergeShapes="{Binding MergeShapes}"
+                                              Stroke="{Binding Stroke}"
+                                              StrokeThickness="{Binding StrokeThickness}"
+                                              Text="{Binding Text}"
+                                              TextAlignment="{Binding TextAlignment}"
+                                              TextDecorations="{Binding TextDecorations}"
+                                              TextTrimming="{Binding TextTrimming}"
+                                              TextWrapping="{Binding TextWrapping}" />
+            </Grid>
+        </Grid>
+    </Grid>
+
+</UserControl>

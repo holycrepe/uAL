@@ -16,7 +16,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:my="clr-namespace:wUAL"
         xmlns:myControl="clr-namespace:wUAL.UserControls"
+        xmlns:progressBar="clr-namespace:wUAL.WPF.Models.ProgressBar"
         xmlns:sys="clr-namespace:System.ComponentModel;assembly=System"
+        xmlns:system="clr-namespace:System;assembly=System"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:toggles="clr-namespace:uAL.Properties.Settings.ToggleSettings;assembly=uAL"
         xmlns:torrent="clr-namespace:Torrent;assembly=Torrent"
@@ -28,13 +30,13 @@
         Initialized="Window_Initialized"
         appSettings:WindowSettings.Save="True"
         d:DesignHeight="1000"
-        d:DesignWidth="1500"
+        d:DesignWidth="2500"
         mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Assets/Styles/Selectors/Queue.xaml" />
-                <ResourceDictionary Source="/Assets/ProgressBar/Merged.xaml" />
+                <ResourceDictionary Source="/Assets/Models/ProgressBar.xaml" />
                 <ResourceDictionary Source="/Assets/Templates/TorrentRowDetails.xaml" />
                 <ResourceDictionary Source="/Assets/Styles/Grid/ColumnHeader.xaml" />
                 <ResourceDictionary Source="/Assets/Styles/Grid/Queue.xaml" />
@@ -64,7 +66,8 @@
         <telerik:RadTabControl x:Name="radTabControl"
                                Grid.RowSpan="2"
                                PreviewSelectionChanged="RadTabControl_PreviewSelectionChanged"
-                               SelectedIndex="4">
+                               SelectedItem="{Binding ElementName=radTabUTorrent,
+                                                      Mode=OneTime}">
             <telerik:RadTabItem x:Name="radTabStart"
                                 Background="{StaticResource TabHeaderButtonBackground}"
                                 Header="Start wUAL" />
@@ -491,10 +494,13 @@
                 </Grid>
             </telerik:RadTabItem>
             <telerik:RadTabItem x:Name="radTabUTorrent"
-                                DataContext="{StaticResource utorrentQueueItemViewSource}"
+                                DataContext="{StaticResource UTorrentJobViewModelDataSource}"
                                 Header="uTorrent Jobs"
+                                IsSelected="True"
                                 d:DataContext="{StaticResource UTorrentJobViewModelDataSource}">
-                <Grid x:Name="gridUTorrent" d:DataContext="{Binding Items}">
+                <Grid x:Name="gridUTorrent"
+                      DataContext="{Binding Items}"
+                      d:DataContext="{Binding Items}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60" />
                         <RowDefinition Height="*" />
@@ -559,6 +565,7 @@
                                          AutoGenerateColumns="False"
                                          GridLinesVisibility="None"
                                          ItemsSource="{Binding}"
+                                         MouseUp="Debug_MouseUp"
                                          RowIndicatorVisibility="Collapsed"
                                          ScrollViewer.CanContentScroll="True"
                                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -630,7 +637,7 @@
                                                         UniqueName="Status" />
 
 
-                            <telerik:GridViewDataColumn CellTemplateSelector="{StaticResource ProgressDataTemplateSelector}"
+                            <telerik:GridViewDataColumn CellTemplateSelector="{StaticResource ProgressBarDataTemplateSelector}"
                                                         DataMemberBinding="{Binding Torrent.Progress}"
                                                         GroupMemberPath="Torrent.Status.Summary"
                                                         Header="{my:QueueGridHeader Name=Progress}"
@@ -638,32 +645,61 @@
                                                         SortMemberPath="Torrent.Status.IsInProgress"
                                                         UniqueName="Progress" />
 
-                            <telerik:GridViewDataColumn CellTemplate="{StaticResource ProgressTemplate}"
+
+                            <telerik:GridViewDataColumn DataMemberBinding="{Binding Torrent.Progress}" Header="{my:QueueGridHeader Name=Progress, Label=Template Converter}">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <telerik:Label Width="100" Content="{Binding Torrent.Status.Summary}" />
+                                            <telerik:Label Content="{Binding}" ContentTemplate="{Binding Converter={progressBar:ProgressTemplateConverter}, ConverterParameter=Debug}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn CellTemplate="{Binding Path=Templates[PercentComplete].Value,
+                                                                               Source={StaticResource ProgressBarModels}}"
                                                         DataMemberBinding="{Binding Torrent.Progress}"
                                                         Header="{my:QueueGridHeader Name=Progress,
-                                                                                    Label=Default}"
-                                                        ShowColumnWhenGrouped="True"
-                                                        SortMemberPath="Torrent.Status.IsInProgress" />
-                            <telerik:GridViewDataColumn CellTemplate="{StaticResource ProgressTemplate_Active}"
+                                                                                    Label=Default}" />
+
+
+                            <telerik:GridViewDataColumn CellTemplate="{Binding Path=Templates[Progress].Value,
+                                                                               Source={StaticResource ProgressBarModels}}"
                                                         DataMemberBinding="{Binding Torrent.Progress}"
                                                         Header="{my:QueueGridHeader Name=Progress,
-                                                                                    Label=Active}"
-                                                        ShowColumnWhenGrouped="True"
-                                                        SortMemberPath="Torrent.Status.IsInProgress" />
-                            <telerik:GridViewDataColumn CellTemplate="{StaticResource ProgressTemplate_Resuming}"
+                                                                                    Label=Active}" />
+
+
+                            <telerik:GridViewDataColumn CellTemplate="{Binding Path=Templates[PercentComplete].Value,
+                                                                               Source={StaticResource ProgressBarModels}}"
                                                         DataMemberBinding="{Binding Torrent.Progress}"
                                                         Header="{my:QueueGridHeader Name=Progress,
-                                                                                    Label=Resuming}"
-                                                        ShowColumnWhenGrouped="True"
-                                                        SortMemberPath="Torrent.Status.IsInProgress" />
-                            <telerik:GridViewDataColumn CellTemplate="{StaticResource ProgressTemplate_Pending}"
+                                                                                    Label=Resuming}" />
+
+
+                            <telerik:GridViewDataColumn CellTemplate="{Binding Path=Templates[NotRunning].Value,
+                                                                               Source={StaticResource ProgressBarModels}}"
                                                         DataMemberBinding="{Binding Torrent.Progress}"
                                                         Header="{my:QueueGridHeader Name=Progress,
                                                                                     Label=Pending}" />
-                            <telerik:GridViewDataColumn CellTemplate="{StaticResource ProgressTemplate_Partial}"
+
+
+                            <telerik:GridViewDataColumn CellTemplate="{Binding Path=Templates[PercentComplete].Value,
+                                                                               Source={StaticResource ProgressBarModels}}"
                                                         DataMemberBinding="{Binding Torrent.Progress}"
                                                         Header="{my:QueueGridHeader Name=Progress,
                                                                                     Label=Partial}" />
+
+
+
+
+
+
+
+
+
+
 
                             <telerik:GridViewDataColumn Width="200"
                                                         CellStyle="{StaticResource QueueGridViewCellMainStyle}"
@@ -1493,7 +1529,8 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
                                     Background="{StaticResource wUAL_ContentBackgroundDark}"
-                                    Foreground="{StaticResource wUAL_ProgressBar_Foreground}"
+                                    Foreground="{Binding Path=Models[Default].Foreground,
+                                                         Source={StaticResource ProgressBarModels}}"
                                     Maximum="{Binding Total}"
                                     Visibility="{Binding IsActive,
                                                          Converter={my:VisibilityConverter},

@@ -30,11 +30,11 @@ namespace Torrent.Helpers.FileHelpers
             [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
             [MarshalAs(UnmanagedType.U4)] uint flagsAndAttributes,
             IntPtr templateFile);
-
+        
         public static string GetFinalPathName(string path)
         {
             if (!File.Exists(path) && !Directory.Exists(path))
-                return path;
+                return path;            
             var h = CreateFile(path,
                 FILE_READ_EA,
                 FileShare.ReadWrite | FileShare.Delete,

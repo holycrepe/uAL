@@ -68,4 +68,21 @@ namespace Torrent.Infrastructure
         public virtual void OnPropertyChanged(params string[] propertyNames)
             => DoOnPropertyChanged(this, PropertyChanged, DerivedProperties, propertyNames);
     }
+    /*      EXAMPLE IMPLEMENTATION
+
+    
+    #region Interfaces
+    #region Interfaces: IPropertyChanged
+    private void OnPropertyChangedLocal(string propertyName)
+        => LogUtils.Log(this.GenericType.Name, $"Δ {propertyName}");
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        => OnPropertiesChanged(propertyName.TrimStart("Set").TrimStart("Get"));
+    public virtual void OnPropertiesChanged(params string[] propertyNames)
+        => DoOnPropertyChanged(this, PropertyChanged, OnPropertyChangedLocal, propertyNames);
+    #endregion
+    #endregion
+
+
+    */
 }

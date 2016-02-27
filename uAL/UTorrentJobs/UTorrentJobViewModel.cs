@@ -41,15 +41,14 @@ namespace uAL.UTorrentJobs
                 var dir = LibSettings.LibSetting.Directories.ADDED;
                 dir = string.IsNullOrEmpty(dir) ? @"E:\$\TORRENTS\ADDED" : dir;
                 LogUtils.Writers.Design("Directory", dir);
-                File.AppendAllText(Path.Combine(@"D:\Git\uAL\wUAL\bin\Debug\logs", "test.log"), $"[{DateUtils.Timestamp}] Directory: {dir}\n");
                 Debug.WriteLine($"Directory: {dir}");
-                var addedTorrents = FileSystemUtils.EnumerateFullNames(dir, "*.torrent", SearchOption.AllDirectories).GetEnumerator();
-                for (var i = 0; i < 25; i++)
+                var addedTorrents = FileSystemUtils.EnumerateFullNames(dir, "*.torrent", SearchOption.AllDirectories).Shuffle().GetEnumerator();
+                for (var i = 0; i < 99; i++)
                 {
                     var info = new TorrentInfo(addedTorrents.Pop())
                     {
                         RootDirectory = dir,
-                        PercentComplete = rnd.Pick(rnd.NextDouble()*100),
+                        PercentComplete = rnd.Pick(0, 100, rnd.NextDouble()*100),
                         Status = rnd.Pick(QueueStatus.Inactive, QueueStatus.Inactive, QueueStatus.Inactive, QueueStatus.Queued, QueueStatus.Active, QueueStatus.Pending),
                     };
                     if (info.Status.IsActive)

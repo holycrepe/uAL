@@ -12,9 +12,27 @@ namespace Torrent.Extensions
     using Infrastructure;
     using System.Collections;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
 
     public static class ListExtensions
-    {        
+    {
+        [DebuggerNonUserCode]
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
+            => source.Shuffle(new Random());
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rnd)
+        {
+            var elements = source.ToArray();
+            for (var i = elements.Length - 1; i >= 0; i--)
+            {
+                // Swap element "i" with a random earlier element it (or itself)
+                // ... except we don't really need to swap it fully, as we can
+                // return it immediately, and afterwards it's irrelevant.
+                var swapIndex = rnd.Next(i + 1);
+                yield return elements[swapIndex];
+                elements[swapIndex] = elements[i];
+            }
+        }
+
         public static string Join<T>(this IEnumerable<T> list, int padding)
             => list.Join("\n", padding);
         public static string Join<T>(this IEnumerable<T> list, string delim="\n", int padding=0)
@@ -189,29 +207,35 @@ namespace Torrent.Extensions
         public static string FormatList<T>(this IEnumerable<T> list,
                                            int level = 1,
                                            string sep = "\n", string delim = "",
-                                           int indent = 4, char indentChar = ' ',
+                                           int indent = LogUtils.DEFAULT_COLLECTION_INDENT, char indentChar = ' ',
                                            bool combineDelimAndSep = true, NumberPadder padder = null,
                                            Func<T, string> formatter = null,
                                            int linePadding = LogUtils.LOG_PREFIX_TITLE_LENGTH,
-                                           bool includeName=false)
+                                           bool includeName=false,
+                                           bool includeCount=true,
+                                           bool includeIndex=true)
         {
             if (list == null) {
                 return null;
             }
             padder = padder ?? new NumberPadder();
-            var indentStr = new string(indentChar, level*indent);
+            var indentStr = indent > 0 ? new string(indentChar, level*indent) : string.Empty;
             if (formatter == null) {
                 var formatterPrefix = indentStr + padder.EmptyPadding
                                       + (linePadding == 0 ? "" : new string(' ', linePadding));
                 formatter = (s) => s.ToString().PrefixNewLines(formatterPrefix);
             }
-            var count = list.Count();
+            var array = list as T[] ?? list.ToArray();
+            var count = array.Length;
             return includeName ? $"{list.GetType().Name}: " : "" +
                    (count == 0
                         ? "Empty"
-                        : $"<{count}>{sep}" +
-                          string.Join(combineDelimAndSep ? delim + sep : delim,
-                                      list.Select((s, i) => indentStr + padder.PadIndex(i) + formatter(s))
+                        : (includeCount ? $"<{count}>{sep}" : "") 
+                        + string.Join(combineDelimAndSep ? delim + sep : delim,
+                                      array.Select((s, i) 
+                                      => indentStr 
+                                      + (includeIndex ? padder.PadIndex(i) : string.Empty)
+                                      + formatter(s))
                               ));
         }
     }
