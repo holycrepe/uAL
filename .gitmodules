@@ -1,0 +1,6 @@
+[submodule "Puchalapalli"]
+	path = Puchalapalli
+	url = https://puchalapalli.visualstudio.com/DefaultCollection/_git/Puchalapalli
+[submodule "UTorrentClientApi"]
+	path = UTorrentClientApi
+	url = https://github.com/latop2604/UTorrentClientApi.git
