@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Windows;
     using AddGenericConstraint;
+    using Puchalapalli.Infrastructure.Interfaces;
     using Torrent.Infrastructure;
 
     public interface ISelectorModels<TItem, TModel, [AddGenericConstraint(typeof(Enum))]

@@ -10,12 +10,7 @@ namespace Torrent.Properties.Settings
     using System.Diagnostics;
     using Extensions;
     using Serialization;
-    public enum BaseSettingsConstructor
-    {
-        None,
-        Default,
-        Load
-    }
+
     [Serializable]
     [XmlSerializerAssembly("Torrent.XmlSerializers")]
     [DataContract]

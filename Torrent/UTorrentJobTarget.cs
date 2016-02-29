@@ -7,6 +7,7 @@ namespace Torrent
     using Infrastructure.Interfaces;
     using System;
     using System.Diagnostics;
+    using Puchalapalli.Infrastructure.Interfaces;
 
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     [NotifyPropertyChanged]

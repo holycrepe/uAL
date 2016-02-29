@@ -11,6 +11,7 @@
     using Torrent.Infrastructure;
     using DataModels;
     using System.Linq;
+    using Puchalapalli.Infrastructure.Interfaces;
     using Torrent.Helpers.Utils;    /// <summary>
                                     /// Represents a torrent job in uTorrent
                                     /// </summary>

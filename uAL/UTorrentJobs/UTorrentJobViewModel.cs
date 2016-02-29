@@ -22,6 +22,8 @@ using uAL.Properties.Settings.LibSettings;
 
 namespace uAL.UTorrentJobs
 {
+    using Puchalapalli.Extensions.Collections;
+
     [NotifyPropertyChanged]
     public class UTorrentJobViewModel : ViewModel<UTorrentJob, object>
     {

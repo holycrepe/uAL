@@ -11,7 +11,6 @@ namespace Torrent.Extensions
     using PostSharp.Patterns.Model;
     public static class StringExtensions
     {
-        static readonly char[] trimChars = new char[] {' ', '_', '-'};
         static readonly Regex replaceNewLines = @"([\r\n]+)".Regex();
         static readonly Regex replaceNewLinesTrimmed = @"(\s*[\r\n]+\s*)".Regex();
 
@@ -43,9 +42,7 @@ namespace Torrent.Extensions
             return i == -1 ? subject 
                 : subject.Substring(i + (includeSearchString ? 0 : searchString.Length));
         }
-        [Pure]
-        public static string Capitalize(this string subject)
-            => subject.Substring(0, 1).ToUpper() + subject.Substring(1);
+
         [Pure]
         public static string ToSnakeCase(this string camelCaseStr)
             =>
@@ -109,30 +106,6 @@ namespace Torrent.Extensions
             return new string(chr, left) + text + new string(chr, right);
         }
 
-        [Pure]
-        [DebuggerNonUserCode]
-        public static string TrimAll(this string subject)
-            => subject.Trim(trimChars);
-        [Pure]
-        [DebuggerNonUserCode]
-        public static string TrimStart(this string subject, params string[] strings) 
-            => string.IsNullOrEmpty(subject) ? subject : 
-            strings.Where(find => !string.IsNullOrEmpty(find))
-            .Aggregate(subject, (current, find) 
-                => current.StartsWith(find) 
-            ? current.Substring(find.Length) 
-            : current);
-
-        [Pure]
-        [DebuggerNonUserCode]
-        public static string TrimEnd(this string subject, params string[] strings)
-            => string.IsNullOrEmpty(subject) ? subject :
-            strings.Where(find => !string.IsNullOrEmpty(find))
-            .Aggregate(subject, (current, find)
-                => current.EndsWith(find)
-            ? current.Substring(0, current.Length - find.Length)
-            : current);
-        
         public static string Format(this string template, Dictionary<string, string> formats)
         {
             var values = new List<string>();

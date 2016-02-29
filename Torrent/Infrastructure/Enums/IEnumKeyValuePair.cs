@@ -3,6 +3,8 @@ using AddGenericConstraint;
 
 namespace Torrent.Infrastructure.Enums
 {
+    using Puchalapalli.Infrastructure.Interfaces;
+
     public interface IEnumKey<[AddGenericConstraint(typeof(Enum))] TKey> : IDebuggerDisplay
     where TKey : struct
     {

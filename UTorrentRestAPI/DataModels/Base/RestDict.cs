@@ -8,6 +8,7 @@ namespace UTorrentRestAPI
     using Torrent.Extensions;
     using Torrent.Infrastructure;
     using Newtonsoft.Json.Linq;
+    using Puchalapalli.Infrastructure.Interfaces;
 
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class RestDict : Dictionary<string, RestStruct>, IDebuggerDisplay

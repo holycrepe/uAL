@@ -11,6 +11,8 @@ using Torrent.Extensions;
 
 namespace Torrent.Extensions.Reflection
 {
+    using Puchalapalli.Extensions.Collections;
+
     public static class AssemblyExtensions
     {
         public static Type[] GetTypesSafe(this Assembly assembly, string text=null, [CallerMemberName] string source=null)

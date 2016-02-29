@@ -11,6 +11,8 @@ namespace Torrent.Infrastructure.Enums
     using System;
     using System.Text;
     using Extensions;
+    using Puchalapalli.Infrastructure.Interfaces;
+
     // A modified KeyValuePair holds an Enum key and a class-based value from a dictionary.
     [Serializable]
     [ContentProperty(nameof(Value))]

@@ -7,6 +7,8 @@
     using System.Windows;
     using System.Windows.Markup;
     using AddGenericConstraint;
+    using Puchalapalli.Extensions.Collections;
+    using Puchalapalli.Infrastructure.Interfaces;
     using Torrent.Extensions;
     using Torrent.Extensions.UI;
     using Torrent.Helpers.Utils;

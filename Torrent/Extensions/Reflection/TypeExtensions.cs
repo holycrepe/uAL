@@ -42,20 +42,30 @@ namespace Torrent.Extensions
             => type.GetBaseGenericTypeDefinition(typeParameters)
             .MakeGenericType(typeParameters);
         #endregion
+        #region Property Info
+
+        public static IEnumerable<PropertyInfo> GetPublicPropertyInfo(this Type type)
+            => type?.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+        public static IEnumerable<Member<object>> GetPublicProperties(this Type type)
+            => type.GetPublicProperties<object>();
+        public static IEnumerable<Member<T>> GetPublicProperties<T>(this Type type, Func<object, T> valueSelector = null)
+            => type?.GetPublicPropertyInfo().Select(pi => new Member<T>(pi, type, valueSelector));
+        #endregion
         #region Field Info
         public static IEnumerable<FieldInfo> GetPublicFieldInfo(this Type type)
             => type?.GetFields(BindingFlags.Public | BindingFlags.Static);
 
-        public static IEnumerable<Field<object>> GetPublicFields(this Type type)
+        public static IEnumerable<Member<object>> GetPublicFields(this Type type)
             => type.GetPublicFields<object>();
-        public static IEnumerable<Field<T>> GetPublicFields<T>(this Type type, Func<object, T> valueSelector = null)
-            => type?.GetPublicFieldInfo().Select(fi => new Field<T>(fi, type, valueSelector));
+        public static IEnumerable<Member<T>> GetPublicFields<T>(this Type type, Func<object, T> valueSelector = null)
+            => type?.GetPublicFieldInfo().Select(fi => new Member<T>(fi, type, valueSelector));
         public static string[] GetNames(this Type type)
             => type?.GetPublicFieldInfo().Select(x => x.Name).ToArray();
         public static object[] GetValues(this Type type)
             => type?.GetPublicFieldInfo().Select(x => x.GetValue(type)).ToArray();
         public static string[] GetDescriptions(this Type type)
-            => type?.GetPublicFieldInfo().Select(x => x.GetDescription()).ToArray();
+            => type?.GetPublicFieldInfo().Select(x => x.GetMemberDescription()).ToArray();
         public static object[] GetDisplays(this Type type)
             => type?.GetPublicFieldInfo().Select(x => x.GetDisplay(type)).ToArray();
         #endregion

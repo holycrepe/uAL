@@ -26,6 +26,7 @@ namespace uAL.UTorrentJobs
     using static NLog.LogManager;
     using static Torrent.Helpers.Utils.DebugUtils;
     using System.Collections.Concurrent;
+    using Puchalapalli.Extensions.Primitives;
     using Torrent.Helpers.Utils;
 
     public class UTorrentJobQueueMonitor : QueueMonitor<UTorrentJob>

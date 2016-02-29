@@ -5,6 +5,7 @@ namespace UTorrentRestAPI
     using System.Linq;
     using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using Puchalapalli.Infrastructure.Interfaces;
     using RestSharp;
     using Torrent.Infrastructure;
 

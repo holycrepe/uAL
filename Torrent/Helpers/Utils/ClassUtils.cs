@@ -6,6 +6,8 @@ namespace Torrent.Helpers.Utils
     using System.Linq;
     using Extensions;
     using System.Collections.Generic;
+    using Puchalapalli.Extensions.Collections;
+    using Puchalapalli.Infrastructure.Interfaces;
 
     public static class ClassUtils
     {

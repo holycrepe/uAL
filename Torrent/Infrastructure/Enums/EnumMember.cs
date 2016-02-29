@@ -13,6 +13,7 @@ using Torrent.Infrastructure.Reflection;
 namespace Torrent.Infrastructure.Enums
 {
     using System.ComponentModel;
+    using Puchalapalli.Infrastructure.Interfaces;
     using static Helpers.Utils.DebugUtils;
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class EnumMember : IDebuggerDisplay, IConvertible,
@@ -68,10 +69,10 @@ namespace Torrent.Infrastructure.Enums
             Browsable = false;
             Description = string.Join(", ", EnumUtils.GetMatchingFields(Type, Value).Select(f => f.Description));
         }
-        public EnumMember(Type enumType, Field<object> field, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
+        public EnumMember(Type enumType, Member<object> member, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
         {
             DisplayFormat = displayFormat;
-            SetFromField(field);
+            SetFromField(member);
         }
         public EnumMember(Type enumType, FieldInfo field, EnumMemberDisplayFormat displayFormat = EnumMemberDisplayFormat.Combined)
         {
@@ -80,17 +81,17 @@ namespace Torrent.Infrastructure.Enums
         }
 
         private bool SetFromField(Type enumType, FieldInfo field)
-            => field != null && SetFromField(new Field<object>(field, enumType));
-        private bool SetFromField(Field<object> field)
+            => field != null && SetFromField(new Member<object>(field, enumType));
+        private bool SetFromField(Member<object> member)
         {
-            if (field == null)
+            if (member == null)
                 return false;
-            Type = field.Type;
-            Name = field.Name;
-            Value = field.Value;
+            Type = member.Type;
+            Name = member.Name;
+            Value = member.Value;
             Long = Convert.ToInt64(Value);
-            Description = field.Description;
-            Browsable = field.Browsable != false;
+            Description = member.Description;
+            Browsable = member.Browsable != false;
             return true;
         }
         #endregion

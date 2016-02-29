@@ -14,6 +14,7 @@ namespace UTorrentRestAPI
     using Torrent.Infrastructure;
     using Newtonsoft.Json.Linq;
     using DataModels;
+    using Puchalapalli.Infrastructure.Interfaces;
     using Serializers.Converters;
     
 

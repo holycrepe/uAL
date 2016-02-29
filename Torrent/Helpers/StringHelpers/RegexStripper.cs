@@ -2,6 +2,7 @@
 {
     using System.Text.RegularExpressions;
     using Extensions;
+    using Puchalapalli.Extensions.Primitives;
     using static Utils.RegexUtils;
 
     public class RegexStripper

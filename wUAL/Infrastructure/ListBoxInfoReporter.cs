@@ -10,6 +10,7 @@ namespace wUAL.Infrastructure
 {
     using System.Collections.Generic;
     using System.Windows;
+    using Puchalapalli.Extensions.Collections;
     using Torrent.Extensions;
     using Torrent.Infrastructure.InfoReporters;
     using uAL.Infrastructure;

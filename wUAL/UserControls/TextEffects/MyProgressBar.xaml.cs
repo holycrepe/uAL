@@ -26,6 +26,7 @@ namespace wUAL.UserControls
     using System.Windows.Media;
     using System.Windows.Media.Effects;
     using PostSharp.Patterns.Model;
+    using Puchalapalli.Extensions.Primitives;
     using Torrent.Extensions;
     using Torrent.Extensions.Collection;
     using Torrent.Extensions.UI;

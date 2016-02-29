@@ -1,6 +1,7 @@
 namespace wUAL.WPF.ValueConverters
 {
     using Models.ProgressBar;
+    using Puchalapalli.Extensions.Primitives;
     using Torrent.Enums;
     using Torrent.Extensions;
     using Torrent.Helpers.Utils;

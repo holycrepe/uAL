@@ -12,6 +12,8 @@ namespace wUAL.Properties.Settings.AppSettings
     using Serialization;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using Puchalapalli.Extensions.Collections;
+    using Puchalapalli.Infrastructure.Interfaces;
     using Torrent.Extensions;
     using Torrent.Infrastructure;
     [Serializable]

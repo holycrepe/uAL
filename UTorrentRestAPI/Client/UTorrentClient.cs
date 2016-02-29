@@ -9,9 +9,11 @@
     using Torrent;
     using Torrent.Helpers.Utils;
     using Torrent.Infrastructure;
-    using Torrent.Infrastructure.ContextHandlers;
+    using Puchalapalli.Infrastructure.ContextManagers;
     using RestClient;
     using System.Collections.Concurrent;
+    using Puchalapalli.Infrastructure;
+    using Puchalapalli.Infrastructure.Interfaces;
 
     /// <summary>
     /// This is the main entrypoint to the UTorrentAPI
@@ -62,7 +64,7 @@
             private set { _torrents = value; }
         }
 
-        public ContextHandlers DeferUpdates
+        public ContextManagers DeferUpdates
             => Torrents?.DeferUpdates;
 
         /// <summary>

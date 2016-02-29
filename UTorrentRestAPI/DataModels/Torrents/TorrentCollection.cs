@@ -13,7 +13,7 @@ namespace UTorrentRestAPI
     using IO = System.IO;
     using RestSharp;
     using RestClient;
-    using Torrent.Infrastructure.ContextHandlers;
+    using Puchalapalli.Infrastructure.ContextManagers;
     using Torrent.Extensions;
     using System.Diagnostics;    /// <summary>
                                  /// Contains all the current torrent jobs
@@ -74,7 +74,7 @@ namespace UTorrentRestAPI
         /// </summary>
         bool ShouldUpdate => !updating || !updated;
 
-        public ContextHandlers DeferUpdates { get; } = new ContextHandlers();
+        public ContextManagers DeferUpdates { get; } = new ContextManagers();
 
         /// <summary>
         /// Gets the number of torrents currently tracked by uTorrent, without updating the collection

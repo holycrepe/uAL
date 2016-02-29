@@ -8,6 +8,7 @@ using wUAL.WPF.Selectors;
 
 namespace wUAL.WPF.Templates
 {
+    using Puchalapalli.Extensions.Primitives;
     using Torrent.Extensions;
     using Torrent.Helpers.Utils;
     using static Selectors.Selectors;

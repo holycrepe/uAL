@@ -9,6 +9,7 @@ namespace UTorrentRestAPI
     using Torrent.Infrastructure;
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json;
+    using Puchalapalli.Infrastructure.Interfaces;
 
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class RestNestedList : List<RestList>, IDebuggerDisplay

@@ -8,6 +8,9 @@ using Torrent.Extensions;
 
 namespace Torrent.Helpers.Utils.IO
 {
+    using Puchalapalli.Extensions;
+    using Puchalapalli.Extensions.Primitives;
+
     public static partial class FileSystemUtils
     {
         static readonly Logger logger = LogManager.GetLogger("Simple.FSU.Mover");

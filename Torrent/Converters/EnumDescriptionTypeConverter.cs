@@ -34,7 +34,7 @@ namespace Torrent.Converters
                     {
                         return field.GetValue(EnumType);
                     }
-                    if (field.GetDescription() == source)
+                    if (field.GetMemberDescription() == source)
                     {
                         return field.GetValue(EnumType);
                     }

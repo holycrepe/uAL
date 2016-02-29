@@ -13,10 +13,11 @@ using Torrent.Enums;
 using Torrent.Extensions;
 using Torrent.Helpers.Utils;
 using Torrent.Infrastructure;
-using Torrent.Infrastructure.ContextHandlers;
+using Puchalapalli.Infrastructure.ContextManagers;
 
 namespace uAL.Infrastructure.UI
 {
+    using Puchalapalli.Extensions.Primitives;
 
     [NotifyPropertyChanged]
     public class ViewModel<T, TValue> : ViewModelBase
@@ -25,8 +26,8 @@ namespace uAL.Infrastructure.UI
     {
         protected bool IsMultiple { get; }
 
-        public ContextHandlers IgnoreSelectedItemsChanged { get; }
-            = new ContextHandlers();
+        public ContextManagers IgnoreSelectedItemsChanged { get; }
+            = new ContextManagers();
         protected virtual bool IS_MULTIPLE_DEFAULT { get; }
             = false;
         protected T _selectedItem;

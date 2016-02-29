@@ -6,6 +6,9 @@ namespace Torrent.Properties.Settings
     using Infrastructure;
     using System.Diagnostics;
     using System.Runtime.Serialization;
+    using Puchalapalli.Extensions.Collections;
+    using Puchalapalli.Infrastructure.Interfaces;
+
     [Serializable]
     [XmlSerializerAssembly("Torrent.XmlSerializers")]
     [DataContract]

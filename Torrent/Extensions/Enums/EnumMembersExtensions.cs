@@ -7,6 +7,8 @@ using Torrent.Infrastructure.Enums;
 
 namespace Torrent.Extensions
 {
+    using Puchalapalli.Extensions.Collections;
+
     public static class EnumMembersExtensions
     {
         public static void SetDisplayFormat(this IEnumerable<EnumMember> list, EnumMemberDisplayFormat value = EnumMemberDisplayFormat.Combined)

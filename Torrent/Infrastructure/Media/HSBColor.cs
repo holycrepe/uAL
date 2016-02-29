@@ -131,7 +131,14 @@
         /// <param name="difference">Should be between -1 and 1</param>
         /// <returns></returns>
         public HSBColor AdjustBrightness([Range(-1d, 1d)] double difference)
-            => SetBrightness(B + difference);
+        {
+            var brightness = B + difference;
+            if (brightness < 0)
+                throw new ArgumentOutOfRangeException(nameof(difference), difference, $"Adjustment of {this.B:F2}{difference:F2} would lead to a negative {nameof(brightness)} of {brightness:F2}");
+            if (brightness > 0)
+                throw new ArgumentOutOfRangeException(nameof(difference), difference, $"Adjustment of {this.B:F2}{difference:+F2} would lead to a {nameof(brightness)} greater than 1 {brightness:F2}");
+            return SetBrightness(brightness);            
+        }
 
         /// <summary>
         /// Explicitly set Brightness

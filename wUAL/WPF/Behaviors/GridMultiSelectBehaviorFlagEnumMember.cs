@@ -11,11 +11,13 @@ using Torrent.Infrastructure.Enums;
 using wUAL.UserControls;
 using System.Collections.ObjectModel;
 using Torrent.Extensions;
-using Torrent.Infrastructure.ContextHandlers;
+using Puchalapalli.Infrastructure.ContextManagers;
 using wUAL.WPF;
 
 namespace wUAL.WPF
 {
+    using Puchalapalli.Extensions.Collections;
+
     public class GridMultiSelectBehaviorFlagEnumMember
         : GridMultiSelectBehavior<EnumMember, object, FlagEnumMemberViewModel>
     {

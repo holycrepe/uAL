@@ -10,65 +10,60 @@ namespace Torrent.Extensions.Expressions
 {
     public static class ExpressionExtensions
     {
+        public static T Evaluate<T>(this Expression e)
+            => e.NodeType == ExpressionType.Constant
+            ? (T)((ConstantExpression)e).Value
+            : (T)Expression.Lambda(e).Compile().DynamicInvoke();
+        public static object Evaluate(this Expression e)
+            => e.NodeType == ExpressionType.Constant
+            ? ((ConstantExpression)e).Value
+            : Expression.Lambda(e).Compile().DynamicInvoke();
+
+        public static TResult GetResult<TResult>(this Expression<Func<TResult>> expression)
+            => expression.Compile().Invoke();
+        public static TResult GetResult<T, TResult>(this Expression<Func<T, TResult>> expression, T parameter)
+            => expression.Compile().Invoke(parameter);
+
+        public static string GetPropertySymbol<TDelegate>(this Expression<TDelegate> expression)
+            => string.Join(".",
+                GetMembersOnPath(expression.Body as MemberExpression)
+                .Select(m => m.Member.Name)
+                .Reverse());
+
+        private static IEnumerable<MemberExpression> GetMembersOnPath(this MemberExpression expression)
+        {
+            while (expression != null)
+            {
+                yield return expression;
+                expression = expression.Expression as MemberExpression;
+            }
+        }
+
         public static string GetPropertyName<TProperty>(this Expression<Func<TProperty>> propertyExpression)
             => propertyExpression.Body.GetMemberExpression().GetPropertyName();
 
         public static string GetPropertyName(this MemberExpression memberExpression)
         {
-            if (memberExpression == null)
-            {
-                return null;
-            }
-
-            if (memberExpression.Member.MemberType != MemberTypes.Property)
-            {
-                return null;
-            }
+            if (memberExpression?.Member.MemberType != MemberTypes.Property)            
+                return null;            
 
             var child = memberExpression.Member.Name;
             var parent = GetPropertyName(memberExpression.Expression.GetMemberExpression());
 
-            if (parent == null)
-            {
-                return child;
-            }
-            else
-            {
-                return parent + "." + child;
-            }
+            return parent == null
+                ? child
+                : parent + "." + child;
         }
 
-        public static MemberExpression GetMemberExpression(this Expression expression)
-        {
-            var memberExpression = expression as MemberExpression;
-
-            if (memberExpression != null)
-            {
-                return memberExpression;
-            }
-
-            var unaryExpression = expression as UnaryExpression;
-
-
-            if (unaryExpression != null)
-            {
-                memberExpression = (MemberExpression)unaryExpression.Operand;
-
-                if (memberExpression != null)
-                {
-                    return memberExpression;
-                }
-
-            }
-            return null;
-        }
+        public static MemberExpression GetMemberExpression(this Expression expression) 
+            => expression as MemberExpression
+            ?? (MemberExpression)(expression as UnaryExpression)?.Operand;
 
         public static void ShouldEqual<T>(this T actual, T expected, string name)
         {
-            if (!Object.Equals(actual, expected))
-            {
-                throw new Exception(String.Format("{0}: Expected <{1}> Actual <{2}>.", name, expected, actual));
-            }
+            if (!object.Equals(actual, expected))            
+                throw new Exception($"{name}: Expected <{expected}> Actual <{actual}>.");
+            
         }
 
     }

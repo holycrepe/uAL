@@ -12,6 +12,8 @@ using wUAL.WPF.Selectors;
 
 namespace wUAL.WPF.Styles
 {
+    using Puchalapalli.Extensions.Collections;
+    using Puchalapalli.Extensions.Primitives;
     using Torrent.Helpers.Utils;
     using static Selectors.Selectors;
     public abstract class StyleSelectorBase<T> : StyleSelector

@@ -8,6 +8,8 @@ namespace Torrent.Infrastructure
     using System.Linq;
     using Extensions;
     using System.Runtime.Serialization;
+    using Puchalapalli.Extensions.Collections;
+
     public delegate void LocalPropertyChangedEventHandler(string propertyName);
     [DataContract]
     public class NotifyPropertyChangedBase : INotifyPropertyChanged

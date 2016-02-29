@@ -9,6 +9,7 @@ namespace UTorrentRestAPI
     using Torrent.Infrastructure;
     using Extensions;
     using Newtonsoft.Json.Linq;
+    using Puchalapalli.Infrastructure.Interfaces;
 
     /// <summary>
     /// Struct That Automatically Casts A String To/From A Primitive Value

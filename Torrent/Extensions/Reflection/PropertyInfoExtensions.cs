@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -39,5 +40,8 @@ namespace Torrent.Extensions
             return (Action<T, object>)Expression.Lambda(setterCall, instance, argument)
                                                 .Compile();
         }
+
+        public static object GetDisplay(this PropertyInfo property, Type enumType)
+            => property.GetMemberDescription() ?? property.GetValue(enumType);
     }
 }

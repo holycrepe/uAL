@@ -12,7 +12,7 @@ using wUAL.UserControls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
-using Torrent.Infrastructure.ContextHandlers;
+using Puchalapalli.Infrastructure.ContextManagers;
 using uAL.Infrastructure.UI;
 
 namespace wUAL.WPF
@@ -41,8 +41,8 @@ namespace wUAL.WPF
             => ViewModel.SelectedItem;
         public TValue Value
             => ViewModel.Value;
-        public ContextHandlers IgnoreEvents { get; }
-            = new ContextHandlers();
+        public ContextManagers IgnoreEvents { get; }
+            = new ContextManagers();
         //public INotifyCollectionChanged SelectedItems
         //{
         //    get { return (INotifyCollectionChanged)GetValue(SelectedItemsProperty); }

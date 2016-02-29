@@ -3,9 +3,6 @@ using System.ComponentModel;
 
 namespace uAL.Properties.Settings.ToggleSettings
 {
-    using Torrent.Extensions;
-    using static MonitorTypes;
-
     [Flags]
     public enum MonitorTypes
     {
@@ -25,28 +22,5 @@ namespace uAL.Properties.Settings.ToggleSettings
         [Description("Torrent & Metalink Files")]
         [Browsable(false)]
         Main = Torrent | Metalink
-    }
-
-    public static class MonitorTypeExtensions
-    {
-        public static bool IsAll(this MonitorTypes value) 
-            => value == All;
-        public static bool IsTorrent(this MonitorTypes value)
-            => value == MonitorTypes.Torrent;
-        public static bool IsMetalink(this MonitorTypes value) 
-            => value == Metalink;
-        public static bool IsJob(this MonitorTypes value)
-            => value == Job;
-
-        public static bool IncludesAll(this MonitorTypes value)
-            => value.IsAll(); // || value.Has(AllMonitors);
-        public static bool Includes(this MonitorTypes value, MonitorTypes flag)
-            => value.IncludesAll() || value.Has(flag);
-        public static bool IncludesTorrent(this MonitorTypes value)
-            => value.Includes(MonitorTypes.Torrent);
-        public static bool IncludesMetalink(this MonitorTypes value)
-            => value.Includes(Metalink);
-        public static bool IncludesJob(this MonitorTypes value)
-            => value.Includes(Job);
     }
 }

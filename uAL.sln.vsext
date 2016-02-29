@@ -1,6 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Solution>
   <Profile Name="Torrent Tests" IsDefault="false" SingleStartProjectGuid="">
-    <Include />
+    <Include>
+      <Project Guid="69aba66e-2506-413f-85fa-1d18ed61362e" />
+      <Project Guid="5158e38d-9925-433f-b5de-380ba73423a9" />
+      <Project Guid="b617f126-efc8-41ad-ac88-16ceb41d75c4" />
+      <Project Guid="a204c876-1d5b-40a8-9dfd-5a1255fc7795" />
+      <Project Guid="2917e84c-b8b0-4308-bcda-dfde860a274d" />
+    </Include>
+  </Profile>
+  <Profile Name="Torrent, Puchalapalli" IsDefault="false" SingleStartProjectGuid="">
+    <Include>
+      <Project Guid="2910c4a7-97d9-4269-a48d-f09f78191423" />
+      <Project Guid="cdd7bb79-ca5f-4ca6-86f5-7f1e25561d6a" />
+      <Project Guid="1f69643b-9cfc-448a-a839-aee66fb89e57" />
+      <Project Guid="2917e84c-b8b0-4308-bcda-dfde860a274d" />
+      <Project Guid="b9eca7ae-d68d-4e57-8d2e-6c0176d02b4d" />
+      <Project Guid="977dda90-93db-4618-b8a5-813dc5d5c796" />
+      <Project Guid="814dcdbf-5592-46ed-9e73-5adbb4cbfe63" />
+    </Include>
+  </Profile>
+  <Profile Name="Puchalapalli" IsDefault="true" SingleStartProjectGuid="">
+    <Include>
+      <Project Guid="c44d9575-55e2-4e43-abc9-0562335d98a5" />
+      <Project Guid="3ad37a4f-9430-49f9-af54-33c7defea1ae" />
+      <Project Guid="cdd7bb79-ca5f-4ca6-86f5-7f1e25561d6a" />
+      <Project Guid="8432b53f-1ff7-49d0-b320-c86810910d35" />
+      <Project Guid="9d969440-c400-45e5-a547-33ad28f4e70d" />
+      <Project Guid="b112eb90-6e6b-40b7-802c-2c88f24e3f13" />
+    </Include>
+  </Profile>
+  <Profile Name="Torrent" IsDefault="false" SingleStartProjectGuid="">
+    <Include>
+      <Project Guid="2917e84c-b8b0-4308-bcda-dfde860a274d" />
+    </Include>
+  </Profile>
+  <Profile Name="wUAL" IsDefault="false" SingleStartProjectGuid="">
+    <Include>
+      <Project Guid="2917e84c-b8b0-4308-bcda-dfde860a274d" />
+      <Project Guid="b9eca7ae-d68d-4e57-8d2e-6c0176d02b4d" />
+      <Project Guid="977dda90-93db-4618-b8a5-813dc5d5c796" />
+      <Project Guid="814dcdbf-5592-46ed-9e73-5adbb4cbfe63" />
+    </Include>
   </Profile>
 </Solution>

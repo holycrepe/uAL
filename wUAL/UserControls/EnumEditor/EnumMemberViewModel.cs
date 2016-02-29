@@ -17,6 +17,8 @@ using uAL.Infrastructure.UI;
 
 namespace wUAL.UserControls
 {
+    using Puchalapalli.Extensions.Collections;
+
     [NotifyPropertyChanged]
     public class EnumMemberViewModel : ViewModel<EnumMember, object>
     {

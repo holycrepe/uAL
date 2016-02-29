@@ -19,6 +19,9 @@ namespace Torrent
     using System.Diagnostics;
     using System.Collections.ObjectModel;
     using Infrastructure;
+    using Puchalapalli.Extensions.Primitives;
+    using Puchalapalli.Infrastructure.Interfaces;
+
     [NotifyPropertyChanged]
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class UTorrentJob : QueueItemBase, IDebuggerDisplay

@@ -17,6 +17,7 @@ using System.Diagnostics;
 
 namespace wUAL.UserControls
 {
+    using Puchalapalli.Extensions.Collections;
     using static Torrent.Helpers.Utils.DebugUtils;
     [NotifyPropertyChanged]
     public class FlagEnumMemberViewModel : EnumMemberViewModel

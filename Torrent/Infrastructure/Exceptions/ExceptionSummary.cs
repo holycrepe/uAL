@@ -9,6 +9,8 @@ using Torrent.Extensions;
 
 namespace Torrent.Infrastructure.Exceptions
 {
+    using Puchalapalli.Infrastructure.Interfaces;
+
     [DebuggerDisplay("{DebuggerDisplay(1)}")]
     public class ExceptionSummary : IDebuggerDisplay
     {

@@ -11,6 +11,7 @@ namespace Torrent.Helpers.Utils
     using System.ComponentModel;
     using System.Reflection;
     using System.Collections.Generic;
+    using Puchalapalli.Extensions.Collections;
     using static DebugUtils;
     public static partial class EnumUtils
     {
@@ -67,13 +68,13 @@ namespace Torrent.Helpers.Utils
                 return value > 0 && flagValues.Has(value);
             }).ToArray();
         }
-        public static Field<long>[] GetMatchingFields(Type t, object flags)
+        public static Member<long>[] GetMatchingFields(Type t, object flags)
         {
             var flagValues = Convert.ToInt64(flags);
             var fields = t.GetPublicFields(Convert.ToInt64)
                 .Where(fi => fi.Cast > 0)
                 .OrderByDescending(fi => fi.Cast);
-            var list = new List<Field<long>>();
+            var list = new List<Member<long>>();
             while (flagValues > 0)
             {
                 var match = fields.FirstOrDefault(field => flagValues.Has(field.Cast));

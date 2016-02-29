@@ -15,11 +15,14 @@
     using RestSharp.Deserializers;
     using Torrent.Extensions;
     using Torrent.Infrastructure;
-    using Torrent.Infrastructure.ContextHandlers;
+    using Puchalapalli.Infrastructure.ContextManagers;
     using Extensions;
     using Deserializers;
     using Newtonsoft.Json.Linq;
     using System.Collections.Concurrent;
+    using Puchalapalli.Infrastructure;
+    using Puchalapalli.Infrastructure.Interfaces;
+
     /// <summary>
     /// This is the main entrypoint to the UTorrentAPI
     /// and provides access to the torrent job list,
@@ -62,7 +65,7 @@
         #region Properties
 
         #region Public Properties
-        public ContextHandlers ThrowExceptions { get; } = new ContextHandlers(DEFAULT_THROW_EXTENSIONS);
+        public ContextManagers ThrowExceptions { get; } = new ContextManagers(DEFAULT_THROW_EXTENSIONS);
         public UTorrentRestClientException GetTokenException;
         public string Token => token ?? (token = GetToken(out GetTokenException));
 
